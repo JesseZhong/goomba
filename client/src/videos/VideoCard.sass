@@ -1,0 +1,22 @@
+@import "../theme"
+
+div.video-card
+    margin: 0.1em
+    position: relative
+    min-height: 100px
+    height: 100px
+    max-height: 100px
+
+    img, video
+        width: auto
+        max-width: 20vh
+
+    div.overlay
+        position: absolute
+        top: 0
+        left: 0
+        z-index: 10
+        opacity: 0
+
+        &:hover
+            opacity: 100%

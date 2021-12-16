@@ -1,0 +1,55 @@
+#!/bin/bash
+
+script_path="$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )"
+cd $script_path
+
+run_api() {
+    # Activate and check required packages.
+    if [[ ! -e "./env/bin/activate" ]]
+    then
+        virtualenv env && . env/bin/activate
+        pip3 install -r ./requirements
+    else
+        . env/bin/activate
+    fi
+
+    # Set necessary environmental variables.
+    . .env
+    export FLASK_APP=api/main.py
+    [[ -v PORT ]] && port=$PORT || port=5102
+
+    # Run dev instance of the api.
+    flask run --port=$port
+
+    deactivate
+}
+
+export -f run_api
+
+run_client() {
+    cd client/
+    yarn run start
+}
+
+export -f run_client
+
+case "$1" in
+    dev | run)
+        case "$2" in
+            api)
+                gnome-terminal --tab -q -- bash -c 'run_api; bash'
+            ;;
+            ui)
+                gnome-terminal --tab -q -- bash -c 'run_client; bash'
+            ;;
+            *)
+                gnome-terminal --tab -q -- bash -c 'run_api; bash'
+                gnome-terminal --tab -q -- bash -c 'run_client; bash'
+            ;;
+        esac
+    ;;
+    *)
+        echo "Usage: $0 run|dev"
+        exit
+    ;;
+esac

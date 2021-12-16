@@ -1,0 +1,26 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.exclude": {
+			"**/.git": true,
+			"**/.gitignore": true,
+			"**/.svn": true,
+			"**/.hg": true,
+			"**/CVS": true,
+			"**/.DS_Store": true,
+			"yarn.lock": true,
+			"webpack.config.js": true,
+			"tsconfig.json": true,
+			"**/node_modules": true,
+			"browserslist": true,
+			"**/*.js": true,
+			"**/.data": true,
+			"**/build": true,
+			"**/dist": true
+		}
+	}
+}
