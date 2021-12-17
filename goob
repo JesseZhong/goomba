@@ -1,9 +1,48 @@
 #!/bin/bash
 
+base=$(basename "$0")
+usage="Usage: $base [COMMAND]
+Utility to help manage the video player.
+
+COMMANDS
+
+    run | dev               Runs both the API and UI in new terminal tabs. For DEBUG USE ONLY.
+                            Subcommands:
+                                ui      Runs just the UI in another tab.
+                                api     Runs just the API in another tab.
+
+    users | user | u        Lists the allowed users for the app.
+                            Subcommands:
+                                add | update                     Adds or updates a user to the allowable list. Prompts user for username.
+                                add | update <username> admin    Adds or updates a user as an admin.
+                                remove | delete                  Removes a user from the allowable list. Prompts for username.
+                                remove | delete <username>       Removes a user from the allowable list.
+
+    roles | role | r        Lists the allowed roles for the app.
+                            Subcommands:
+                                add | update                     Adds or updates a role to the allowable list. Prompts user for guild and role.
+                                add | update <guild> <role>      Adds or updates a role to the allowable list.
+                                remove | delete                  Removes a role from the allowable list. Prompts for guild and role.
+                                remove | delete <guild> <role>   Removes a role from the allowable list.
+
+EXAMPLES
+
+    $base run               Runs both the API and UI apps in their own terminal tabs.
+    $base run api           Run just the API in a new tab.
+"
+
 script_path="$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )"
 cd $script_path
+arg1=$1
+arg2=$2
+arg3=$3
+arg4=$4
+unset 1
+unset 2
+unset 3
+unset 4
 
-run_api() {
+activate() {
     # Activate and check required packages.
     if [[ ! -e "./env/bin/activate" ]]
     then
@@ -12,6 +51,10 @@ run_api() {
     else
         . env/bin/activate
     fi
+}
+
+run_api() {
+    activate
 
     # Set necessary environmental variables.
     . .env
@@ -23,33 +66,104 @@ run_api() {
 
     deactivate
 }
-
 export -f run_api
 
 run_client() {
     cd client/
     yarn run start
 }
-
 export -f run_client
 
-case "$1" in
+
+exec_util() {
+    activate
+
+    python3 -c "import api.utility as u; $1"
+
+    deactivate
+}
+
+command_exists() {
+    echo "$(type $1 >/dev/null 2>&1 && echo 'y')"
+}
+
+prompt() {
+    local val
+    if [[ -v 2 ]]
+    then
+        val="$2"
+    else
+        echo -n "$1: "
+        read val
+    fi
+
+    echo "$val"
+}
+
+
+case "$arg1" in
     dev | run)
-        case "$2" in
+        # GNOME desktop environment.
+        if [[ -n $(command_exists "gnome-terminal") ]]
+        then
+            echo 'shit'
+            go() {
+                gnome-terminal --tab -q -- bash -c "$1; bash"
+            }
+
+        # MacOS.
+        elif [[ -n $(command_exists "osascript") ]]
+        then
+            go() {
+                osascript -e 'tell application "Terminal" to activate' \
+                          -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' \
+                          -e "tell application \"Terminal\" to do script \"$1\" in selected tab of the front window"
+            }
+
+        # Unsupported.
+        else
+            echo "No supported terminal available."
+            exit
+        fi
+
+        # Attempt to perform action.
+        case "$arg2" in
             api)
-                gnome-terminal --tab -q -- bash -c 'run_api; bash'
+                go 'run_api'
             ;;
             ui)
-                gnome-terminal --tab -q -- bash -c 'run_client; bash'
+                go 'run_client'
             ;;
             *)
-                gnome-terminal --tab -q -- bash -c 'run_api; bash'
-                gnome-terminal --tab -q -- bash -c 'run_client; bash'
+                go 'run_api'
+                go 'run_client'
             ;;
         esac
     ;;
+    users | user | u)
+        case "$arg2" in
+            add | update)
+                username=$(prompt "username" $arg3)
+                [[ "$arg4" == "admin" ]] && admin="True" || admin="False"
+                func="u.put_user('$username', $admin)"
+            ;;
+            delete | remove)
+                username=$(prompt "username" $arg3)
+                func="u.delete_user('$username')"
+            ;;
+            *)
+                func="u.list_users()"
+            ;;
+        esac
+    ;;
+    roles | role | r)
+
+    ;;
     *)
-        echo "Usage: $0 run|dev"
+        echo "$usage"
         exit
     ;;
 esac
+
+# Execute any requested commands.
+[[ -v func ]] && exec_util "$func"

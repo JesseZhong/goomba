@@ -63,6 +63,4 @@ TODO
 # Dependencies
 node_modules/
 
-*.pem
-*.csr
-*.key
+db/
