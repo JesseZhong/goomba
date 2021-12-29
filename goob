@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 base=$(basename "$0")
 usage="Usage: $base [COMMAND]
@@ -37,17 +37,21 @@ arg1=$1
 arg2=$2
 arg3=$3
 arg4=$4
-unset 1
-unset 2
-unset 3
-unset 4
+[ -v 1 ] && unset 1
+[[ -v 2 ]] && unset 2
+[[ -v 3 ]] && unset 3
+[[ -v 4 ]] && unset 4
+
+install() {
+    virtualenv env && . env/bin/activate
+    pip3 install -r ./requirements
+}
 
 activate() {
     # Activate and check required packages.
     if [[ ! -e "./env/bin/activate" ]]
     then
-        virtualenv env && . env/bin/activate
-        pip3 install -r ./requirements
+        install
     else
         . env/bin/activate
     fi
@@ -57,8 +61,8 @@ run_api() {
     activate
 
     # Set necessary environmental variables.
-    . .env
-    export FLASK_APP=api/main.py
+    [[ -e ".env" ]] && . .env
+    export FLASK_APP=api.main
     [[ -v PORT ]] && port=$PORT || port=5102
 
     # Run dev instance of the api.
@@ -102,11 +106,14 @@ prompt() {
 
 
 case "$arg1" in
+    install | setup)
+        install
+        hash -p "$script_path/$base" "$base"
+    ;;
     dev | run)
         # GNOME desktop environment.
         if [[ -n $(command_exists "gnome-terminal") ]]
         then
-            echo 'shit'
             go() {
                 gnome-terminal --tab -q -- bash -c "$1; bash"
             }
@@ -117,7 +124,7 @@ case "$arg1" in
             go() {
                 osascript -e 'tell application "Terminal" to activate' \
                           -e 'tell application "System Events" to tell process "Terminal" to keystroke "t" using command down' \
-                          -e "tell application \"Terminal\" to do script \"$1\" in selected tab of the front window"
+                          -e "tell application \"Terminal\" to do script \"$script_path/$base self-run $1\" in selected tab of the front window"
             }
 
         # Unsupported.
@@ -137,6 +144,16 @@ case "$arg1" in
             *)
                 go 'run_api'
                 go 'run_client'
+            ;;
+        esac
+    ;;
+    self-run)
+        case "$arg2" in
+            api | run_api)
+                run_api
+            ;;
+            ui | run_client)
+                run_client
             ;;
         esac
     ;;

@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse, abort
-from authorization import auth_required
+from api.authorization import auth_required
 
 parser = reqparse.RequestParser()
 parser.add_argument('url', type=str, help='Url for the video.')

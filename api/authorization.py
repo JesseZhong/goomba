@@ -80,7 +80,7 @@ def resolve_auth(
 
 def auth_required(func):
 
-    @wraps()
+    @wraps(func)
     def check_auth():
         result = resolve_auth()
 
@@ -91,7 +91,7 @@ def auth_required(func):
 
 def admin_required(func):
 
-    @wraps()
+    @wraps(func)
     def check_admin():
         result = resolve_auth(check_admin=True)
 

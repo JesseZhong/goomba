@@ -1,5 +1,5 @@
 from typing import Set
-from .db import get, update
+from api.db import get, update
 
 
 def list_users():
