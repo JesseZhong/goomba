@@ -5,7 +5,7 @@ import MediaView from './MediaView';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
-import './ItemView.sass';
+import './VideoView.sass';
 
 const VideoView = (props: {
     id: number,

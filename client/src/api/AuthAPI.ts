@@ -89,7 +89,7 @@ const AuthAPI = (
         action(
             access_token,
             (response: ErrorResponse): boolean => {
-                if (response.statusCode === 401) {
+                if (response.status === 401) {
                     if (response.statusText === 'Unauthorized - Invalid Token.') {
                         request.get(`${url}/refresh`)
                             .set('Accept', 'application/json')
