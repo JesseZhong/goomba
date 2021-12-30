@@ -1,5 +1,8 @@
 import request, { Response } from 'superagent';
+import { Directories } from '../videos/Directory';
 import { Videos } from '../videos/Video';
+import { Access } from './Access';
+import { ErrorResponse } from './ErrorResponse';
 
 function reduce(
     url: string,
@@ -18,43 +21,114 @@ function reduce(
 }
 
 const VideoAPI = (
-    url: string
+    url: string,
+    access: Access
 ) => ({
     get(
         received: (videos: Videos) => void
     ): void {
-        request.get(`${url}`)
-            .set('Accept', 'application/json')
-            .end((error: any, response: Response) => {
-                if (error) {
-                    return console.error(error);
-                }
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) =>
+                request.get(`${url}/videos`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (!errorHandler?.(response as ErrorResponse)) {
+                                console.error(error)
+                            }
+                            return;
+                        }
 
-                reduce(
-                    url,
-                    response,
-                    received
-                );
-            });
+                        reduce(
+                            url,
+                            response,
+                            received
+                        );
+                    })
+        );
     },
 
-    getTaggedVideos(
-        tag: string,
+    getByTags(
+        tags: string[],
         received: (videos: Videos) => void
     ): void {
-        request.get(`${url}/tags/${tag}/files`)
-            .set('Accept', 'application/json')
-            .end((error: any, response: Response) => {
-                if (error) {
-                    return console.error(error);
-                }
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) =>
+                request.get(`${url}/videos?tags=[${tags.join(',')}]`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (!errorHandler?.(response as ErrorResponse)) {
+                                console.error(error)
+                            }
+                            return;
+                        }
 
-                reduce(
-                    url,
-                    response,
-                    received
-                );
-            });
+                        reduce(
+                            url,
+                            response,
+                            received
+                        );
+                    })
+        );
+    },
+
+    getDirectories(
+        received: (directories: Directories) => void
+    ): void {
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) =>
+                request.get(`${url}/directories`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (!errorHandler?.(response as ErrorResponse)) {
+                                console.error(error)
+                            }
+                            return;
+                        }
+
+                        const results = new Directories(response?.body);
+                        received(results);
+                    })
+        );
+    },
+
+    getTags(
+        received: (tags: string[]) => void
+    ): void {
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) =>
+                request.get(`${url}/tags`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (!errorHandler?.(response as ErrorResponse)) {
+                                console.error(error)
+                            }
+                            return;
+                        }
+
+                        const results = response?.body as string[];
+                        received(results);
+                    })
+        );
     }
 });
 

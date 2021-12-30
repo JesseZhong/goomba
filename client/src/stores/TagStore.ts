@@ -21,9 +21,6 @@ class TagStore extends ReduceStore<string[], ActionPayload> {
                     state = receiveAction.tags;
                 }
                 return state;
-            case ActionTypes.GET_TAGGED_VIDEOS:
-            case ActionTypes.ADD_TAGS:
-            case ActionTypes.REMOVE_TAGS:
             case ActionTypes.GET_TAGS:
             default:
                 return state;

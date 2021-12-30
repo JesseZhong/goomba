@@ -46,6 +46,7 @@
     "cross-env": "^6.0.3",
     "flux": "^4.0.1",
     "formik": "^2.1.4",
+    "local-storage": "2",
     "lodash": "^4.17.15",
     "node-sass": "^4.13.1",
     "node-uuid": "^1.4.8",

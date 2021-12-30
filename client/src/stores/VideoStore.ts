@@ -23,7 +23,6 @@ class VideoStore extends ReduceStore<Videos, ActionPayload> {
                 }
                 return state;
 
-            case ActionTypes.GET_TAGGED_VIDEOS:
             case ActionTypes.GET_VIDEOS:
             default:
                 return state;

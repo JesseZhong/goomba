@@ -4,6 +4,7 @@ export interface Video {
     fileURI: string;
     thumbnailURI: string;
     type: 'image' | 'video/webm' | 'video/mp4' | 'unknown';
+    tags: string[];
 }
 
 export class Videos extends Map<string, Video> {
