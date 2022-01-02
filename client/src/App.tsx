@@ -44,6 +44,12 @@ const App = (state: AppState) => {
                 <Switch>
                     <Route
                         exact
+                        path='/'
+                    >
+                        <Redirect to='/requestauth' />
+                    </Route>
+                    <Route
+                        exact
                         path='/denied'
                         component={Denied}
                     />
@@ -75,16 +81,7 @@ const App = (state: AppState) => {
     return (
         <div className='page'>
             <Switch>
-                <Route path='/view' render={(props: any) => (
-                    <VideoView
-                        id={props.location?.state as number}
-                        videos={state.videos}
-                    />
-                )} />
-                <Route exact path='/' render={(props: any) => (
-                    <VideosPage {...props} videos={state.videos} />
-                )} />
-                <Route path='*' component={PageNotFound} />
+                {route()}
             </Switch>
         </div>
     )

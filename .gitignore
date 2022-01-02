@@ -64,3 +64,4 @@ TODO
 node_modules/
 
 db/
+.cert/

@@ -1,6 +1,8 @@
-from typing import Set
+from typing import Dict, Set
+from datetime import datetime
 from api.db import get, update
 
+TIME_FORMAT = '%Y.%m.%d %H:%M:%S'
 
 def list_users():
     """
@@ -102,3 +104,15 @@ def put_role(
         roles[guild] = guild_roles
 
         update('roles', roles)
+
+
+def clean_states():
+    """
+        Clean up session states that have expired.
+    """
+    states: Dict[str, str] = get('states')
+
+    now = datetime.now()
+    for state, expiry in states.items():
+        if datetime.strptime(expiry, TIME_FORMAT) > now:
+            del states[state]

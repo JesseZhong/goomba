@@ -14,13 +14,15 @@ const AuthAPI = (
 ) => ({
     requestAuthorization(
         state: string,
-        received: (auth_url: string) => void
+        received: (auth_url: string) => void,
+        onerror?: (error: any) => void
     ): void {
         request.get(`${url}/authorize`)
             .set('Accept', 'application/json')
             .set('State', state)
             .end((error: any, response: Response) => {
                 if (error) {
+                    onerror?.(error);
                     return console.error(error);
                 }
 
@@ -42,7 +44,8 @@ const AuthAPI = (
         received: (
             access_token: string,
             refresh_token: string
-        ) => void
+        ) => void,
+        onerror?: (error: any) => void
     ): void {
         request.get(`${url}/access`)
             .set('Accept', 'application/json')
@@ -50,6 +53,7 @@ const AuthAPI = (
             .set('Code', code)
             .end((error: any, response: Response) => {
                 if (error) {
+                    onerror?.(error);
                     return console.error(error);
                 }
 

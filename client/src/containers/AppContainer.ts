@@ -62,12 +62,12 @@ const access: Access = (
     }
 }
 
-const videoApi = VideoAPI(url, access);
-
 // Load session.
 Sessions.load(
     SessionActions.receive
 );
+
+const videoApi = VideoAPI(url, access);
 
 function getStores() {
     return [
@@ -81,13 +81,15 @@ export interface AppState {
 
     requestAuthorization: (
         state: string,
-        received: (auth_url: string) => void
+        received: (auth_url: string) => void,
+        onerror?: (error: any) => void
     ) => void,
 
     requestAccess: (
         state: string,
         code: string,
-        received: (token: string) => void
+        received: (token: string) => void,
+        onerror?: (error: any) => void
     ) => void,
 
     videos: Videos,
@@ -125,7 +127,8 @@ function getState(): AppState {
         requestAccess: (
             state: string,
             code: string,
-            received: (token: string) => void
+            received: (token: string) => void,
+            onerror?: (error: any) => void
         ) => authApi.requestAccess(
             state,
             code,
@@ -135,7 +138,8 @@ function getState(): AppState {
             ) => {
                 saveSession(access_token, refresh_token);
                 received(access_token);
-            }
+            },
+            onerror
         ),
 
         videos: VideoStore.getState(),

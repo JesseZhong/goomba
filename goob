@@ -65,8 +65,16 @@ run_api() {
     export FLASK_APP=api.main
     [[ -v PORT ]] && port=$PORT || port=5102
 
+    local options=''
+
+    # Use TLS if cert provided.
+    if [[ -v CERT_FILE && -v KEY_FILE ]]
+    then
+        options="--cert=$CERT_FILE --key=$KEY_FILE"
+    fi
+    
     # Run dev instance of the api.
-    flask run --port=$port
+    flask run --port=$port $options
 
     deactivate
 }

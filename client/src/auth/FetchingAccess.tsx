@@ -10,7 +10,8 @@ const AwaitAccess = (
         requestAccess: (
             state: string,
             code: string,
-            received: (token: string) => void
+            received: (token: string) => void,
+            onerror?: (error: any) => void
         ) => void,
         fetchAllData: (
             guild?: string
@@ -21,7 +22,7 @@ const AwaitAccess = (
     const location = useLocation();
 
     const goMain = () => {
-        history.push('/');
+        //history.push('/');
     }
 
     // NOTE: Discord OAuth service seems to call this route twice,
@@ -102,7 +103,8 @@ const AwaitAccess = (
     props.requestAccess(
         state,
         code,
-        goMain
+        goMain,
+        () => history.push('/denied')
     );
 
     return (

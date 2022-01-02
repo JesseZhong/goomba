@@ -1,5 +1,3 @@
-import _ from 'lodash';
-
 export interface Directory {
     id: string;
     name: string;
