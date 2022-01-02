@@ -22,7 +22,7 @@ const AwaitAccess = (
     const location = useLocation();
 
     const goMain = () => {
-        //history.push('/');
+        history.push('/');
     }
 
     // NOTE: Discord OAuth service seems to call this route twice,

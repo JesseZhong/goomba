@@ -78,13 +78,11 @@ run_api() {
 
     deactivate
 }
-export -f run_api
 
 run_client() {
     cd client/
     yarn run start
 }
-export -f run_client
 
 
 exec_util() {
@@ -123,6 +121,10 @@ case "$arg1" in
         if [[ -n $(command_exists "gnome-terminal") ]]
         then
             go() {
+                # Make functions available in bash for new gnome tabs.
+                export -f run_api
+                export -f run_client
+                
                 gnome-terminal --tab -q -- bash -c "$1; bash"
             }
 
