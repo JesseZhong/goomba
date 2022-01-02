@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from functools import wraps
 from json import loads
 from gremlin.discord.auth import DiscordAuth
-from api.db import get, open_db, update
+from api.db import get, open_db, transact_get, transact_update, update
 
 
 load_dotenv()
@@ -122,12 +122,24 @@ class RequestAuthorization(Resource):
 
         # Save state to compare later.
         state = request.headers['State']
-        states: Dict[str, str] = get(STATE_KEY)
 
-        expiry_date = datetime.now() + timedelta(days=STATE_EXPIRY)
-        states[state] = expiry_date.strftime(TIME_FORMAT)
+        db = open_db()
+        with db.begin(write=True) as trnx:
+            states: Dict[str, str] = transact_get(
+                trnx,
+                STATE_KEY
+            )
 
-        update(STATE_KEY, states)
+            expiry_date = datetime.now() + timedelta(days=STATE_EXPIRY)
+            states[state] = expiry_date.strftime(TIME_FORMAT)
+
+            transact_update(
+                trnx,
+                STATE_KEY,
+                states
+            )
+
+        db.close()
 
         auth_url = discord.request_authorization(
             state=state,
@@ -148,8 +160,13 @@ class RequestAccess(Resource):
 
         state = request.headers['State']
 
+        db = open_db()
+
         # Check if state was previously handled.
-        states: Dict[str, str] = get(STATE_KEY)
+        states: Dict[str, str] = get(
+            STATE_KEY,
+            dbenv=db
+        )
         
         if state not in states:
             abort(400, message='Bad state.')
@@ -172,12 +189,19 @@ class RequestAccess(Resource):
             )
             
             del states[state]
-            update(STATE_KEY, states)
+            update(
+                STATE_KEY,
+                states,
+                dbenv=db
+            )
 
             return tokens, 200
 
         except Exception:
             abort(500, message='What?')
+
+        finally:
+            db.close()
 
 
 class RefreshAccess(Resource):

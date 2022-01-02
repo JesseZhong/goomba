@@ -1,7 +1,7 @@
 from os import getenv, path, mkdir
 from typing import Dict, List, Union
 from dotenv import load_dotenv
-from plyvel import DB
+from lmdb import open
 import json
 
 
@@ -11,14 +11,35 @@ DB_DIR = getenv('DB_DIR', './db')
 def open_db():
     if not path.exists(DB_DIR):
         mkdir(DB_DIR)
-    db = DB(DB_DIR, create_if_missing=True)
 
-    return db
+    dbenv = open(
+        DB_DIR,
+        create=True,
+        max_dbs=0
+    )
 
+    return dbenv
+
+
+def transact_get(
+    transaction: any,
+    key: str,
+    *,
+    default: Union[Dict, List] = {}
+) -> Union[Dict, List]:
+    return json.loads(
+        transaction.get(
+            key.encode(encoding='utf-8'),
+            default=bytes(
+                json.dumps(default),
+                'utf-8'
+            )
+        )
+    )
 
 def get(
     key: str,
-    db: any = None,
+    dbenv: any = None,
     *,
     default: Union[Dict, List] = {}
 ) -> Union[Dict, List]:
@@ -26,38 +47,57 @@ def get(
         Retrieves an item from db.
     """
 
-    # Open the DB if no previously opened instance was passed.
-    target_db = db if db else open_db()
+    # Open the DB environment if no
+    # previously opened instance was passed.
+    env = dbenv if dbenv else open_db()
 
-    result = target_db.get(
-        bytes(key, 'utf-8'),
-        bytes(json.dumps(default), 'utf-8')
-    )
+    result = None
+    with env.begin() as trnx:
+        result = transact_get(
+            trnx,
+            key,
+            default=default
+        )
 
-    # Close a self-opened DB.
-    if not db:
-        target_db.close()
+    # Close a self-opened DB environment.
+    if not dbenv:
+        env.close()
         
-    return json.loads(result)
+    return result
+
+
+def transact_update(
+    transaction: any,
+    key: str,
+    item: Union[Dict, List]
+):
+    transaction.put(
+        key.encode(encoding='utf-8'),
+        bytes(json.dumps(item), 'utf-8')
+    )
 
 
 def update(
     key: str,
     item: Union[Dict, List],
     *,
-    db: any = None
+    dbenv: any = None
 ):
     """
         Update an item in the db.
     """
-    # Open the DB if no previously opened instance was passed.
-    target_db = db if db else open_db()
+    
+    # Open the DB environment if no
+    # previously opened instance was passed.
+    env = dbenv if dbenv else open_db()
 
-    target_db.put(
-        bytes(key, 'utf-8'),
-        bytes(json.dumps(item), 'utf-8')
-    )
+    with env.begin(write=True) as trnx:
+        transact_update(
+            trnx,
+            key,
+            item
+        )
 
-    # Close a self-opened DB.
-    if not db:
-        target_db.close()
+    # Close a self-opened DB environment.
+    if not dbenv:
+        env.close()
