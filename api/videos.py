@@ -2,8 +2,8 @@ from os import path, getenv
 from dotenv import load_dotenv
 from typing import Dict, List
 from flask import request
-from flask_restful import Resource, reqparse, abort
-from api.authorization import admin_required, auth_required
+from flask_restful import Resource, abort
+from api.authorization import admin_required, auth_required, resolve_auth
 from api.db import get, open_db, transact_get, transact_update, update
 from boto3 import client as awsclient
 from jsonschema import validate
@@ -18,18 +18,8 @@ VIDEO_EXPIRY = getenv('VIDEO_EXPIRY', 86400)  # In seconds. Default is 24 hours.
 # Video ID regex. UUID format.
 ID_REGEX = '^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'
 
-parser = reqparse.RequestParser()
-parser.add_argument('id', type=str, help='Video listing identifier', required=True)
-parser.add_argument('key', type=str, help='File identifier.', required=True)
-parser.add_argument('name', type=str, help='Title of the video.', required=True)
-parser.add_argument('date_aired', type=str, help='Date the video originally aired.')
-parser.add_argument('date_added', type=str, help='Date the video was uploaded.')
-parser.add_argument('hide', type=bool, help='Hide from UI or not.')
-parser.add_argument('tags', type=list, help='Tags my dude.')
-
-
 def get_videos(
-    admin: bool = False
+    show_hidden: bool = False
 ):
     """
         Grab all available videos.
@@ -37,7 +27,7 @@ def get_videos(
     try:
         videos: Dict = get('videos')
 
-        if not admin:
+        if not show_hidden:
 
             # Not admin? Filter out videos that are set to 'hide'.
             for id, video in videos:
@@ -87,6 +77,7 @@ class Video(Resource):
 
         return video, 200
 
+
     @admin_required
     def put(self, video_id: str):
         """
@@ -100,9 +91,9 @@ class Video(Resource):
             abort(400, 'Invalid video ID.')
 
         # Attempt to get the request body as json.
-        data = None
+        video = None
         try:
-            data = request.get_json(force=True)
+            video = request.get_json(force=True)
         except TypeError:
             abort(400, 'Malformed request body.')
 
@@ -114,14 +105,11 @@ class Video(Resource):
             put_schema = json.load(file)
             try:
                 validate(
-                    instance=data,
+                    instance=video,
                     schema=put_schema
                 )
             except ValidationError as e:
                 abort(400, message=e.message)
-
-        # Validate arguments through flask.
-        video = parser.parse_args()
 
         videos = get_videos()
 
@@ -212,18 +200,63 @@ class Video(Resource):
 
 class Videos(Resource):
 
-    @auth_required
     def get(self):
         """
             Get all visible videos.
+            Admins see all hidden videos as well.
         """
-        return get_videos()
+        show_hidden = request.args.get('show_hidden') != None
 
-class AllVideos(Resource):
+        # Auth check based off query.
+        # Hidden videos specified? Check for admin access.
+        result = resolve_auth(check_admin=show_hidden)
+        if result:
+            return result()
+        
+        videos = get_videos(show_hidden)
 
-    @admin_required
-    def get(self):
-        """
-            Get complete list of all videos.
-        """
-        return get_videos(admin=True)
+        # Get videos for a directory, if it is specified.
+        directory = request.args.get('directory')
+        if directory:
+            directories = get('directories')
+
+            # Check that the directory exists.
+            if directory not in directories:
+                abort(400, message='Directory not found.')
+
+            # Get video ids for the directory.
+            dir_videos: List[str] = directories[directory]
+
+            # Filter video info by the ids.
+            filtered = {}
+            for dir_vid in dir_videos:
+                if dir_vid in videos:
+                    filtered = videos[dir_vid]
+
+            # Reassign.
+            videos = filtered
+
+        # Filter by tags if tags are specified.
+        tags = request.args.getlist('tags')
+        if tags:
+            db_tags = get('tags')
+
+            try:
+                # Get list of video ids for the first tag listed.
+                tagged_video_ids = set(db_tags[tags[0]])
+
+                # Filter the list down further if other tags are specified.
+                for tag in tags[1:]:
+                    tagged_video_ids &= set(db_tags[tag])
+
+                # Filter the video info list.
+                tagged_videos = {}
+                for tagged_vid_id in tagged_video_ids:
+                    if tagged_vid_id in videos:
+                        tagged_videos[tagged_vid_id] = videos[tagged_vid_id]
+                videos = tagged_videos
+
+            except KeyError as e:
+                abort(400, message=f"Tag '{e.args[0]}' not found.")
+        
+        return videos
