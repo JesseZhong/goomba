@@ -41,14 +41,7 @@ def permissions_check(
         CLIENT_ID
     )
 
-    response = discord.get_user(token)
-
-    if response.status_code != 200:
-        return lambda: abort(401)
-
-    user = loads(response.content)['user']
-    if not user:
-        return lambda: abort(401)
+    user = discord.get_user(token)
 
     try:
         username = user['username']
