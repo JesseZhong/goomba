@@ -1,6 +1,14 @@
 import { ActionPayload } from '../AppDispatcher';
-import { Videos } from '../videos/Video';
+import { Video, Videos } from '../videos/Video';
 
-export interface ReceiveVideosPayload extends ActionPayload {
+export interface VideosPayload extends ActionPayload {
     videos: Videos
+}
+
+export interface PutVideoPayload extends ActionPayload {
+    video: Video
+}
+
+export interface RemoveVideoPayload extends ActionPayload {
+    id: string
 }

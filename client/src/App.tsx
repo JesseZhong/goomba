@@ -8,6 +8,7 @@ import VideoView from './videos/VideoView';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
 import Denied from './auth/Denied';
+import SessionActions from './actions/SessionActions';
 
 
 const titles: string[] = [
@@ -19,6 +20,9 @@ const titles: string[] = [
     'Gruber'
 ]
 
+// Load session.
+SessionActions.load();
+
 const App = (state: AppState) => {
     
     // Give a random title.
@@ -28,10 +32,7 @@ const App = (state: AppState) => {
         if (state.session?.access_token) {
             <Switch>
                 <Route path='/view/:id' render={(props: any) => (
-                    <VideoView
-                        {...props}
-                        getVideo={state.getVideo}
-                    />
+                    <VideoView {...props} />
                 )} />
                 <Route exact path='/' render={(props: any) => (
                     <VideosPage {...props} videos={state.videos} />
@@ -59,7 +60,6 @@ const App = (state: AppState) => {
                         render={(props: any) =>
                             <RequestAuthorization {...props}
                                 session={state.session}
-                                requestAuthorization={state.requestAuthorization}
                             />}
                     />
                     <Route
@@ -68,7 +68,6 @@ const App = (state: AppState) => {
                         render={(props: any) =>
                             <FetchingAccess {...props}
                                 session={state.session}
-                                requestAccess={state.requestAccess}
                             />
                         }
                     />

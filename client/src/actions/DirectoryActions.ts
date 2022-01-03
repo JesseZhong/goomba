@@ -1,12 +1,12 @@
 import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
-import { Directories } from '../videos/Directory';
+import { Directories } from '../directories/Directory';
 import { ReceiveDirectoryPayload } from './DirectoryPayload';
 
 const DirectoryActions = {
     get(): void {
         AppDispatcher.dispatch({
-            type: ActionTypes.GET_TAGS
+            type: ActionTypes.RECEIVE_DIRECTORIES
         });
     },
 

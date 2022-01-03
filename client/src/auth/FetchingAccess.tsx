@@ -3,19 +3,11 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { faCircleNotch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from './Session';
+import AuthActions from '../actions/AuthActions';
 
 const AwaitAccess = (
     props: {
-        session: Session,
-        requestAccess: (
-            state: string,
-            code: string,
-            received: (token: string) => void,
-            onerror?: (error: any) => void
-        ) => void,
-        fetchAllData: (
-            guild?: string
-        ) => void
+        session: Session
     }
 ) => {
     const history = useHistory();
@@ -100,7 +92,7 @@ const AwaitAccess = (
 
     // Ping the API to retreive the access and refresh tokens from Discord.
     // Navigate back to root once the tokens are received.
-    props.requestAccess(
+    AuthActions.requestAccess(
         state,
         code,
         goMain,

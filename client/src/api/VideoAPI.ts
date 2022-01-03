@@ -1,24 +1,7 @@
 import request, { Response } from 'superagent';
-import { Directories } from '../videos/Directory';
 import { Video, Videos } from '../videos/Video';
 import { Access } from './Access';
 import { ErrorResponse } from './ErrorResponse';
-
-function reduce(
-    url: string,
-    response: Response,
-    received: (videos: Videos) => void
-): void {
-    if (response) {
-        let results = new Videos(response.body);
-        results.forEach(video => {
-            video.url = `${url}${video.url}`;
-            video.thumbnail = `${url}${video.thumbnail}`;
-        });
-
-        received(results);
-    }
-}
 
 const VideoAPI = (
     url: string,
@@ -54,14 +37,15 @@ const VideoAPI = (
     },
 
     getAll(
-        received: (videos: Videos) => void
+        received: (videos: Videos) => void,
+        admin: boolean = false
     ): void {
         access(
             (
                 token: string,
                 errorHandler?: (response: ErrorResponse) => boolean
             ) =>
-                request.get(`${url}/videos`)
+                request.get(`${url}/videos${admin ? '/all' : ''}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
@@ -72,11 +56,7 @@ const VideoAPI = (
                             return;
                         }
 
-                        reduce(
-                            url,
-                            response,
-                            received
-                        );
+                        received(new Videos(response.body));
                     })
         );
     },
@@ -101,24 +81,21 @@ const VideoAPI = (
                             return;
                         }
 
-                        reduce(
-                            url,
-                            response,
-                            received
-                        );
+                        received(new Videos(response.body));
                     })
         );
     },
 
-    getDirectories(
-        received: (directories: Directories) => void
+    getByDirectory(
+        directory_id: string,
+        received: (videos: Videos) => void
     ): void {
         access(
             (
                 token: string,
                 errorHandler?: (response: ErrorResponse) => boolean
             ) =>
-                request.get(`${url}/directories`)
+                request.get(`${url}/videos?directory=${directory_id}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
@@ -129,21 +106,53 @@ const VideoAPI = (
                             return;
                         }
 
-                        const results = new Directories(response?.body);
-                        received(results);
+                        received(new Videos(response.body));
                     })
         );
     },
 
-    getTags(
-        received: (tags: string[]) => void
+    put(
+        video: Video,
+        success: (video: Video) => void,
+        onerror: (error: any) => void
     ): void {
         access(
             (
                 token: string,
                 errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
-                request.get(`${url}/tags`)
+            ) => {
+                request.put(`${url}/videos/${video.id}`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .send(video)
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (!errorHandler?.(response as ErrorResponse)) {
+                                console.error(error)
+                            }
+                            onerror(error);
+                            return;
+                        }
+
+                        if (response.status === 201) {
+                            success(response.body);
+                        }
+                    })
+            }
+        );
+    },
+
+    remove(
+        id: string,
+        success: () => void,
+        onerror: (error: any) => void
+    ): void {
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) => {
+                request.del(`${url}/videos/${id}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
@@ -151,12 +160,15 @@ const VideoAPI = (
                             if (!errorHandler?.(response as ErrorResponse)) {
                                 console.error(error)
                             }
+                            onerror(error);
                             return;
                         }
 
-                        const results = response?.body as string[];
-                        received(results);
+                        if (response.status === 204) {
+                            success();
+                        }
                     })
+            }
         );
     }
 });

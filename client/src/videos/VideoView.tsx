@@ -3,6 +3,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import VideoActions from '../actions/VideoActions';
 import './VideoView.sass';
 
 interface VideoParam {
@@ -10,11 +11,6 @@ interface VideoParam {
 }
 
 const VideoView = (props: {
-    getVideo: (
-        id: string,
-        received: (video: Video) => void,
-        onerror: (error: any) => void
-    ) => void,
     id?: string
 }) => {
     const history = useHistory();
@@ -28,7 +24,7 @@ const VideoView = (props: {
 
     const [video, setVideo] = React.useState<Video | null>(null);
 
-    props.getVideo(
+    VideoActions.get(
         id,
         (video: Video) => {
             setVideo(video);

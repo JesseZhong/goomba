@@ -1,5 +1,5 @@
 import { ActionPayload } from "../AppDispatcher";
 
-export interface ReceiveTagsPayload extends ActionPayload {
+export interface TagsPayload extends ActionPayload {
     tags: string[]
 }

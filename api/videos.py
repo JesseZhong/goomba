@@ -1,18 +1,25 @@
-from os import path
+from os import path, getenv
+from dotenv import load_dotenv
 from typing import Dict, List
 from flask import request
 from flask_restful import Resource, reqparse, abort
 from api.authorization import admin_required, auth_required
 from api.db import get, open_db, transact_get, transact_update, update
+from boto3 import client as awsclient
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 import json
 import re
 
+load_dotenv()
+VIDEO_BUCKET = getenv('VIDEO_BUCKET')
+VIDEO_EXPIRY = getenv('VIDEO_EXPIRY', 86400)  # In seconds. Default is 24 hours.
+
 # Video ID regex. UUID format.
 ID_REGEX = '^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'
 
 parser = reqparse.RequestParser()
+parser.add_argument('id', type=str, help='Video listing identifier', required=True)
 parser.add_argument('key', type=str, help='File identifier.', required=True)
 parser.add_argument('name', type=str, help='Title of the video.', required=True)
 parser.add_argument('date_aired', type=str, help='Date the video originally aired.')
@@ -21,27 +28,37 @@ parser.add_argument('hide', type=bool, help='Hide from UI or not.')
 parser.add_argument('tags', type=list, help='Tags my dude.')
 
 
-# Load videos.
-videos = {}
-try:
-    all_vids: Dict = get('videos')
+def get_videos(
+    admin: bool = False
+):
+    """
+        Grab all available videos.
+    """
+    try:
+        videos: Dict = get('videos')
 
-    # Filter out videos that are set to 'hide'.
-    for id, video in all_vids:
-        if 'hide' not in video and not video['hide']:
+        if not admin:
 
-            # Strip key.
-            if 'key' in video:
-                del video['key']
+            # Not admin? Filter out videos that are set to 'hide'.
+            for id, video in videos:
+                if 'hide' in video and video['hide']:
+                    del video[id]
 
-            videos[id] = video
+                # Strip key.
+                if 'key' in video:
+                    del video['key']
 
-except Exception as e:
-    print(e)
-    abort(500)
+        return videos
+
+    except Exception as e:
+        print(e)
+        abort(500)
 
 
-def abort_if_not_exist(video_id: str):
+def abort_if_not_exist(
+    videos: Dict,
+    video_id: str
+):
     if video_id not in videos:
         abort(404, message=f'Video {video_id} does not exist.')
 
@@ -53,12 +70,22 @@ class Video(Resource):
             Get a video's info along with a temporary
             link to use to view the video.
         """
-        abort_if_not_exist(video_id)
+        videos = get_videos()
+
+        abort_if_not_exist(videos, video_id)
         video = videos[video_id]
 
-        # TODO: S3 presigned.
+        # Get presigned URL to the actual video file.
+        video['url'] = awsclient('s3').generate_presigned_url(
+            ClientMethod='get_object', 
+            Params={
+                'Bucket': VIDEO_BUCKET,
+                'Key': video['key']
+            },
+            ExpiresIn=VIDEO_EXPIRY
+        )
 
-        return 
+        return video, 200
 
     @admin_required
     def put(self, video_id: str):
@@ -95,6 +122,8 @@ class Video(Resource):
 
         # Validate arguments through flask.
         video = parser.parse_args()
+
+        videos = get_videos()
 
         # Get old tags for removal later.
         old_tags = set()
@@ -166,9 +195,18 @@ class Video(Resource):
 
     @admin_required
     def delete(self, video_id: str):
-        abort_if_not_exist(video_id)
+
+        # Validate the id.
+        subMatch = re.match(ID_REGEX, self.subpath, re.RegexFlag.IGNORECASE)
+        if not subMatch:
+            abort(400, 'Invalid video ID.')
+
+        videos = get_videos()
+        abort_if_not_exist(videos, video_id)
+
         del videos[video_id]
         update('videos', videos)
+
         return '', 204
 
 
@@ -179,4 +217,13 @@ class Videos(Resource):
         """
             Get all visible videos.
         """
-        return videos
+        return get_videos()
+
+class AllVideos(Resource):
+
+    @admin_required
+    def get(self):
+        """
+            Get complete list of all videos.
+        """
+        return get_videos(admin=True)

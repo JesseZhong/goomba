@@ -2,14 +2,11 @@ import React from 'react';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from './Session';
+import AuthActions from '../actions/AuthActions';
 
 const RequestAuthorization = (
     props: {
-        session: Session,
-        requestAuthorization: (
-            state: string,
-            received: (auth_url: string) => void
-        ) => void
+        session: Session
     }
 ) => {
 
@@ -19,7 +16,7 @@ const RequestAuthorization = (
     // NOTE: Session id is passed so both the client
     // and API can verify it is the same user performing
     // these handshakes throughout the OAuth process.
-    props.requestAuthorization(
+    AuthActions.requestAuthorization(
         props.session?.session_id,
         (auth_url: string) => {
 

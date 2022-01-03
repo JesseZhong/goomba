@@ -2,7 +2,7 @@ import { ReduceStore } from 'flux/utils';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
 import ActionTypes from '../actions/ActionTypes';
 import { ReceiveDirectoryPayload } from '../actions/DirectoryPayload';
-import { Directories } from '../videos/Directory';
+import { Directories } from '../directories/Directory';
 
 class TagStore extends ReduceStore<Directories, ActionPayload> {
 
@@ -22,7 +22,6 @@ class TagStore extends ReduceStore<Directories, ActionPayload> {
                     state = receiveAction.directories;
                 }
                 return state;
-            case ActionTypes.GET_DIRECTORIES:
             default:
                 return state;
         }

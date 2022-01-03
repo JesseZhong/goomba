@@ -1,20 +1,13 @@
 import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
-import { ReceiveTagsPayload } from './TagPayload';
+import { TagsPayload } from './TagPayload';
 
 const TagActions = {
     get(): void {
         AppDispatcher.dispatch({
-            type: ActionTypes.GET_TAGS
-        });
+            type: ActionTypes.RECEIVE_TAGS
+        } as TagsPayload);
     },
-
-    recieve(tags: string[]) {
-        AppDispatcher.dispatch({
-            type: ActionTypes.RECEIVE_TAGS,
-            tags: tags
-        } as ReceiveTagsPayload);
-    }
 }
 
 export default TagActions;
