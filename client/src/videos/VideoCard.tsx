@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Video } from './Video';
-import MediaView from './MediaView';
 import './VideoCard.sass';
 
 const VideoCard = (props: {
@@ -30,10 +29,13 @@ const VideoCard = (props: {
                         pathname: '/view',
                         state: props.id
                     }}>
-                        <MediaView
-                            video={video}
-                            thumbnail
-                        />
+                        {
+                            video.thumbnail &&
+                            <img
+                                src={video.thumbnail}
+                                alt={video.name}
+                            />
+                        }
                     </Link>
                 </div>
             </div>

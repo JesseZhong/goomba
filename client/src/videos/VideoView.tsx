@@ -1,65 +1,64 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Videos } from './Video';
-import MediaView from './MediaView';
+import React from 'react';
+import { Link, useHistory, useParams } from 'react-router-dom';
+import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
 import './VideoView.sass';
 
+interface VideoParam {
+    id: string
+}
+
 const VideoView = (props: {
-    id: number,
-    videos: Videos
+    getVideo: (
+        id: string,
+        received: (video: Video) => void,
+        onerror: (error: any) => void
+    ) => void,
+    id?: string
 }) => {
-    
-    window.scrollTo(0, 0);
+    const history = useHistory();
+    const params = useParams<VideoParam>();
 
-    const scrollRate = 120;
-    const len = props.videos.len();
-    const [id, setId] = useState(props.id);
-    const [full, setFull] = useState(true);
-
-    const handleKeys = (keyEvent: React.KeyboardEvent<HTMLDivElement>) => {
-        if (!len) {
-            return;
-        }
-
-        if (keyEvent.key === 'd') {
-            const nextId = id + 1;
-            setId(nextId >= len ? 0 : nextId);
-        }
-
-        else if (keyEvent.key === 'a') {
-            const prevId = id - 1;
-            setId(prevId < 0 ? len - 1 : prevId)
-        }
-
-        else if (keyEvent.key === 'w') {
-            window.scrollBy(0, -scrollRate);
-        }
-
-        else if (keyEvent.key === 's') {
-            window.scrollBy(0, scrollRate);
-        }
-
-        else if (keyEvent.key === 'e') {
-            setFull(!full);
-        }
-    };
-
-    const video = props.videos.getVideo(id);
-    if (!video) {
-        return (<></>);
+    // Make sure an ID was provided, or else 404.
+    const id = props.id ?? params?.id;
+    if (!id) {
+        history.push('/not-found');
     }
 
+    const [video, setVideo] = React.useState<Video | null>(null);
+
+    props.getVideo(
+        id,
+        (video: Video) => {
+            setVideo(video);
+        },
+        () => {
+            // Video can't be found, kick to the 404.
+            history.push('/not-found');
+        }
+    );
+    
+    const videoView = video
+        ? (
+            <div className='video-view' tabIndex={0}>
+                <video controls autoPlay loop src={video.url} />
+            </div>
+        )
+        : (
+            <div>
+                Loading...
+            </div>
+        );
+
     return (
-        <div className='video-view' tabIndex={0} onKeyDown={handleKeys}>
-            <div className='navi d-flex justify-content-end p-2 '>
+        <div className='video-view' tabIndex={0}>
+            <div className='navi d-flex justify-content-end p-2'>
                 <Link to='/videos'>
                     <FontAwesomeIcon icon={faArrowLeft} />
                 </Link>
             </div>
-            {video && <MediaView video={video} className={(full ? 'full' : 'fit')}/>}
+            {videoView}
         </div>
     );
 }

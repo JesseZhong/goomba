@@ -9,7 +9,7 @@ import { Session, Sessions } from '../auth/Session';
 import VideoAPI from '../api/VideoAPI';
 import VideoStore from '../stores/VideoStore';
 import VideoActions from '../actions/VideoActions';
-import { Videos } from '../videos/Video';
+import { Video, Videos } from '../videos/Video';
 import TagStore from '../stores/TagStore';
 import TagActions from '../actions/TagActions';
 import { Directories } from '../videos/Directory';
@@ -95,6 +95,12 @@ export interface AppState {
     videos: Videos,
     receiveVideos: (videos: Videos) => void,
 
+    getVideo: (
+        id: string,
+        received: (video: Video) => void,
+        onerror: (error: any) => void
+    ) => void,
+
     getVideos: (
         received: (videos: Videos) => void
     ) => void,
@@ -145,9 +151,19 @@ function getState(): AppState {
         videos: VideoStore.getState(),
         receiveVideos: VideoActions.receive,
 
+        getVideo: (
+            id: string,
+            received: (video: Video) => void,
+            onerror: (error: any) => void
+        ) => videoApi.get(
+            id,
+            received,
+            onerror
+        ),
+
         getVideos: (
             received: (videos: Videos) => void
-        ) => videoApi.get(received),
+        ) => videoApi.getAll(received),
 
         getVideosByTags: (
             tags: string[],

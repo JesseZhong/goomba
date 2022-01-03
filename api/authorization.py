@@ -1,5 +1,5 @@
 from os import getenv
-from typing import Dict
+from typing import Dict, Callable, Union
 from dotenv import load_dotenv
 from flask import request
 from flask_restful import Resource, abort
@@ -22,16 +22,18 @@ STATE_KEY = getenv('STATE_KEY', 'session_states')
 TIME_FORMAT = '%Y.%m.%d %H:%M:%S'
 
 
-def resolve_auth(
+def permissions_check(
+    token: str,
     check_admin: bool = False
-):
-    if 'Authorization' not in request.headers:
-        return lambda: abort(401)
+) -> Union[Callable, None]:
+    """
+        Check user if user has access
+        to resources using their token.
 
-    auth_type, token = request.headers['Authorization'].split(' ')
-
-    if auth_type.lower() != 'bearer':
-        return lambda: abort(400)
+        Return:
+            None - User is permitted.
+            Callable - Abort lambda if user is denied.
+    """
 
     discord = DiscordAuth(
         DISCORD_API,
@@ -51,7 +53,6 @@ def resolve_auth(
     try:
         username = user['username']
         discriminator = user['discriminator']
-        userid = user['id']
 
         full_username = f'{username}#{discriminator}'
 
@@ -78,7 +79,6 @@ def resolve_auth(
         # TODO: Roles check.
         permitted_roles = get('roles')
 
-
     except KeyError as e:
         print(e)
         return lambda: abort(418, 'I''m a little teapot.')
@@ -86,7 +86,28 @@ def resolve_auth(
     return lambda: abort(401)
 
 
+def resolve_auth(
+    check_admin: bool = False
+):
+    if 'Authorization' not in request.headers:
+        return lambda: abort(401)
+
+    auth_type, token = request.headers['Authorization'].split(' ')
+
+    if auth_type.lower() != 'bearer':
+        return lambda: abort(400)
+
+    return permissions_check(
+        token,
+        check_admin
+    )
+
+
 def auth_required(func):
+    """
+        Requires the user to auth with Discord
+        and be permitted.
+    """
 
     @wraps(func)
     def check_auth():
@@ -98,6 +119,9 @@ def auth_required(func):
 
 
 def admin_required(func):
+    """
+        Requires the user to be an admin to have access.
+    """
 
     @wraps(func)
     def check_admin():
@@ -194,6 +218,12 @@ class RequestAccess(Resource):
                 states,
                 dbenv=db
             )
+
+            # Check if user is permitted.
+            # Call abort if user is not allowed.
+            should_abort = permissions_check(tokens['access_token'])
+            if should_abort:
+                return should_abort()
 
             return tokens, 200
 

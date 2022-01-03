@@ -27,10 +27,10 @@ const App = (state: AppState) => {
     const route = () => {
         if (state.session?.access_token) {
             <Switch>
-                <Route path='/view' render={(props: any) => (
+                <Route path='/view/:id' render={(props: any) => (
                     <VideoView
-                        id={props.location?.state as number}
-                        videos={state.videos}
+                        {...props}
+                        getVideo={state.getVideo}
                     />
                 )} />
                 <Route exact path='/' render={(props: any) => (
