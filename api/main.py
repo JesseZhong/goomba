@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 from flask import Flask
 from flask_restful import Api
 from api.authorization import RefreshAccess, RequestAccess, RequestAuthorization
+from api.directories import Directories, Directory
+from api.tags import Tags
 from api.videos import Video, Videos
 
 
@@ -35,3 +37,7 @@ api.add_resource(RefreshAccess, '/refresh')
 api.add_resource(Videos, '/videos')
 api.add_resource(Video, '/videos/<video_id>')
 
+api.add_resource(Directories, '/directories')
+api.add_resource(Directory, '/directories/<directory_id>')
+
+api.add_resource(Tags, '/tags')

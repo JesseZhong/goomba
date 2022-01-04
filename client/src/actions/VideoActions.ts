@@ -32,51 +32,25 @@ const VideoActions = {
      * Get all watchable videos.
      * @param admin Setting to true allows an admin
      * to view all videos, including hidden.
+     * @param directory_id Get only the videos from a directory.
+     * @param tags Filter videos by tags.
      */
-    getAll(
-        admin: boolean = false
+    getVideos(
+        admin: boolean = false,
+        directory_id?: string,
+        tags?: string[]
     ): void {
-        videoApi.getAll(
+        videoApi.Videos(
             (videos: Videos) => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.RECEIVE_VIDEOS,
                     videos: videos
                 } as VideosPayload);
             },
-            admin
+            admin,
+            directory_id,
+            tags
         )
-    },
-
-    /**
-     * Get all videos that have the listed tags.
-     * @param tags Desired tags to search by.
-     */
-    getByTags(tags: string[]): void {
-        videoApi.getByTags(
-            tags,
-            (videos: Videos) => {
-                AppDispatcher.dispatch({
-                    type: ActionTypes.RECEIVE_VIDEOS,
-                    videos: videos
-                } as VideosPayload);
-            }
-        );
-    },
-
-    /**
-     * Get all the videos under a specific directory.
-     * @param dir_id UUID of the directory.
-     */
-    getByDirectory(dir_id: string): void {
-        videoApi.getByDirectory(
-            dir_id,
-            (videos: Videos) => {
-                AppDispatcher.dispatch({
-                    type: ActionTypes.RECEIVE_VIDEOS,
-                    videos: videos
-                } as VideosPayload);
-            }
-        );
     },
 
     /**

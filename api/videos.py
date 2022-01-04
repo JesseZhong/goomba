@@ -1,4 +1,4 @@
-from os import path, getenv
+from os import getenv
 from dotenv import load_dotenv
 from typing import Dict, List
 from flask import request
@@ -6,17 +6,14 @@ from flask_restful import Resource, abort
 from api.authorization import admin_required, auth_required, resolve_auth
 from api.db import get, open_db, transact_get, transact_update, update
 from boto3 import client as awsclient
-from jsonschema import validate
-from jsonschema.exceptions import ValidationError
-import json
-import re
+
+from api.validation import verify_id, verify_schema
 
 load_dotenv()
 VIDEO_BUCKET = getenv('VIDEO_BUCKET')
 VIDEO_EXPIRY = getenv('VIDEO_EXPIRY', 86400)  # In seconds. Default is 24 hours.
 
-# Video ID regex. UUID format.
-ID_REGEX = '^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$'
+
 
 def get_videos(
     show_hidden: bool = False
@@ -86,30 +83,12 @@ class Video(Resource):
         """
 
         # Validate the id.
-        subMatch = re.match(ID_REGEX, self.subpath, re.RegexFlag.IGNORECASE)
-        if not subMatch:
+        if not verify_id(video_id):
             abort(400, 'Invalid video ID.')
 
-        # Attempt to get the request body as json.
-        video = None
-        try:
-            video = request.get_json(force=True)
-        except TypeError:
-            abort(400, 'Malformed request body.')
-
-        # Grab local path.
-        apiDir = path.dirname(path.realpath(__file__))
-
-        # Validate the schema of the request body first.
-        with open(path.join(apiDir, 'schemas/put_persona.json'), 'r') as file:
-            put_schema = json.load(file)
-            try:
-                validate(
-                    instance=video,
-                    schema=put_schema
-                )
-            except ValidationError as e:
-                abort(400, message=e.message)
+        
+        # Acquire and validate request body.
+        video = verify_schema('schemas/put_video.json')
 
         videos = get_videos()
 
@@ -139,44 +118,50 @@ class Video(Resource):
 
             # Complete update in a single transaction.
             db = open_db()
-            with db.begin(write=True) as trnx:
-                db_tags: Dict[str, List[str]] = set(transact_get(
-                    trnx,
-                    'tags'
-                ))
-                
-                # Remove video from tag.
-                for tag in tags_to_remove:
-                    if tag in db_tags:
-                        tvideos = set(db_tags[tag])
-
-                        # Remove video from tag's list.
-                        if video_id in tvideos:
-                            tvideos.remove(video_id)
-
-                        # Remove tag if no more videos belong to it.
-                        if len(tvideos) < 1:
-                            del db_tags[tag]
-
-                # Add video to new tags.
-                for tag in tags_to_add:
+            try:
+                with db.begin(write=True) as trnx:
+                    db_tags: Dict[str, List[str]] = set(transact_get(
+                        trnx,
+                        'tags'
+                    ))
                     
-                    # Make list for a tag if the tag doesn't exist.
-                    tvideos = set(db_tags[tag]) if tag in db_tags else set()
+                    # Remove video from tag.
+                    for tag in tags_to_remove:
+                        if tag in db_tags:
+                            tvideos = set(db_tags[tag])
 
-                    # Add video to tag's list.
-                    for tag in new_tags:
-                        tvideos.add(video_id)
+                            # Remove video from tag's list.
+                            if video_id in tvideos:
+                                tvideos.remove(video_id)
 
-                    # Put tag.
-                    db_tags[tag] = tvideos
+                            # Remove tag if no more videos belong to it.
+                            if len(tvideos) < 1:
+                                del db_tags[tag]
 
-                # Send it.
-                transact_update(
-                    trnx,
-                    'tags',
-                    db_tags
-                )
+                    # Add video to new tags.
+                    for tag in tags_to_add:
+                        
+                        # Make list for a tag if the tag doesn't exist.
+                        tvideos = set(db_tags[tag]) if tag in db_tags else set()
+
+                        # Add video to tag's list.
+                        for tag in new_tags:
+                            tvideos.add(video_id)
+
+                        # Put tag.
+                        db_tags[tag] = tvideos
+
+                    # Send it.
+                    transact_update(
+                        trnx,
+                        'tags',
+                        db_tags
+                    )
+            except Exception as e:
+                print(e)
+                abort(500)
+            finally:
+                db.close()
 
         return video, 201
 
@@ -185,8 +170,7 @@ class Video(Resource):
     def delete(self, video_id: str):
 
         # Validate the id.
-        subMatch = re.match(ID_REGEX, self.subpath, re.RegexFlag.IGNORECASE)
-        if not subMatch:
+        if not verify_id(video_id):
             abort(400, 'Invalid video ID.')
 
         videos = get_videos()

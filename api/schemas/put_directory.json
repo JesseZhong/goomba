@@ -1,0 +1,45 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "PUT Directory",
+    "description": "Body for a Directory PUT request.",
+    "type": "object",
+    "properties": {
+        "id": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+        },
+        "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 200,
+            "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
+        },
+        "banner": {
+            "type": "string",
+            "pattern": "^(http(s?):)([/|.|\\w|\\s|-])*\\.(?:gif|png|bmp|jpeg|jpg|webm)"
+        },
+        "parent": {
+            "type": "string",
+            "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+        },
+        "children": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+            }
+        },
+        "videos": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+            }
+        }
+    },
+    "required": [
+        "id",
+        "key",
+        "name"
+    ]
+}

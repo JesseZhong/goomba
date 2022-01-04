@@ -36,16 +36,31 @@ const VideoAPI = (
         );
     },
 
-    getAll(
+    Videos(
         received: (videos: Videos) => void,
-        admin: boolean = false
+        show_hidden: boolean = false,
+        directory_id?: string,
+        tags?: string[]
     ): void {
         access(
             (
                 token: string,
                 errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
-                request.get(`${url}/videos${admin ? '/all' : ''}`)
+            ) => {
+                let queries: string[] = []
+                if (show_hidden) {
+                    queries.push('show_hidden=true');
+                }
+
+                if (directory_id) {
+                    queries.push(`directory=${directory_id}`);
+                }
+
+                if (tags) {
+                    queries.push(`tags=[${tags.join(',')}]`);
+                }
+
+                request.get(`${url}/videos${queries ? `?${queries.join('&')}` : ''}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
@@ -57,57 +72,8 @@ const VideoAPI = (
                         }
 
                         received(new Videos(response.body));
-                    })
-        );
-    },
-
-    getByTags(
-        tags: string[],
-        received: (videos: Videos) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
-                request.get(`${url}/videos?tags=[${tags.join(',')}]`)
-                    .set('Accept', 'application/json')
-                    .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
-                                console.error(error)
-                            }
-                            return;
-                        }
-
-                        received(new Videos(response.body));
-                    })
-        );
-    },
-
-    getByDirectory(
-        directory_id: string,
-        received: (videos: Videos) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
-                request.get(`${url}/videos?directory=${directory_id}`)
-                    .set('Accept', 'application/json')
-                    .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
-                                console.error(error)
-                            }
-                            return;
-                        }
-
-                        received(new Videos(response.body));
-                    })
+                    });
+            }
         );
     },
 
