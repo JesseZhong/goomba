@@ -4,67 +4,65 @@ import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHashtag, faCog, faSearch } from '@fortawesome/free-solid-svg-icons';
 import image from '../assets/goobs.png';
+import './Nav.sass';
 
 const Nav = (props: {
 
 }) => {
 
     return (
-        <nav className='navbar navbar-dark bg-dark'>
-            <div className='container-fluid'>
-                <Link
-                    className='navbar-brand'
-                    to='/'
-                >
-                    <img
-                        src={image}
-                        alt='Gobbers'
-                        width='30'
-                        height='24'
-                    />
-                </Link>
-                <button
-                    className='navbar-toggler'
-                    type='button'
-                    data-bs-toggle='collapse'
-                    data-bs-target='#navbarNav'
-                    aria-controls='navbarNav'
-                    aria-expanded='false'
-                    aria-label='Toggle navigation'
-                >
-                    <span className='navbar-toggler-icon'></span>
-                </button>
-                <div className='collapse navbar-collapse' id='navbarNav'>
-                    <ul className='navbar-nav'>
-                        <li className='nav-item'>
-                            <Link
-                                className='nav-link'
-                                to='/tags'
-                            >
-                                <FontAwesomeIcon icon={faHashtag} />
-                            </Link>
-                        </li>
-                        <li className='nav-item'>
-                            <Link
-                                className='nav-link'
-                                to='/manage'
-                            >
-                                <FontAwesomeIcon icon={faCog} />
-                            </Link>
-                        </li>
-                    </ul>
-
-                    <div className='input-group mb-3'>
-                        <span className='input-group-text'>
-                            <FontAwesomeIcon icon={faSearch} />
-                        </span>
-                        <input
-                            className='form-control me-2'
-                            type='search'
-                            placeholder='search'
-                            aria-label='Search'
+        <nav className='nav navbar py-0'>
+            <div
+                className='d-flex flex-row justify-content-between align-items-center'
+                style={{
+                    width: '100vw'
+                }}
+            >
+                <div className='d-flex flex-row'>
+                    <Link
+                        className='navbar-brand ms-3'
+                        to='/'
+                    >
+                        <img
+                            src={image}
+                            alt='Gobbers'
+                            width='32'
+                            style={{
+                                marginTop: '-5px'
+                            }}
                         />
-                    </div>
+                    </Link>
+                    <Link
+                        className='nav-link'
+                        to='/tags'
+                    >
+                        <FontAwesomeIcon icon={faHashtag} />
+                    </Link>
+                    <Link
+                        className='nav-link'
+                        to='/manage'
+                    >
+                        <FontAwesomeIcon icon={faCog} />
+                    </Link>
+                </div>
+                <div
+                    className='input-group my-1'
+                    style={{
+                        maxWidth: '18em'
+                    }}
+                >
+                    <span className='input-group-text'>
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            size='xs'
+                        />
+                    </span>
+                    <input
+                        className='form-control me-2'
+                        type='search'
+                        placeholder='search'
+                        aria-label='Search'
+                    />
                 </div>
             </div>
         </nav>
