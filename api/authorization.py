@@ -1,11 +1,10 @@
 from os import getenv
-from typing import Dict, Callable, Union
+from typing import Dict, NoReturn, Union
 from dotenv import load_dotenv
 from flask import request
 from flask_restful import Resource, abort
 from datetime import datetime, timedelta
 from functools import wraps
-from json import loads
 from gremlin.discord.auth import DiscordAuth
 from api.db import get, open_db, transact_get, transact_update, update
 
@@ -24,15 +23,14 @@ TIME_FORMAT = '%Y.%m.%d %H:%M:%S'
 
 def permissions_check(
     token: str,
-    check_admin: bool = False
-) -> Union[Callable, None]:
+    require_admin: bool = False
+) -> Union[NoReturn, bool]:
     """
         Check user if user has access
         to resources using their token.
 
         Return:
-            None - User is permitted.
-            Callable - Abort lambda if user is denied.
+            Admin or not.
     """
 
     discord = DiscordAuth(
@@ -43,52 +41,58 @@ def permissions_check(
 
     user = discord.get_user(token)
 
+    username = ''
+    discriminator = ''
     try:
         username = user['username']
         discriminator = user['discriminator']
 
-        full_username = f'{username}#{discriminator}'
-
-        permitted_users = get('users')
-
-        # Check if the user has permission to view the resource.
-        if full_username in permitted_users:
-
-            # If the resource is restricted to admins only,
-            # check if the user is an admin.
-            if check_admin:
-                user = permitted_users[full_username]
-                
-                if 'is_admin' in user and user['is_admin']:
-                    return None
-                else:
-                    return lambda: abort(403)
-
-            # Otherwise, send traffic through.
-            else:
-                return None
-
-        
-        # TODO: Roles check.
-        permitted_roles = get('roles')
-
     except KeyError as e:
         print(e)
-        return lambda: abort(418, 'I''m a little teapot.')
+        abort(418, 'I''m a little teapot.')
 
-    return lambda: abort(401)
+    full_username = f'{username}#{discriminator}'
+
+    permitted_users = get('users')
+
+    # Check if the user has permission to view the resource.
+    if full_username in permitted_users:
+
+        # Check if admin.
+        user = permitted_users[full_username]
+        is_admin = 'is_admin' in user and user['is_admin']
+
+        # If the resource is restricted to admins only,
+        # check if the user is an admin.
+        if require_admin:
+            if is_admin:
+                return True
+            else:
+                abort(403)
+
+        # Otherwise, send traffic through.
+        else:
+            return is_admin
+        
+    # TODO: Roles check.
+    permitted_roles = get('roles')
+
+    abort(401)
 
 
 def resolve_auth(
     check_admin: bool = False
 ):
+    """
+        Grab token and check
+    """
     if 'Authorization' not in request.headers:
-        return lambda: abort(401)
+        abort(401)
 
     auth_type, token = request.headers['Authorization'].split(' ')
 
     if auth_type.lower() != 'bearer':
-        return lambda: abort(400)
+        abort(400)
 
     return permissions_check(
         token,
@@ -104,9 +108,8 @@ def auth_required(func):
 
     @wraps(func)
     def check_auth():
-        result = resolve_auth()
-
-        return result() if result else func()
+        resolve_auth()
+        return func()
     
     return check_auth
 
@@ -118,9 +121,8 @@ def admin_required(func):
 
     @wraps(func)
     def check_admin():
-        result = resolve_auth(check_admin=True)
-
-        return result() if result else func()
+        resolve_auth(check_admin=True)
+        return func()
     
     return check_admin
 
@@ -212,19 +214,19 @@ class RequestAccess(Resource):
                 dbenv=db
             )
 
-            # Check if user is permitted.
-            # Call abort if user is not allowed.
-            should_abort = permissions_check(tokens['access_token'])
-            if should_abort:
-                return should_abort()
-
-            return tokens, 200
-
         except Exception:
             abort(500, message='What?')
 
         finally:
             db.close()
+
+        # Check if user is permitted.
+        # Set admin if the user is one.
+        is_admin = permissions_check(tokens['access_token'])
+        if is_admin:
+            tokens['is_admin'] = True
+
+        return tokens, 200
 
 
 class RefreshAccess(Resource):

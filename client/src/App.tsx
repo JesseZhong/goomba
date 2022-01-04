@@ -7,6 +7,7 @@ import VideosPage from './videos/VideosPage';
 import VideoView from './videos/VideoView';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
+import Nav from './nav/Nav';
 import Denied from './auth/Denied';
 import SessionActions from './actions/SessionActions';
 
@@ -79,6 +80,7 @@ const App = (state: AppState) => {
 
     return (
         <div className='page'>
+            <Nav />
             <Switch>
                 {route()}
             </Switch>

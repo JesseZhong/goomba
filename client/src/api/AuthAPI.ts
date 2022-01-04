@@ -1,10 +1,11 @@
-import request, { Response } from "superagent";
-import { ErrorResponse } from "./ErrorResponse";
+import request, { Response } from 'superagent';
+import { ErrorResponse } from './ErrorResponse';
 
 
 interface TokenResponse {
     access_token: string;
     refresh_token: string;
+    is_admin?: boolean;
     scope: string;
 }
 
@@ -43,7 +44,8 @@ const AuthAPI = (
         code: string,
         received: (
             access_token: string,
-            refresh_token: string
+            refresh_token: string,
+            is_admin?: boolean
         ) => void,
         onerror?: (error: any) => void
     ): void {
@@ -59,12 +61,14 @@ const AuthAPI = (
 
                 const {
                     access_token,
-                    refresh_token
+                    refresh_token,
+                    is_admin
                 } = response.body as TokenResponse;
 
                 received(
                     access_token,
-                    refresh_token
+                    refresh_token,
+                    is_admin
                 );
             });
     },

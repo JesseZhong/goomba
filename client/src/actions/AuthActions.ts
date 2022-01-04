@@ -9,12 +9,14 @@ export const authApi = AuthAPI(process.env.REACT_APP_API_URL ?? '');
 
 const saveSession = (
     access_token: string,
-    refresh_token: string
+    refresh_token: string,
+    is_admin?: boolean
 ) => {
     // Load up session info.
     let session = SessionStore.getState();
     session.access_token = access_token;
     session.refresh_token = refresh_token;
+    session.is_admin = is_admin;
 
     // Save it.
     Sessions.set(session);
@@ -26,6 +28,7 @@ const resetSession = () => {
     let session = SessionStore.getState();
     delete session.access_token;
     delete session.refresh_token;
+    delete session.is_admin;
 
     // Save it.
     Sessions.set(session);
@@ -72,9 +75,14 @@ const AuthActions = {
         code,
         (
             access_token: string,
-            refresh_token: string
+            refresh_token: string,
+            is_admin?: boolean
         ) => {
-            saveSession(access_token, refresh_token);
+            saveSession(
+                access_token,
+                refresh_token,
+                is_admin
+            );
             received(access_token);
         },
         onerror
