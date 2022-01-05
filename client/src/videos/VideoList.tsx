@@ -1,53 +1,49 @@
 import React from 'react';
-import Infinite from 'react-infinite';
-import { Videos } from './Video';
+import { useHistory } from 'react-router-dom';
+import { History } from 'history';
+import { Video, Videos } from './Video';
 import VideoCard from './VideoCard';
 
-const VideosPerRow = 6;
-const Height = 400;
+export const ToVideoView = (
+    video: Video,
+    history?: History<History.PoorMansUnknown>
+) => {
+    history?.push(`/view/${video.id}`);
+}
 
 const VideoList = (props: {
     videos: Videos,
+    onClick?: (
+        video: Video,
+        history?: History<History.PoorMansUnknown>
+    ) => void,
+    editable?: boolean,
     className?: string
 }) => {
-    let videos = [];
-    const listedItems = Array.from(props.videos.values());
-    const length = listedItems.length;
-    for (let i = 0; i < length; i += VideosPerRow) {
-        videos.push(listedItems.splice(i, VideosPerRow));
-    }
+    const history = useHistory();
+    const videos = [...props.videos.entries()];
+    const onClick = props.onClick;
 
     return (
-        <div className={'d-flex flex-wrap ' + props.className}>
-            <Infinite
-                useWindowAsScrollContainer
-                elementHeight={Height}
-            >
+        <div
+            className={'d-flex flex-wrap flex-row' + props.className}
+        >
             {
                 videos &&
                 videos.map(
-                    (row, rowIndex) =>
+                    ([id, video]) =>
                         <div
-                            key={rowIndex}
-                            className='d-flex flex-row justify-content-around'
-                            style={{
-                                minHeight: Height
-                            }}
+                            key={id}
+                            className={
+                                'd-flex flex-row justify-content-around'
+                                + (onClick ? ' clickable' : '')
+                            }
+                            onClick={() => onClick?.(video, history)}
                         >
-                        {
-                            row.map(
-                                (video, videoIndex) =>
-                                    <VideoCard
-                                        id={props.videos.getIndex(video) || 0}
-                                        key={videoIndex}
-                                        video={video}
-                                    />
-                            )
-                        }
+                            <VideoCard video={video} />
                         </div>
                 )
             }
-            </Infinite>
         </div>
     )
 }

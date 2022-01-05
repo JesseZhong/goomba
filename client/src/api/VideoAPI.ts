@@ -23,10 +23,12 @@ const VideoAPI = (
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
                         if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
+                            if (
+                                error.status < 500 &&
+                                !errorHandler?.(response as ErrorResponse)
+                            ) {
                                 console.error(error)
                             }
-
                             onerror(error);
                             return;
                         }
@@ -36,7 +38,7 @@ const VideoAPI = (
         );
     },
 
-    Videos(
+    getVideos(
         received: (videos: Videos) => void,
         show_hidden: boolean = false,
         directory_id?: string,
@@ -65,7 +67,10 @@ const VideoAPI = (
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
                         if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
+                            if (
+                                error.status < 500 &&
+                                !errorHandler?.(response as ErrorResponse)
+                            ) {
                                 console.error(error)
                             }
                             return;
@@ -93,7 +98,10 @@ const VideoAPI = (
                     .send(video)
                     .end((error: any, response: Response) => {
                         if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
+                            if (
+                                error.status < 500 &&
+                                !errorHandler?.(response as ErrorResponse)
+                            ) {
                                 console.error(error)
                             }
                             onerror(error);
@@ -123,7 +131,10 @@ const VideoAPI = (
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {
                         if (error) {
-                            if (!errorHandler?.(response as ErrorResponse)) {
+                            if (
+                                error.status < 500 &&
+                                !errorHandler?.(response as ErrorResponse)
+                            ) {
                                 console.error(error)
                             }
                             onerror(error);

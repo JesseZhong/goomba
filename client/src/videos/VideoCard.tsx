@@ -1,22 +1,23 @@
+import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Video } from './Video';
 import './VideoCard.sass';
 
 const VideoCard = (props: {
-    id: number,
     video: Video,
     className?: string
 }) => {
 
     const video = props.video;
+    console.log(video)
 
     return (
         <>
             <div
                 className={
-                    'video-card synth ' +
-                    props.className
+                    'video-card ' +
+                    (props.className ?? '' )
                 }
             >
                 <div className='overlay'>
@@ -24,19 +25,29 @@ const VideoCard = (props: {
                         {video.name}
                     </span>
                 </div>
-                <div>
-                    <Link to={{
-                        pathname: '/view',
-                        state: props.id
-                    }}>
+                <div className='d-flex flex-row'>
+                    <div className='me-4'>
                         {
-                            video.thumbnail &&
-                            <img
+                            video.thumbnail
+                            ? <img
+                                className='img-fluid rounded-start'
                                 src={video.thumbnail}
                                 alt={video.name}
                             />
+                            : <FontAwesomeIcon
+                                icon={faPhotoVideo}
+                                size='3x'
+                            />
                         }
-                    </Link>
+                    </div>
+                    <div>
+                        <span className='title'>
+                            {video.name}
+                        </span>
+                        <p>
+                            Placeholder text.
+                        </p>
+                    </div>
                 </div>
             </div>
         </>

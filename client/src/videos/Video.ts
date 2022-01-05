@@ -1,6 +1,7 @@
 export interface Video {
     id: string;
     name: string;
+    key: string;
     url?: string;
     thumbnail?: string;
     date_aired?: string;

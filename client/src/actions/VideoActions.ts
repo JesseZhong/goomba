@@ -40,7 +40,7 @@ const VideoActions = {
         directory_id?: string,
         tags?: string[]
     ): void {
-        videoApi.Videos(
+        videoApi.getVideos(
             (videos: Videos) => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.RECEIVE_VIDEOS,

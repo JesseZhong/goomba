@@ -1,4 +1,5 @@
 from os import abort
+from typing import Dict
 from api.authorization import admin_required, auth_required
 from api.db import get, open_db, transact_get, transact_update
 from flask_restful import Resource, abort
@@ -8,10 +9,14 @@ from api.validation import verify_id, verify_schema
 class Directory(Resource):
 
     @admin_required
-    def put(self, directory_id):
+    def put(self, args: Dict[str, str]):
         """
             Add or update a directory.
         """
+
+        if not args or 'directory_id' not in args:
+            abort(400, 'Missing ID.')
+        directory_id = args['directory_id']
 
         # Validate the id.
         if not verify_id(directory_id):
@@ -47,10 +52,14 @@ class Directory(Resource):
 
 
     @admin_required
-    def delete(self, directory_id):
+    def delete(self, args: Dict[str, str]):
         """
             Remove a directory if it exists.
         """
+
+        if not args or 'directory_id' not in args:
+            abort(400, 'Missing ID.')
+        directory_id = args['directory_id']
 
         # Validate the id.
         if not verify_id(directory_id):

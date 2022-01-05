@@ -10,6 +10,7 @@ import FetchingAccess from './auth/FetchingAccess';
 import Nav from './nav/Nav';
 import Denied from './auth/Denied';
 import SessionActions from './actions/SessionActions';
+import ManagePage from './manage/ManagePage';
 
 
 const titles: string[] = [
@@ -18,7 +19,9 @@ const titles: string[] = [
     'Goomba',
     'Goomba Roomba',
     'Gom Goms',
-    'Gruber'
+    'Gruber',
+    'Gub Gubs',
+    'Groombers'
 ]
 
 // Load session.
@@ -31,15 +34,23 @@ const App = (state: AppState) => {
 
     const route = () => {
         if (state.session?.access_token) {
-            <Switch>
-                <Route path='/view/:id' render={(props: any) => (
-                    <VideoView {...props} />
-                )} />
-                <Route exact path='/' render={(props: any) => (
-                    <VideosPage {...props} videos={state.videos} />
-                )} />
-                <Route path='*' component={PageNotFound} />
-            </Switch>
+            return (
+                <>
+                    <Nav session={state.session} />
+                    <Switch>
+                        <Route path='/view/:id' render={(props: any) => (
+                            <VideoView {...props} />
+                        )} />
+                        <Route path='/manage' render={(props: any) => (
+                            <ManagePage {...props} videos={state.videos} />
+                        )} />
+                        <Route exact path='/' render={(props: any) => (
+                            <VideosPage {...props} videos={state.videos} />
+                        )} />
+                        <Route path='*' component={PageNotFound} />
+                    </Switch>
+                </>
+            );
         }
         else {
             return (
@@ -80,10 +91,7 @@ const App = (state: AppState) => {
 
     return (
         <div className='page'>
-            <Nav />
-            <Switch>
-                {route()}
-            </Switch>
+            {route()}
         </div>
     )
 }

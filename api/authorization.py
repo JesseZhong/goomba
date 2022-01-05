@@ -120,9 +120,9 @@ def admin_required(func):
     """
 
     @wraps(func)
-    def check_admin():
+    def check_admin(*args, **kwargs):
         resolve_auth(check_admin=True)
-        return func()
+        return func(args, kwargs)
     
     return check_admin
 

@@ -17,7 +17,11 @@ $theme-colors: ("primary": $primary, "secondary": $secondary, "success": $succes
 
 @import "bootstrap/scss/bootstrap"
 
-@keyframes synth-card-animation
+body
+    font-family: 'Roboto Mono', monospace
+    color: #dcddde !important
+
+@keyframes goob-card-animation
   0%
     transform: translateY(-0.3rem)
     opacity: 0.4
@@ -28,7 +32,7 @@ $theme-colors: ("primary": $primary, "secondary": $secondary, "success": $succes
     transform: translateY(0)
     opacity: 1
 
-@keyframes synth-nav-animation
+@keyframes goob-nav-animation
   0%
     transform: translateX(2rem)
     opacity: 0.4
@@ -47,11 +51,8 @@ $theme-colors: ("primary": $primary, "secondary": $secondary, "success": $succes
       animation: (#{$anim}) (#{$i*$delay})
       -webkit-animation: (#{$anim}) (#{$i*$delay})
 
-body
-    font-family: 'Roboto Mono', monospace
-
-div.card.synth
-  @include delayed-animation($anim: synth-card-animation 0.4s normal forwards, $number: 8, $delay: 0.05s)
+div.card.goob
+  @include delayed-animation($anim: goob-card-animation 0.4s normal forwards, $number: 8, $delay: 0.05s)
   border: 1px solid $primary
 
   &> div.card-body
@@ -59,5 +60,5 @@ div.card.synth
 
 nav
   a
-    @include delayed-animation($anim: synth-nav-animation 0.4s normal forwards, $number: 6, $delay: 0.05s)
+    @include delayed-animation($anim: goob-nav-animation 0.4s normal forwards, $number: 6, $delay: 0.05s)
     

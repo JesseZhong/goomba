@@ -14,7 +14,6 @@ VIDEO_BUCKET = getenv('VIDEO_BUCKET')
 VIDEO_EXPIRY = getenv('VIDEO_EXPIRY', 86400)  # In seconds. Default is 24 hours.
 
 
-
 def get_videos(
     show_hidden: bool = False
 ):
@@ -52,12 +51,20 @@ def abort_if_not_exist(
 class Video(Resource):
 
     @auth_required
-    def get(self, video_id: str):
+    def get(self, args: Dict[str, str]):
         """
             Get a video's info along with a temporary
             link to use to view the video.
         """
         videos = get_videos()
+
+        if not args or 'video_id' not in args:
+            abort(400, 'Missing ID.')
+        video_id = args['video_id']
+
+        # Validate the id.
+        if not verify_id(video_id):
+            abort(400, 'Invalid video ID.')
 
         abort_if_not_exist(videos, video_id)
         video = videos[video_id]
@@ -76,16 +83,19 @@ class Video(Resource):
 
 
     @admin_required
-    def put(self, video_id: str):
+    def put(self, args: Dict[str, str]):
         """
             Adds or updates a video listing.
             Also updates tags.
         """
 
+        if not args or 'video_id' not in args:
+            abort(400, 'Missing ID.')
+        video_id = args['video_id']
+
         # Validate the id.
         if not verify_id(video_id):
             abort(400, 'Invalid video ID.')
-
         
         # Acquire and validate request body.
         video = verify_schema('schemas/put_video.json')
@@ -167,7 +177,11 @@ class Video(Resource):
 
 
     @admin_required
-    def delete(self, video_id: str):
+    def delete(self, args: Dict[str, str]):
+
+        if not args or 'video_id' not in args:
+            abort(400, 'Missing ID.')
+        video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
@@ -193,9 +207,7 @@ class Videos(Resource):
 
         # Auth check based off query.
         # Hidden videos specified? Check for admin access.
-        result = resolve_auth(check_admin=show_hidden)
-        if result:
-            return result()
+        resolve_auth(check_admin=show_hidden)
         
         videos = get_videos(show_hidden)
 

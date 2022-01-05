@@ -3,12 +3,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHashtag, faCog, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Session } from '../auth/Session';
 import image from '../assets/goobs.png';
 import './Nav.sass';
 
-const Nav = (props: {
 
+const Nav = (props: {
+    session: Session
 }) => {
+
+    const session = props.session;
 
     return (
         <nav className='nav navbar py-0'>
@@ -38,12 +42,15 @@ const Nav = (props: {
                     >
                         <FontAwesomeIcon icon={faHashtag} />
                     </Link>
-                    <Link
-                        className='nav-link'
-                        to='/manage'
-                    >
-                        <FontAwesomeIcon icon={faCog} />
-                    </Link>
+                    {
+                        session.is_admin &&
+                        <Link
+                            className='nav-link'
+                            to='/manage'
+                        >
+                            <FontAwesomeIcon icon={faCog} />
+                        </Link>
+                    }
                 </div>
                 <div
                     className='input-group my-1'
