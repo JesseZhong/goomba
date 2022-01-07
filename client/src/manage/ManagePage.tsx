@@ -1,6 +1,6 @@
+import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react';
 import VideoActions from '../actions/VideoActions';
 import { Videos } from '../videos/Video';
 import VideoEdit from '../videos/VideoEdit';

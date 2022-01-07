@@ -10,7 +10,6 @@ const VideoCard = (props: {
 }) => {
 
     const video = props.video;
-    console.log(video)
 
     return (
         <>

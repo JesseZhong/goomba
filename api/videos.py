@@ -1,21 +1,24 @@
 from os import getenv
 from dotenv import load_dotenv
 from typing import Dict, List
+from datetime import timedelta
 from flask import request
 from flask_restful import Resource, abort
 from api.authorization import admin_required, auth_required, resolve_auth
+from api.cdn import gen_cdn_url
 from api.db import get, open_db, transact_get, transact_update, update
 from boto3 import client as awsclient
 
 from api.validation import verify_id, verify_schema
 
 load_dotenv()
-VIDEO_BUCKET = getenv('VIDEO_BUCKET')
-VIDEO_EXPIRY = getenv('VIDEO_EXPIRY', 86400)  # In seconds. Default is 24 hours.
+CDN_VALID_TIME = getenv('CDN_VALID_TIME', 8)     # In hours. How much time a CDN url is valid for.
 
 
 def get_videos(
-    show_hidden: bool = False
+    *,
+    show_hidden: bool = False,
+    show_key: bool = False
 ):
     """
         Grab all available videos.
@@ -26,12 +29,12 @@ def get_videos(
         if not show_hidden:
 
             # Not admin? Filter out videos that are set to 'hide'.
-            for id, video in videos:
+            for id, video in videos.items():
                 if 'hide' in video and video['hide']:
                     del video[id]
 
                 # Strip key.
-                if 'key' in video:
+                if not show_key and 'key' in video:
                     del video['key']
 
         return videos
@@ -56,7 +59,9 @@ class Video(Resource):
             Get a video's info along with a temporary
             link to use to view the video.
         """
-        videos = get_videos()
+        videos = get_videos(
+            show_key=True
+        )
 
         if not args or 'video_id' not in args:
             abort(400, 'Missing ID.')
@@ -69,14 +74,10 @@ class Video(Resource):
         abort_if_not_exist(videos, video_id)
         video = videos[video_id]
 
-        # Get presigned URL to the actual video file.
-        video['url'] = awsclient('s3').generate_presigned_url(
-            ClientMethod='get_object', 
-            Params={
-                'Bucket': VIDEO_BUCKET,
-                'Key': video['key']
-            },
-            ExpiresIn=VIDEO_EXPIRY
+        # Generate signed url for HLS playlist.
+        video['url'] = gen_cdn_url(
+            video['key'] + '.m3u8',
+            timedelta(hours=CDN_VALID_TIME)
         )
 
         return video, 200
@@ -209,7 +210,9 @@ class Videos(Resource):
         # Hidden videos specified? Check for admin access.
         resolve_auth(check_admin=show_hidden)
         
-        videos = get_videos(show_hidden)
+        videos = get_videos(
+            show_hidden=show_hidden
+        )
 
         # Get videos for a directory, if it is specified.
         directory = request.args.get('directory')

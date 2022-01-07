@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactHlsPlayer from 'react-hls-player';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,21 +25,35 @@ const VideoView = (props: {
 
     const [video, setVideo] = React.useState<Video | null>(null);
 
-    VideoActions.get(
-        id,
-        (video: Video) => {
-            setVideo(video);
-        },
-        () => {
-            // Video can't be found, kick to the 404.
-            history.push('/not-found');
-        }
-    );
+    const [loading, setLoading] = React.useState(false);
+    if (!loading) {
+        setLoading(true);
+        VideoActions.get(
+            id,
+            (video: Video) => {
+                setVideo(video);
+            },
+            () => {
+                // Video can't be found, kick to the 404.
+                history.push('/not-found');
+            }
+        );
+    }
+
+    const playerRef = React.createRef<HTMLVideoElement>();
+
     
-    const videoView = video
+    const videoView = video?.url
         ? (
             <div className='video-view' tabIndex={0}>
-                <video controls autoPlay loop src={video.url} />
+                <ReactHlsPlayer
+                    playerRef={playerRef}
+                    src={video.url}
+                    autoPlay={false}
+                    controls={true}
+                    width='100%'
+                    height='auto'
+                />
             </div>
         )
         : (
