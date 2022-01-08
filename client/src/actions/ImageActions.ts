@@ -10,11 +10,13 @@ const imageApi = ImageAPI(
 
 const ImageActions = {
     upload: (
+        image_key: string,
         file: File,
-        success: (fileKey: string) => void,
+        success: (image_key: string) => void,
         event?: events.EventEmitter
     ) => {
         imageApi.upload(
+            image_key,
             file,
             success,
             event

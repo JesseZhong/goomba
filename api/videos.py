@@ -7,18 +7,18 @@ from flask_restful import Resource, abort
 from api.authorization import admin_required, auth_required, resolve_auth
 from api.cdn import gen_cdn_url
 from api.db import get, open_db, transact_get, transact_update, update
-from boto3 import client as awsclient
 
 from api.validation import verify_id, verify_schema
 
 load_dotenv()
-CDN_VALID_TIME = getenv('CDN_VALID_TIME', 8)     # In hours. How much time a CDN url is valid for.
+CDN_STREAM_VALID_TIME = getenv('CDN_STREAM_VALID_TIME', 8)     # In hours. How much time a HLS playlist file is valid for.
+CDN_DOWNLOAD_VALID_TIME = getenv('CDN_DOWNLOAD_VALID_TIME', 3)    # In hours. How much time a download file is valid for.
 
 
 def get_videos(
     *,
     show_hidden: bool = False,
-    show_key: bool = False
+    show_keys: bool = False
 ):
     """
         Grab all available videos.
@@ -33,9 +33,13 @@ def get_videos(
                 if 'hide' in video and video['hide']:
                     del video[id]
 
-                # Strip key.
-                if not show_key and 'key' in video:
-                    del video['key']
+                # Strip object keys.
+                if not show_keys:
+                    if 'stream_key' in video:
+                        del video['stream_key']
+
+                    if 'download_key' in video:
+                        del video['download_key']
 
         return videos
 
@@ -52,35 +56,6 @@ def abort_if_not_exist(
         abort(404, message=f'Video {video_id} does not exist.')
 
 class Video(Resource):
-
-    @auth_required
-    def get(self, args: Dict[str, str]):
-        """
-            Get a video's info along with a temporary
-            link to use to view the video.
-        """
-        videos = get_videos(
-            show_key=True
-        )
-
-        if not args or 'video_id' not in args:
-            abort(400, 'Missing ID.')
-        video_id = args['video_id']
-
-        # Validate the id.
-        if not verify_id(video_id):
-            abort(400, 'Invalid video ID.')
-
-        abort_if_not_exist(videos, video_id)
-        video = videos[video_id]
-
-        # Generate signed url for HLS playlist.
-        video['url'] = gen_cdn_url(
-            video['key'] + '.m3u8',
-            timedelta(hours=CDN_VALID_TIME)
-        )
-
-        return video, 200
 
 
     @admin_required
@@ -259,3 +234,67 @@ class Videos(Resource):
                 abort(400, message=f"Tag '{e.args[0]}' not found.")
         
         return videos
+
+
+class StreamVideo(Resource):
+
+    @auth_required
+    def get(self, args: Dict[str, str]):
+        """
+            Get a video's info along with a temporary
+            link to use to stream the video.
+        """
+        videos = get_videos(
+            show_keys=True
+        )
+
+        if not args or 'video_id' not in args:
+            abort(400, 'Missing ID.')
+        video_id = args['video_id']
+
+        # Validate the id.
+        if not verify_id(video_id):
+            abort(400, 'Invalid video ID.')
+
+        abort_if_not_exist(videos, video_id)
+        video = videos[video_id]
+
+        # Generate signed url for HLS playlist.
+        video['stream_url'] = gen_cdn_url(
+            'stream/' + video['stream_key'] + '/master.m3u8',
+            timedelta(hours=CDN_STREAM_VALID_TIME)
+        )
+
+        return video, 200
+
+
+class DownloadVideo(Resource):
+
+    @auth_required
+    def get(self, args: Dict[str, str]):
+        """
+            Get a video's info along with a temporary
+            link to use to download the video.
+        """
+        videos = get_videos(
+            show_keys=True
+        )
+
+        if not args or 'video_id' not in args:
+            abort(400, 'Missing ID.')
+        video_id = args['video_id']
+
+        # Validate the id.
+        if not verify_id(video_id):
+            abort(400, 'Invalid video ID.')
+
+        abort_if_not_exist(videos, video_id)
+        video = videos[video_id]
+
+        # Generate signed url for HLS playlist.
+        video['download_url'] = gen_cdn_url(
+            'download/' + video['download_key'],
+            timedelta(hours=CDN_DOWNLOAD_VALID_TIME)
+        )
+
+        return video, 200

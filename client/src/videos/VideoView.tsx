@@ -28,7 +28,7 @@ const VideoView = (props: {
     const [loading, setLoading] = React.useState(false);
     if (!loading) {
         setLoading(true);
-        VideoActions.get(
+        VideoActions.getStream(
             id,
             (video: Video) => {
                 setVideo(video);
@@ -41,14 +41,13 @@ const VideoView = (props: {
     }
 
     const playerRef = React.createRef<HTMLVideoElement>();
-
     
-    const videoView = video?.url
+    const videoView = video?.stream_url
         ? (
             <div className='video-view' tabIndex={0}>
                 <ReactHlsPlayer
                     playerRef={playerRef}
-                    src={video.url}
+                    src={video.stream_url}
                     autoPlay={false}
                     controls={true}
                     width='100%'

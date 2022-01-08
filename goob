@@ -122,6 +122,8 @@ case "$arg1" in
         then
             go() {
                 # Make functions available in bash for new gnome tabs.
+                export -f install
+                export -f activate
                 export -f run_api
                 export -f run_client
                 

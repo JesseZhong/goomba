@@ -1,9 +1,11 @@
 export interface Video {
     id: string;
     name: string;
-    key: string;
-    url?: string;
-    thumbnail?: string;
+    stream_key: string;
+    download_key?: string;
+    stream_url?: string;
+    download_url?: string;
+    thumbnail_key?: string;
     date_aired?: string;
     date_added?: string;
     tags?: string[];

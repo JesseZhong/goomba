@@ -26,8 +26,9 @@ const ImageAPI = (
     access: Access
 ) => ({
     upload(
+        image_key: string,
         file: File,
-        success: (fileKey: string) => void,
+        success: (image_key: string) => void,
         event?: events.EventEmitter
     ): void {
         access(
@@ -36,22 +37,16 @@ const ImageAPI = (
                 errorHandler?: (response: ErrorResponse) => boolean
             ) => 
                 // Request presigned url to use for upload.
-                request.put(`${url}/images`)
+                request.get(`${url}/images/${image_key}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .send({
-                        'filename': file.name
-                    })
                     .end((error: any, response: Response) => {
                         if (!error && response.ok) {
-                            const result = response?.body as {
-                                fileKey: string,
-                                presigned: PresignedUpload
-                            };
+                            const result = response?.body as PresignedUpload;
                             const data = new FormData();
 
                             // Append all the fields from the presigned.
-                            Object.entries(result.presigned.fields).forEach(([key, value]) => {
+                            Object.entries(result.fields).forEach(([key, value]) => {
                                 data.append(key, value);
                             });
 
@@ -59,7 +54,7 @@ const ImageAPI = (
                             data.append('file', file);
 
                             // Attempt to upload the file.
-                            request.post(result.presigned.url)
+                            request.post(result.url)
                                 .on('progress', (e: ProgressEvent) => {
                                     const progress = e as Progress;
 
@@ -73,7 +68,7 @@ const ImageAPI = (
                                 .send(data)
                                 .end((error: any, response: Response) => {
                                     if (!error && response.ok) {
-                                        success(result.fileKey);
+                                        success(result.fields.key);
                                     }
                                 });
                         }

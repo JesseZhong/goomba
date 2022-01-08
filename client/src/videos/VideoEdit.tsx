@@ -3,13 +3,14 @@ import uuid from 'node-uuid';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Video } from './Video';
-import { ErrorMessage, Field, Form, Formik } from 'formik';
-import VideoValidation from './VideoValidation';
+import VideoCard from './VideoCard';
 import VideoActions from '../actions/VideoActions';
+import VideoValidation from './VideoValidation';
 import FileUpload from '../common/ImageUpload';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { WithContext as ReactTags, Tag } from 'react-tag-input';
 import './VideoEdit.sass';
-import VideoCard from './VideoCard';
+
 
 const KeyCodes = {
     tab: 9,
@@ -33,7 +34,14 @@ const VideoEdit = (props: {
 }) => {
 
     const video = props.video ?? {
-        id: uuid.v4()
+        id: uuid.v4(),
+        name: '',
+        stream_key: '',
+        download_key: '',
+        thumbnail_key: '',
+        date_aired: '',
+        date_added: '',
+        tags: []
     } as Video;
 
     const [showPutError, setShowPutError] = React.useState(false);
@@ -58,6 +66,9 @@ const VideoEdit = (props: {
                 validationSchema={VideoValidation}
                 onSubmit={(newVideo, { setSubmitting }) => {
 
+                    // Set current time if date added isn't set.
+                    newVideo.date_added = newVideo.date_added ?? new Date().toISOString();
+
                     VideoActions.put(
                         newVideo,
                         () => {
@@ -72,72 +83,96 @@ const VideoEdit = (props: {
                     <Form className='mx-4'>
 
                         <div className='d-flex flex-row'>
-                            <div className='d-flex flex-column'>
-                                <div className='d-flex flex-column mb-4'>
-                                    <div className='input-group input-group-sm flex-nowrap pe-5'>
-                                        <span className='input-group-text'>
-                                            Title
-                                        </span>
+
+                            <div className='container'>
+
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
+                                        Title
+                                    </div>
+                                    <div className='col-8 d-flex flex-column'>
                                         <Field
                                             as='input'
                                             name='name'
                                             placeholder='Title of the video'
                                             className='form-control'
                                         />
-                                    </div>
-                                    <ErrorMessage
-                                        name='name'
-                                        component='div'
-                                        className='text-danger ms-2'
-                                    />
-                                </div>
-
-                                <div className='d-flex flex-column mb-4'>
-                                    <div className='input-group input-group-sm flex-nowrap pe-5'>
-                                        <span className='input-group-text'>
-                                            Key
-                                        </span>
-                                        <Field
-                                            as='input'
-                                            name='key'
-                                            placeholder='S3 object key of the video'
-                                            className='form-control'
+                                        <ErrorMessage
+                                            name='name'
+                                            component='div'
+                                            className='text-danger ms-2'
                                         />
                                     </div>
-                                    <ErrorMessage
-                                        name='key'
-                                        component='div'
-                                        className='text-danger ms-2'
-                                    />
                                 </div>
 
-                                <div className='d-flex flex-column mb-4'>
-                                    <div className='input-group input-group-sm flex-nowrap pe-5'>
-                                        <span className='input-group-text'>
-                                            Date Aired
-                                        </span>
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
+                                        Stream Key
+                                    </div>
+                                    <div className='col-8 d-flex flex-column'>
+                                        <Field
+                                            as='input'
+                                            name='stream_key'
+                                            placeholder='S3 object stream key'
+                                            className='form-control'
+                                        />
+                                        <ErrorMessage
+                                            name='stream_key'
+                                            component='div'
+                                            className='text-danger ms-2'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
+                                        Download Key
+                                    </div>
+                                    <div className='col-8 d-flex flex-column'>
+                                        <Field
+                                            as='input'
+                                            name='download_key'
+                                            placeholder='S3 object download key'
+                                            className='form-control'
+                                        />
+                                        <ErrorMessage
+                                            name='download_key'
+                                            component='div'
+                                            className='text-danger ms-2'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
+                                        Date Aired
+                                    </div>
+                                    <div className='col-4 d-flex flex-column'>
                                         <input
                                             type='datetime-local'
                                             name='date_aired'
                                             className='form-control'
                                         />
+                                        <ErrorMessage
+                                            name='date-aired'
+                                            component='div'
+                                            className='text-danger ms-2'
+                                        />
                                     </div>
-                                    <ErrorMessage
-                                        name='date-aired'
-                                        component='div'
-                                        className='text-danger ms-2'
-                                    />
                                 </div>
+
                             </div>
 
                             <div className='d-flex flex-column justify-content-between'>
+
                                 <div className='d-flex flex-column'>
                                     <span>Preview</span>
                                     <VideoCard video={values} />
                                 </div>
+
                                 <div className='d-flex flex-column mb-2'>
-                                    <div className='input-group input-group-sm flex-nowrap pe-5'>
-                                        <span className='input-group-text'>
+                                    <div className='d-flex flex-column'>
+                                        <span>
                                             Thumbnail
                                         </span>
                                         <FileUpload
@@ -149,6 +184,7 @@ const VideoEdit = (props: {
                                         className='text-danger ms-2'
                                     />
                                 </div>
+
                             </div>
                         </div>
 

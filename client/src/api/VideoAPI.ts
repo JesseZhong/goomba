@@ -8,7 +8,7 @@ const VideoAPI = (
     access: Access
 ) => ({
 
-    get(
+    getStream(
         id: string,
         received: (video: Video) => void,
         onerror: (error: any) => void
@@ -18,7 +18,37 @@ const VideoAPI = (
                 token: string,
                 errorHandler?: (response: ErrorResponse) => boolean
             ) =>
-                request.get(`${url}/videos/${id}`)
+                request.get(`${url}/videos/${id}/stream`)
+                    .set('Accept', 'application/json')
+                    .auth(token, { type: 'bearer' })
+                    .end((error: any, response: Response) => {
+                        if (error) {
+                            if (
+                                error.status < 500 &&
+                                !errorHandler?.(response as ErrorResponse)
+                            ) {
+                                console.error(error)
+                            }
+                            onerror(error);
+                            return;
+                        }
+
+                        received(response.body);
+                    })
+        );
+    },
+
+    getDownload(
+        id: string,
+        received: (video: Video) => void,
+        onerror: (error: any) => void
+    ): void {
+        access(
+            (
+                token: string,
+                errorHandler?: (response: ErrorResponse) => boolean
+            ) =>
+                request.get(`${url}/videos/${id}/download`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .end((error: any, response: Response) => {

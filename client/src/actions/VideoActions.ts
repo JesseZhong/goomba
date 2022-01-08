@@ -13,16 +13,32 @@ const videoApi = VideoAPI(
 const VideoActions = {
 
     /**
-     * Grabs video info along with a watchable video URL.
+     * Grabs video info along with a HLS video URL.
      * @param id Video UUID.
      * @param received Action performed after video info is received.
      * @param onerror Action performed if there was an error.
      */
-    get: (
+    getStream: (
         id: string,
         received: (video: Video) => void,
         onerror: (error: any) => void
-    ) => videoApi.get(
+    ) => videoApi.getStream(
+        id,
+        received,
+        onerror
+    ),
+
+    /**
+     * Grabs video info along with a video download URL.
+     * @param id Video UUID.
+     * @param received Action performed after video info is received.
+     * @param onerror Action performed if there was an error.
+     */
+     getDownload: (
+        id: string,
+        received: (video: Video) => void,
+        onerror: (error: any) => void
+    ) => videoApi.getStream(
         id,
         received,
         onerror

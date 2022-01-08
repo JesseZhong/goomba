@@ -6,7 +6,7 @@ import VideoCard from './VideoCard';
 
 export const ToVideoView = (
     video: Video,
-    history?: History<History.PoorMansUnknown>
+    history?: History<unknown>
 ) => {
     history?.push(`/view/${video.id}`);
 }
@@ -15,7 +15,7 @@ const VideoList = (props: {
     videos: Videos,
     onClick?: (
         video: Video,
-        history?: History<History.PoorMansUnknown>
+        history?: History<unknown>
     ) => void,
     editable?: boolean,
     className?: string
