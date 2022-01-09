@@ -5,7 +5,7 @@ from datetime import timedelta
 from flask import request
 from flask_restful import Resource, abort
 from api.authorization import admin_required, auth_required, resolve_auth
-from api.cdn import gen_cdn_url
+from api.cdn import CDN_URL, gen_cdn_url
 from api.db import get, open_db, transact_get, transact_update, update
 
 from api.validation import verify_id, verify_schema
@@ -13,6 +13,15 @@ from api.validation import verify_id, verify_schema
 load_dotenv()
 CDN_STREAM_VALID_TIME = getenv('CDN_STREAM_VALID_TIME', 8)     # In hours. How much time a HLS playlist file is valid for.
 CDN_DOWNLOAD_VALID_TIME = getenv('CDN_DOWNLOAD_VALID_TIME', 3)    # In hours. How much time a download file is valid for.
+
+
+def set_thumbnail_url(video: Dict[str, str]):
+    """
+        Set thumbnail URL if key is available.
+    """
+    if 'thumbnail_key' in video:
+        thumbnail_key = video['thumbnail_key']
+        video['thumbnail_url'] = f'{CDN_URL}/images/{thumbnail_key}'
 
 
 def get_videos(
@@ -25,11 +34,11 @@ def get_videos(
     """
     try:
         videos: Dict = get('videos')
-
-        if not show_hidden:
+        
+        for id, video in videos.items():
 
             # Not admin? Filter out videos that are set to 'hide'.
-            for id, video in videos.items():
+            if not show_hidden:
                 if 'hide' in video and video['hide']:
                     del video[id]
 
@@ -40,6 +49,9 @@ def get_videos(
 
                     if 'download_key' in video:
                         del video['download_key']
+
+            # Include fully generated thumbnail url.
+            set_thumbnail_url(video)
 
         return videos
 
@@ -148,6 +160,9 @@ class Video(Resource):
                 abort(500)
             finally:
                 db.close()
+
+        # Send back the thumbnail URL.
+        set_thumbnail_url(video)
 
         return video, 201
 

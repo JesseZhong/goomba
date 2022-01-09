@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { History } from 'history';
 import { Video, Videos } from './Video';
 import VideoCard from './VideoCard';
+import EditableVideoCard from './EditableVideoCard';
 
 export const ToVideoView = (
     video: Video,
@@ -40,7 +41,11 @@ const VideoList = (props: {
                             }
                             onClick={() => onClick?.(video, history)}
                         >
-                            <VideoCard video={video} />
+                            {
+                                props.editable
+                                ? <EditableVideoCard video={video} />
+                                : <VideoCard video={video} />
+                            }
                         </div>
                 )
             }

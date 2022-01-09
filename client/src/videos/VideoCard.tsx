@@ -15,7 +15,7 @@ const VideoCard = (props: {
         <>
             <div
                 className={
-                    'video-card ' +
+                    'video-card m-2 ' +
                     (props.className ?? '' )
                 }
             >
@@ -25,12 +25,12 @@ const VideoCard = (props: {
                     </span>
                 </div>
                 <div className='d-flex flex-row'>
-                    <div className='me-4'>
+                    <div>
                         {
                             video.thumbnail_key
                             ? <img
                                 className='img-fluid rounded-start'
-                                src={video.thumbnail_key}
+                                src={video.thumbnail_url}
                                 alt={video.name}
                             />
                             : <FontAwesomeIcon
@@ -39,7 +39,7 @@ const VideoCard = (props: {
                             />
                         }
                     </div>
-                    <div>
+                    <div className='m-3'>
                         <span className='title'>
                             {video.name}
                         </span>

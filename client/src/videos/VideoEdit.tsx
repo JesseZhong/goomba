@@ -6,7 +6,7 @@ import { Video } from './Video';
 import VideoCard from './VideoCard';
 import VideoActions from '../actions/VideoActions';
 import VideoValidation from './VideoValidation';
-import FileUpload from '../common/ImageUpload';
+import ImageUpload from '../common/ImageUpload';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { WithContext as ReactTags, Tag } from 'react-tag-input';
 import './VideoEdit.sass';
@@ -36,12 +36,7 @@ const VideoEdit = (props: {
     const video = props.video ?? {
         id: uuid.v4(),
         name: '',
-        stream_key: '',
-        download_key: '',
-        thumbnail_key: '',
-        date_aired: '',
-        date_added: '',
-        tags: []
+        stream_key: ''
     } as Video;
 
     const [showPutError, setShowPutError] = React.useState(false);
@@ -72,7 +67,7 @@ const VideoEdit = (props: {
                     VideoActions.put(
                         newVideo,
                         () => {
-                            setSubmitting(false);
+                            //setSubmitting(false);
                             finished();
                         },
                         () => setShowPutError(true)
@@ -175,7 +170,9 @@ const VideoEdit = (props: {
                                         <span>
                                             Thumbnail
                                         </span>
-                                        <FileUpload
+                                        <ImageUpload
+                                            value={values.thumbnail_key}
+                                            onChange={(file_key: string) => setFieldValue('thumbnail_key', file_key)}
                                         />
                                     </div>
                                     <ErrorMessage

@@ -62,6 +62,9 @@
     "superagent": "^6.1.0",
     "yup": "^0.28.4"
   },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

@@ -7,8 +7,8 @@ import { basename } from 'path';
 const ImageUpload = (props: {
     name?: string,
     className?: string,
-    value?: string | number | string[] | undefined,
-    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+    value?: string,
+    onChange?: (file_key: string) => void
 }) => {
     const [value, setValue] = React.useState(props.value ?? '');
     const [progress, setProgress] = React.useState<number | undefined>(undefined);
@@ -38,21 +38,15 @@ const ImageUpload = (props: {
                         ImageActions.upload(
                             filename,
                             file,
-                            (image_key: string) => {
-                                setValue(image_key);
+                            () => {
+                                setValue(filename);
                                 setProgress(undefined);
+                                props.onChange?.(filename);
                             },
                             progressEvent
                         );
                     }
                 }}
-            />
-
-            <input
-                type='hidden'
-                name={props.name}
-                onChange={props.onChange}
-                value={value}
             />
             
             <button
@@ -78,7 +72,7 @@ const ImageUpload = (props: {
                     </div>
                     : (
                         value
-                        ? `URL: ${value}`
+                        ? `File: ${value}`
                         : 'Upload a File'
                     )
                 }

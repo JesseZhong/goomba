@@ -6,6 +6,7 @@ export interface Video {
     stream_url?: string;
     download_url?: string;
     thumbnail_key?: string;
+    thumbnail_url?: string;
     date_aired?: string;
     date_added?: string;
     tags?: string[];

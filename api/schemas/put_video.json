@@ -56,7 +56,7 @@
     },
     "required": [
         "id",
-        "key",
+        "stream_key",
         "name"
     ]
 }

@@ -48,7 +48,7 @@ const VideoView = (props: {
                 <ReactHlsPlayer
                     playerRef={playerRef}
                     src={video.stream_url}
-                    autoPlay={false}
+                    autoPlay={true}
                     controls={true}
                     width='100%'
                     height='auto'

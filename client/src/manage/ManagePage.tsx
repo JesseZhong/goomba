@@ -41,7 +41,7 @@ const ManagePage = (props: {
                         finished={() => setVideoAdd(false)}
                     />
                 }
-                <VideoList videos={videos} />
+                <VideoList videos={videos} editable />
             </div>
         </div>
     )
