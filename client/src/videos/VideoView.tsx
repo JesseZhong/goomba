@@ -25,26 +25,26 @@ const VideoView = (props: {
 
     const [video, setVideo] = React.useState<Video | null>(null);
 
-    const [loading, setLoading] = React.useState(false);
-    if (!loading) {
-        setLoading(true);
-        VideoActions.getStream(
-            id,
-            (video: Video) => {
-                setVideo(video);
-            },
-            () => {
-                // Video can't be found, kick to the 404.
-                history.push('/not-found');
-            }
-        );
-    }
+    React.useEffect(() => {
+            VideoActions.getStream(
+                id,
+                (video: Video) => {
+                    setVideo(video);
+                },
+                () => {
+                    // Video can't be found, kick to the 404.
+                    history.push('/not-found');
+                }
+            );
+        },
+        [id, history]
+    );
 
     const playerRef = React.createRef<HTMLVideoElement>();
     
     const videoView = video?.stream_url
         ? (
-            <div className='video-view' tabIndex={0}>
+            <div className='video-view d-flex flex-column' tabIndex={0}>
                 <ReactHlsPlayer
                     playerRef={playerRef}
                     src={video.stream_url}
@@ -53,6 +53,21 @@ const VideoView = (props: {
                     width='100%'
                     height='auto'
                 />
+                <div className='info'>
+                    <h3>{video.name}</h3>
+                    {
+                        video.date_aired &&
+                        <span>
+                            {'Aired' + Date.parse(video.date_aired).toLocaleString()}
+                        </span>
+                    }
+                    {
+                        video.member &&
+                        <span>
+                            Member
+                        </span>
+                    }
+                </div>
             </div>
         )
         : (

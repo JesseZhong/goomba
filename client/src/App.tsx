@@ -44,9 +44,12 @@ const App = (state: AppState) => {
                         <Route path='/manage' render={(props: any) => (
                             <ManagePage {...props} videos={state.videos} />
                         )} />
-                        <Route exact path='/' render={(props: any) => (
+                        <Route exact path='/videos' render={(props: any) => (
                             <VideosPage {...props} videos={state.videos} />
                         )} />
+                        <Route exact path='/'>
+                            <Redirect to='/videos' />
+                        </Route>
                         <Route path='*' component={PageNotFound} />
                     </Switch>
                 </>

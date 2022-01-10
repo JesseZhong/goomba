@@ -3,25 +3,10 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.7
       nodejs: 12
     commands:
-      - npm i -g serverless
+      - npm i -g yarn --unsafe-perm
+      - npm i -g serverless --unsafe-perm
   build:
     commands:
-      # Package shared code.
-      - cd ./core/ && python setup.py sdist && cd -
-
-      # Deploy DynamoDB.
-      - cd ./resources/DynamoDB/ && npm ci && sls deploy -r $AWS_REGION --stage $STAGE && cd -
-
-      #- . ./deploy auth $STAGE
-      #- . ./deploy files $STAGE
-      #- . ./deploy servers $STAGE
-      #- . ./deploy minecraft $STAGE
-      #- . ./deploy players $STAGE
-      #- . ./deploy mods $STAGE
-
-      # Deploy manager.
-      #- ./publish
-      #- ./publish-manager
+      - ./publish
