@@ -9,4 +9,4 @@ phases:
       - npm i -g serverless --unsafe-perm
   build:
     commands:
-      - ./publish
+      - cd ./client/ && ./publish
