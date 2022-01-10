@@ -3,6 +3,13 @@ import { Video, Videos } from '../videos/Video';
 import { Access } from './Access';
 import { ErrorResponse } from './ErrorResponse';
 
+export interface VideoOptions {
+    show_hidden?: boolean,
+    show_keys?: boolean,
+    directory_id?: string,
+    tags?: string[]
+}
+
 const VideoAPI = (
     url: string,
     access: Access
@@ -70,9 +77,7 @@ const VideoAPI = (
 
     getVideos(
         received: (videos: Videos) => void,
-        show_hidden: boolean = false,
-        directory_id?: string,
-        tags?: string[]
+        options?: VideoOptions
     ): void {
         access(
             (
@@ -80,16 +85,20 @@ const VideoAPI = (
                 errorHandler?: (response: ErrorResponse) => boolean
             ) => {
                 let queries: string[] = []
-                if (show_hidden) {
+                if (options?.show_hidden) {
                     queries.push('show_hidden=true');
                 }
 
-                if (directory_id) {
-                    queries.push(`directory=${directory_id}`);
+                if (options?.show_keys) {
+                    queries.push('show_keys=true');
                 }
 
-                if (tags) {
-                    queries.push(`tags=[${tags.join(',')}]`);
+                if (options?.directory_id) {
+                    queries.push(`directory=${options.directory_id}`);
+                }
+
+                if (options?.tags) {
+                    queries.push(`tags=[${options.tags.join(',')}]`);
                 }
 
                 request.get(`${url}/videos${queries ? `?${queries.join('&')}` : ''}`)

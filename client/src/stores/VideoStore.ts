@@ -29,16 +29,16 @@ class VideoStore extends ReduceStore<Videos, ActionPayload> {
                     state.set(
                         putAction.video.id,
                         putAction.video
-                    )
+                    );
                 }
-                return new Videos(state.entries());
+                return new Videos(Object.fromEntries(state));
 
             case ActionTypes.REMOVE_VIDEO:
                 const removeAction: RemoveVideoPayload = action as RemoveVideoPayload;
                 if (removeAction) {
                     state.delete(removeAction.id);
                 }
-                return new Videos(state.entries());
+                return new Videos(Object.fromEntries(state));
                 
             default:
                 return state;

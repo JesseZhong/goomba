@@ -10,6 +10,7 @@ import ImageUpload from '../common/ImageUpload';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { WithContext as ReactTags, Tag } from 'react-tag-input';
 import './VideoEdit.sass';
+import OptionalField from '../common/OptionalField';
 
 
 const KeyCodes = {
@@ -28,6 +29,7 @@ const delimiters = [
 
 
 const VideoEdit = (props: {
+    className?: string,
     tags?: string[],
     video?: Video,
     finished?: () => void
@@ -47,7 +49,10 @@ const VideoEdit = (props: {
 
     return (
         <div
-            className='video-edit'
+            className={
+                'video-edit ' +
+                props.className ?? ''
+            }
         >
             <button
                 type='button'
@@ -67,7 +72,7 @@ const VideoEdit = (props: {
                     VideoActions.put(
                         newVideo,
                         () => {
-                            //setSubmitting(false);
+                            setSubmitting(false);
                             finished();
                         },
                         () => setShowPutError(true)
@@ -124,7 +129,7 @@ const VideoEdit = (props: {
                                         Download Key
                                     </div>
                                     <div className='col-8 d-flex flex-column'>
-                                        <Field
+                                        <OptionalField
                                             as='input'
                                             name='download_key'
                                             placeholder='S3 object download key'
@@ -143,13 +148,30 @@ const VideoEdit = (props: {
                                         Date Aired
                                     </div>
                                     <div className='col-4 d-flex flex-column'>
-                                        <input
+                                        <OptionalField
                                             type='datetime-local'
                                             name='date_aired'
                                             className='form-control'
                                         />
                                         <ErrorMessage
                                             name='date-aired'
+                                            component='div'
+                                            className='text-danger ms-2'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
+                                        Member
+                                    </div>
+                                    <div className='col-4 d-flex flex-column'>
+                                        <OptionalField
+                                            type='checkbox'
+                                            name='member'
+                                        />
+                                        <ErrorMessage
+                                            name='member'
                                             component='div'
                                             className='text-danger ms-2'
                                         />

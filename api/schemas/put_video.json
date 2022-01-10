@@ -11,23 +11,23 @@
         "stream_key": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
+            "pattern": "^[^\\^{}%`\"'~<>|]{1,}$"
         },
         "download_key": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
+            "pattern": "^[^\\^{}%`\"'~<>|]{1,}$"
         },
         "thumbnail_key": {
             "type": "string",
             "minLength": 1,
-            "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
+            "pattern": "^[^\\^{}%`\"'~<>|]{1,}$"
         },
         "name": {
             "type": "string",
             "minLength": 1,
             "maxLength": 200,
-            "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
+            "pattern": "^[^\\^{}%`\"'~<>|]{1,}$"
         },
         "date_aired": {
             "type": "string",
@@ -40,6 +40,9 @@
             "minLength": 24,
             "maxLength": 27,
             "pattern": "^[0-9]{4}(-[0-9]{2}){2}T[0-9]{2}(:[0-9]{2}){2}.[0-9]{3}Z"
+        },
+        "member": {
+            "type": "boolean"
         },
         "tags": {
             "type": "array",

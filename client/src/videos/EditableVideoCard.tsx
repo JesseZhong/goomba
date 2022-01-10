@@ -1,10 +1,11 @@
-import { faCross, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import HoverButtonGroup from '../common/HoverButtonGroup';
 import { Video } from './Video';
 import VideoCard from './VideoCard';
 import VideoEdit from './VideoEdit';
+
 
 const EditableVideoCard = (props: {
     video: Video,
@@ -25,7 +26,11 @@ const EditableVideoCard = (props: {
         >
             {
                 edit
-                ? <VideoEdit video={video} finished={() => setEdit(false)} />
+                ? <VideoEdit
+                    video={video}
+                    finished={() => setEdit(false)}
+                    className='my-3'
+                />
                 : <>
                     <HoverButtonGroup
                         owner={wrap}

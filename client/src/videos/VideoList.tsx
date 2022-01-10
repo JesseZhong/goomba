@@ -4,6 +4,8 @@ import { History } from 'history';
 import { Video, Videos } from './Video';
 import VideoCard from './VideoCard';
 import EditableVideoCard from './EditableVideoCard';
+import './VideoList.sass';
+
 
 export const ToVideoView = (
     video: Video,
@@ -27,7 +29,10 @@ const VideoList = (props: {
 
     return (
         <div
-            className={'d-flex flex-wrap flex-row' + props.className}
+            className={
+                'video-list d-flex flex-wrap flex-row ' +
+                props.className
+            }
         >
             {
                 videos &&

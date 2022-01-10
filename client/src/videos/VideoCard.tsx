@@ -15,37 +15,41 @@ const VideoCard = (props: {
         <>
             <div
                 className={
-                    'video-card m-2 ' +
+                    'video-card d-flex flex-row m-2 ' +
                     (props.className ?? '' )
                 }
             >
-                <div className='overlay'>
-                    <span className='ml-2 mt-2'>
+                <div>
+                    {
+                        video.thumbnail_key
+                        ? <img
+                            className='img-fluid rounded-start'
+                            src={video.thumbnail_url}
+                            alt={video.name}
+                        />
+                        : <FontAwesomeIcon
+                            icon={faPhotoVideo}
+                            size='3x'
+                        />
+                    }
+                </div>
+                <div className='d-flex flex-column m-3'>
+                    <span className='title'>
                         {video.name}
                     </span>
-                </div>
-                <div className='d-flex flex-row'>
-                    <div>
+                    <div className='info flex-column'>
                         {
-                            video.thumbnail_key
-                            ? <img
-                                className='img-fluid rounded-start'
-                                src={video.thumbnail_url}
-                                alt={video.name}
-                            />
-                            : <FontAwesomeIcon
-                                icon={faPhotoVideo}
-                                size='3x'
-                            />
+                            video.date_aired &&
+                            <span>
+                                {'Aired' + Date.parse(video.date_aired).toLocaleString()}
+                            </span>
                         }
-                    </div>
-                    <div className='m-3'>
-                        <span className='title'>
-                            {video.name}
-                        </span>
-                        <p>
-                            Placeholder text.
-                        </p>
+                        {
+                            video.member &&
+                            <span>
+                                Member
+                            </span>
+                        }
                     </div>
                 </div>
             </div>

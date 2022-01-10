@@ -42,13 +42,13 @@ def get_videos(
                 if 'hide' in video and video['hide']:
                     del video[id]
 
-                # Strip object keys.
-                if not show_keys:
-                    if 'stream_key' in video:
-                        del video['stream_key']
+            # Strip object keys.
+            if not show_keys:
+                if 'stream_key' in video:
+                    del video['stream_key']
 
-                    if 'download_key' in video:
-                        del video['download_key']
+                if 'download_key' in video:
+                    del video['download_key']
 
             # Include fully generated thumbnail url.
             set_thumbnail_url(video)
@@ -88,7 +88,10 @@ class Video(Resource):
         # Acquire and validate request body.
         video = verify_schema('schemas/put_video.json')
 
-        videos = get_videos()
+        videos = get_videos(
+            show_hidden=True,
+            show_keys=True
+        )
 
         # Get old tags for removal later.
         old_tags = set()
@@ -195,13 +198,15 @@ class Videos(Resource):
             Admins see all hidden videos as well.
         """
         show_hidden = request.args.get('show_hidden') != None
+        show_keys = request.args.get('show_keys') != None
 
         # Auth check based off query.
         # Hidden videos specified? Check for admin access.
-        resolve_auth(check_admin=show_hidden)
+        resolve_auth(check_admin=(show_hidden | show_keys))
         
         videos = get_videos(
-            show_hidden=show_hidden
+            show_hidden=show_hidden,
+            show_keys=show_keys
         )
 
         # Get videos for a directory, if it is specified.

@@ -2,7 +2,7 @@ import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
 import { PutVideoPayload, VideosPayload, RemoveVideoPayload } from './VideoPayloads';
 import { Video, Videos } from '../videos/Video';
-import VideoAPI from '../api/VideoAPI';
+import VideoAPI, { VideoOptions } from '../api/VideoAPI';
 import { AuthAccess } from './AuthActions';
 
 const videoApi = VideoAPI(
@@ -52,9 +52,7 @@ const VideoActions = {
      * @param tags Filter videos by tags.
      */
     getVideos(
-        admin: boolean = false,
-        directory_id?: string,
-        tags?: string[]
+        options?: VideoOptions
     ): void {
         videoApi.getVideos(
             (videos: Videos) => {
@@ -63,9 +61,7 @@ const VideoActions = {
                     videos: videos
                 } as VideosPayload);
             },
-            admin,
-            directory_id,
-            tags
+            options
         )
     },
 

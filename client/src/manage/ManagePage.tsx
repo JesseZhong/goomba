@@ -9,11 +9,15 @@ import VideoList from '../videos/VideoList';
 const ManagePage = (props: {
     videos: Videos
 }) => {
-    const [loading, setLoading] = React.useState(false);
-    if (!loading) {
-        setLoading(true);
-        VideoActions.getVideos(true);
-    }
+
+    React.useEffect(() => {
+            VideoActions.getVideos({
+                show_hidden: true,
+                show_keys: true
+            });
+        },
+        []
+    );
 
     const videos = props.videos;
     const [videoAdd, setVideoAdd] = React.useState(false);
