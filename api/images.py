@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from typing import Dict
 from flask_restful import Resource, abort
 from boto3 import client
+from botocore.client import Config
 from botocore.exceptions import ClientError
 from api.authorization import admin_required
 import re
@@ -42,7 +43,8 @@ class ImageUpload(Resource):
 
         s3 = client(
             's3',
-            region_name=REGION
+            region_name=REGION,
+            config=Config(signature_version='s3v4')
         )
         try:
             response = s3.generate_presigned_post(
