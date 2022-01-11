@@ -10,6 +10,7 @@ import re
 
 load_dotenv()
 IMAGE_BUCKET = getenv('IMAGE_BUCKET')
+REGION = getenv('REGION')
 
 # Time in seconds. How long upload URL is valid for.
 IMAGE_UPLOAD_EXPIRY = getenv(
@@ -39,7 +40,10 @@ class ImageUpload(Resource):
         ):
             abort(400, 'Invalid key.')
 
-        s3 = client('s3')
+        s3 = client(
+            's3',
+            region_name=REGION
+        )
         try:
             response = s3.generate_presigned_post(
                 IMAGE_BUCKET,
