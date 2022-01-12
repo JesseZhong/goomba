@@ -10,6 +10,7 @@ export interface Session {
     refresh_token?: string;
     is_admin?: boolean;
     user?: User;
+    videoProgress?: { [key: string]: number }
 }
 
 export const Sessions = {

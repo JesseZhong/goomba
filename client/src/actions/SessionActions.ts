@@ -20,6 +20,7 @@ const SessionActions = {
     },
 
     set(session: Session): void {
+        Sessions.set(session);
         AppDispatcher.dispatch({
             type: ActionTypes.SET_SESSION,
             session: session

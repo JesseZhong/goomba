@@ -12,6 +12,8 @@ function getStores() {
     return [
         SessionStore,
         VideoStore,
+        DirectoryStore,
+        TagStore
     ]
 }
 

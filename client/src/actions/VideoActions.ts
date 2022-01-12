@@ -4,6 +4,9 @@ import { PutVideoPayload, VideosPayload, RemoveVideoPayload } from './VideoPaylo
 import { Video, Videos } from '../videos/Video';
 import VideoAPI, { VideoOptions } from '../api/VideoAPI';
 import { AuthAccess } from './AuthActions';
+import * as ls from 'local-storage';
+
+const video_times_key = 'video_times';
 
 const videoApi = VideoAPI(
     process.env.REACT_APP_API_URL ?? '',
@@ -111,6 +114,17 @@ const VideoActions = {
             },
             onerror
         );
+    },
+
+    getTimes(): { [id: string]: number } {
+
+        return ls.get(video_times_key) as { [id: string]: number } ?? {};
+    },
+
+    setTimes(
+        times: { [id: string]: number }
+    ): void {
+        ls.set(video_times_key, times);
     }
 }
 

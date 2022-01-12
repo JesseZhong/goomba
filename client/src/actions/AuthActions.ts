@@ -1,7 +1,6 @@
 import { Access } from '../api/Access';
 import AuthAPI from '../api/AuthAPI';
 import { ErrorResponse } from '../api/ErrorResponse';
-import { Sessions } from '../auth/Session';
 import SessionStore from '../stores/SessionStore';
 import SessionActions from './SessionActions';
 
@@ -19,7 +18,6 @@ const saveSession = (
     session.is_admin = is_admin;
 
     // Save it.
-    Sessions.set(session);
     SessionActions.set(session);
 }
 
@@ -31,7 +29,6 @@ const resetSession = () => {
     delete session.is_admin;
 
     // Save it.
-    Sessions.set(session);
     SessionActions.set(session);
 }
 
