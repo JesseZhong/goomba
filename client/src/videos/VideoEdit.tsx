@@ -69,6 +69,11 @@ const VideoEdit = (props: {
                     // Set current time if date added isn't set.
                     newVideo.date_added = newVideo.date_added ?? new Date().toISOString();
 
+                    // Some client-side sync'ing.
+                    newVideo.download_available = newVideo.download_key
+                        ? true
+                        : undefined;
+
                     VideoActions.put(
                         newVideo,
                         () => {

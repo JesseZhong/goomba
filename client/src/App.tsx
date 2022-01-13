@@ -37,7 +37,10 @@ const App = (state: AppState) => {
         if (state.session?.access_token) {
             return (
                 <>
-                    <Nav session={state.session} />
+                    <Nav
+                        className='mb-1'
+                        session={state.session}
+                    />
                     <Switch>
                         <Route path='/view/:id' render={(props: any) => (
                             <VideoView {...props} />

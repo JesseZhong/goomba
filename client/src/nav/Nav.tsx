@@ -9,13 +9,19 @@ import './Nav.sass';
 
 
 const Nav = (props: {
-    session: Session
+    session: Session,
+    className?: string
 }) => {
 
     const session = props.session;
 
     return (
-        <nav className='nav navbar py-0'>
+        <nav
+            className={
+                'nav navbar py-0 '
+                + props.className ?? ''
+            }
+        >
             <div
                 className='d-flex flex-row justify-content-between align-items-center'
                 style={{

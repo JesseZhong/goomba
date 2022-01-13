@@ -5,6 +5,7 @@ import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import VideoActions from '../actions/VideoActions';
+import VideoInfo from './VideoInfo';
 import './VideoView.sass';
 
 
@@ -91,20 +92,12 @@ const VideoView = (props: {
                     onSeeked={saveTime}
                     onEnded={resetTime}
                 />
-                <div className='info'>
+                <div className='info mt-2'>
                     <h3>{video.name}</h3>
-                    {
-                        video.date_aired &&
-                        <span>
-                            {'Aired' + Date.parse(video.date_aired).toLocaleString()}
-                        </span>
-                    }
-                    {
-                        video.member &&
-                        <span>
-                            Member
-                        </span>
-                    }
+                    <VideoInfo
+                        className='ms-3'
+                        video={video}
+                    />
                 </div>
             </div>
         )
@@ -117,9 +110,10 @@ const VideoView = (props: {
     return (
         <div className='video-view' tabIndex={0}>
             <div className='navi d-flex justify-content-end p-2'>
-                <Link to='/videos'>
-                    <FontAwesomeIcon icon={faArrowLeft} />
-                </Link>
+                <FontAwesomeIcon
+                    icon={faArrowLeft}
+                    onClick={() => history.goBack()}
+                />
             </div>
             {videoView}
         </div>
