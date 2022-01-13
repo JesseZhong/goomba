@@ -26,7 +26,7 @@ const VideoList = (props: {
     const history = useHistory();
     const videos = [...props.videos.entries()];
     const onClick = props.onClick;
-
+console.log(videos)
     return (
         <div
             className={

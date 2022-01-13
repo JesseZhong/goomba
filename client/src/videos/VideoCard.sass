@@ -1,20 +1,45 @@
 @import "../theme"
 
+$img-width: 14.5em
+$width: 29.5em
+$height: 8em
+
 div.video-card
     margin: 0.1em
     position: relative
     background-color: $background5
     border-radius: 5px
+    overflow: hidden
 
-    min-width: 29em
-    max-width: 29em
+    min-width: $width
+    max-width: $width
+    min-height: $height
 
     span.title
         font-size: 0.8em
-    
-    div.info
-        font-size: 0.5em
 
-    img
-        width: auto
-        max-width: 20vh
+    div.info
+        font-size: 0.6em
+
+        svg.icon
+            font-size: 1.5em
+
+    div.thumbnail
+        min-width: $img-width
+
+        > img
+            width: auto
+            object-fit: cover
+            min-height: $height
+            max-height: $height
+
+        > div.thumbholder
+            width: 100%
+            height: 100%
+            align-items: center
+            display: flex
+            background-color: $background2
+
+            > svg
+                display: block
+                margin: 0 auto

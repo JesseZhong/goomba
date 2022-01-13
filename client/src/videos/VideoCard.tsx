@@ -1,4 +1,4 @@
-import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons';
+import { faDownload, faPhotoVideo, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { Video } from './Video';
@@ -19,7 +19,7 @@ const VideoCard = (props: {
                     (props.className ?? '' )
                 }
             >
-                <div>
+                <div className='thumbnail'>
                     {
                         video.thumbnail_key
                         ? <img
@@ -27,17 +27,20 @@ const VideoCard = (props: {
                             src={video.thumbnail_url}
                             alt={video.name}
                         />
-                        : <FontAwesomeIcon
-                            icon={faPhotoVideo}
-                            size='3x'
-                        />
+                        : 
+                        <div className='thumbholder'>
+                            <FontAwesomeIcon
+                                icon={faPhotoVideo}
+                                size='4x'
+                            />
+                        </div>
                     }
                 </div>
                 <div className='d-flex flex-column m-3'>
-                    <span className='title'>
+                    <span className='title mb-1'>
                         {video.name}
                     </span>
-                    <div className='info flex-column'>
+                    <div className='info d-flex flex-column justify-content-between'>
                         {
                             video.date_aired &&
                             <span>
@@ -46,8 +49,26 @@ const VideoCard = (props: {
                         }
                         {
                             video.member &&
-                            <span>
-                                Member
+                            <span className='mt-2'>
+                                <FontAwesomeIcon
+                                    icon={faStar}
+                                    className='icon'
+                                />
+                                <span className='ms-2'>
+                                    Membership Stream
+                                </span>
+                            </span>
+                        }
+                        {
+                            video.download_available &&
+                            <span className='mt-2'>
+                                <FontAwesomeIcon
+                                    icon={faDownload}
+                                    className='icon'
+                                />
+                                <span className='ms-2'>
+                                    Download Available
+                                </span>
                             </span>
                         }
                     </div>

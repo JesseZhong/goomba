@@ -44,6 +44,9 @@
         "member": {
             "type": "boolean"
         },
+        "download_available": {
+            "type": "boolean"
+        },
         "tags": {
             "type": "array",
             "items": {

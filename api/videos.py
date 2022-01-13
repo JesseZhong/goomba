@@ -50,6 +50,10 @@ def get_videos(
                 if 'download_key' in video:
                     del video['download_key']
 
+            # Indicate if a file is available for download.
+            if 'download_key' in video and video['download_key']:
+                video['download_available'] = True
+
             # Include fully generated thumbnail url.
             set_thumbnail_url(video)
 
@@ -109,6 +113,10 @@ class Video(Resource):
         # Calculate the tag diffs.
         tags_to_remove = old_tags - new_tags
         tags_to_add = new_tags - old_tags
+
+        # Strip temp fields.
+        if 'download_available' in video:
+            del video['download_available']
 
         # Put to DB.
         videos[video_id] = video
