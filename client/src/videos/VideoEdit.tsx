@@ -9,8 +9,8 @@ import VideoValidation from './VideoValidation';
 import ImageUpload from '../common/ImageUpload';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { WithContext as ReactTags, Tag } from 'react-tag-input';
-import './VideoEdit.sass';
 import OptionalField from '../common/OptionalField';
+import './VideoEdit.sass';
 
 
 const KeyCodes = {
@@ -50,7 +50,7 @@ const VideoEdit = (props: {
     return (
         <div
             className={
-                'video-edit ' +
+                'video-edit my-5 ' +
                 props.className ?? ''
             }
         >

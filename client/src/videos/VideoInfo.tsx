@@ -1,6 +1,6 @@
 import React from 'react';
 import { Video } from './Video';
-import { faDownload, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faClock, faDownload, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './VideoInfo.sass';
 
@@ -21,8 +21,26 @@ const VideoInfo = (props: {
         >
             {
                 video.date_aired &&
-                <span>
-                    {'Aired' + Date.parse(video.date_aired).toLocaleString()}
+                <span className='mt-2'>
+                    <FontAwesomeIcon
+                        icon={faClock}
+                        className='icon'
+                    />
+                    <span className='ms-2'>
+                        {
+                            new Date(video.date_aired).toLocaleString(
+                                'en-US',
+                                {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: 'numeric',
+                                    minute: 'numeric',
+                                    hour12: true
+                                }
+                            )
+                        }
+                    </span>
                 </span>
             }
             {

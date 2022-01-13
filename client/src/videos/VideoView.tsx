@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactHlsPlayer from 'react-hls-player';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
