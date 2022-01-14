@@ -6,6 +6,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from botocore.signers import CloudFrontSigner
+from urllib.parse import quote_plus
 import re
 
 
@@ -15,39 +16,13 @@ KEY_LOCATION = getenv('KEY_LOCATION')
 CDN_URL = getenv('CDN_URL')
 
 
-mapping = {
-  '+': '%2B',
-  '!': '%21',
-  '\"': '%22',
-  '#': '%23',
-  '$': '%24',
-  '&': '%26',
-  '\'': '%27',
-  '(': '%28',
-  ')': '%29',
-  '*': '%2A',
-  ',': '%2C',
-  ':': '%3A',
-  ';': '%3B',
-  '=': '%3D',
-  '?': '%3F',
-  '@': '%40',
-}
-
-
 def encode_object_key(
     key: str
 ):
     """
         Encodes a S3 object so it is safe to use in URLs.
     """
-
-    return re.sub(
-        r'(\+|!|"|#|\$|&|\'|\(|\)|\*|\+|,|:|;|=|\?|@)',
-        lambda m: mapping[m.group()],
-        key,
-        flags=re.IGNORECASE | re.MULTILINE
-    ).replace(' ', '+')
+    return quote_plus(key, safe='/')
 
 
 def rsa_signer(
