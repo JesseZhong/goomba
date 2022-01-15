@@ -1,9 +1,11 @@
 import React from 'react';
 import VideoActions from '../actions/VideoActions';
-import { Videos } from './Video';
-import VideoList, { ToVideoView } from './VideoList';
+import { Videos } from '../videos/Video';
+import VideoList from '../videos/VideoList';
+import _ from 'lodash';
 
-const VideosPage = (props: {
+
+const VideosByDate = (props: {
     videos: Videos
 }) => {
 
@@ -13,16 +15,19 @@ const VideosPage = (props: {
         []
     );
 
-    const videos = props.videos;
+    const videos = _.orderBy(
+        [...props.videos.values()],
+        ['date_aired'],
+        ['desc']
+    );
 
     return (
         <div>
             <VideoList
                 videos={videos}
-                onClick={ToVideoView}
             />
         </div>
     );
 }
 
-export default VideosPage;
+export default VideosByDate;

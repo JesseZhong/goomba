@@ -6,14 +6,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import VideoActions from '../actions/VideoActions';
 import VideoInfo from './VideoInfo';
-import './VideoView.sass';
+import './VideoPlayer.sass';
 
 
 interface VideoParam {
     id: string
 }
 
-const VideoView = (props: {
+const VideoPlayer = (props: {
     id?: string
 }) => {
     const history = useHistory();
@@ -75,9 +75,9 @@ const VideoView = (props: {
         }
     }
     
-    const videoView = video?.stream_url
+    const videoPlayer = video?.stream_url
         ? (
-            <div className='video-view d-flex flex-column' tabIndex={0}>
+            <div className='video-player d-flex flex-column' tabIndex={0}>
                 <ReactHlsPlayer
                     playerRef={playerRef}
                     src={video.stream_url}
@@ -108,16 +108,16 @@ const VideoView = (props: {
         );
 
     return (
-        <div className='video-view' tabIndex={0}>
+        <div className='video-player' tabIndex={0}>
             <div className='navi d-flex justify-content-end p-2'>
                 <FontAwesomeIcon
                     icon={faArrowLeft}
                     onClick={() => history.goBack()}
                 />
             </div>
-            {videoView}
+            {videoPlayer}
         </div>
     );
 }
 
-export default VideoView;
+export default VideoPlayer;

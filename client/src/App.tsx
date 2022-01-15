@@ -3,8 +3,8 @@ import _ from 'lodash';
 import { AppState } from "./containers/AppContainer";
 import { Switch, Route, Redirect } from 'react-router-dom';
 import PageNotFound from './not-found/PageNotFound';
-import VideosPage from './videos/VideosPage';
-import VideoView from './videos/VideoView';
+import VideosByDate from './video-views/VideosByDate';
+import VideoPlayer from './videos/VideoPlayer';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
 import Nav from './nav/Nav';
@@ -42,14 +42,14 @@ const App = (state: AppState) => {
                         session={state.session}
                     />
                     <Switch>
-                        <Route path='/view/:id' render={(props: any) => (
-                            <VideoView {...props} />
+                        <Route path='/watch/:id' render={(props: any) => (
+                            <VideoPlayer {...props} />
                         )} />
                         <Route path='/manage' render={(props: any) => (
                             <ManagePage {...props} videos={state.videos} />
                         )} />
                         <Route exact path='/videos' render={(props: any) => (
-                            <VideosPage {...props} videos={state.videos} />
+                            <VideosByDate {...props} videos={state.videos} />
                         )} />
                         <Route exact path='/'>
                             <Redirect to='/videos' />

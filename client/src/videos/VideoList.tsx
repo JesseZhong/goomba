@@ -7,25 +7,31 @@ import EditableVideoCard from './EditableVideoCard';
 import './VideoList.sass';
 
 
-export const ToVideoView = (
+const ToVideoPlayer = (
     video: Video,
     history?: History<unknown>
 ) => {
-    history?.push(`/view/${video.id}`);
+    history?.push(`/watch/${video.id}`);
 }
 
 const VideoList = (props: {
-    videos: Videos,
+    videos: Videos | Video[],
     onClick?: (
         video: Video,
         history?: History<unknown>
     ) => void,
+    disableClick?: boolean,
     editable?: boolean,
     className?: string
 }) => {
     const history = useHistory();
-    const videos = [...props.videos.entries()];
-    const onClick = props.onClick;
+    const videos = props.videos instanceof Videos
+        ? [...props.videos.values()]
+        : props.videos;
+        
+    const onClick = props.disableClick
+        ? undefined
+        : (props.onClick ?? ToVideoPlayer);
 
     return (
         <div
@@ -37,9 +43,9 @@ const VideoList = (props: {
             {
                 videos &&
                 videos.map(
-                    ([id, video]) =>
+                    (video: Video) =>
                         <div
-                            key={id}
+                            key={video.id}
                             className={
                                 'd-flex flex-row justify-content-around'
                                 + (onClick ? ' clickable' : '')
