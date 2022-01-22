@@ -39,7 +39,12 @@ def permissions_check(
         CLIENT_ID
     )
 
-    user = discord.get_user(token)
+    user = None
+    try:
+        user = discord.get_user(token)
+    except KeyError:
+        # No user returned if token expired.
+        abort(401, message='Unauthorized - New Token Required.')
 
     username = ''
     discriminator = ''
@@ -77,7 +82,7 @@ def permissions_check(
     # TODO: Roles check.
     permitted_roles = get('roles')
 
-    abort(401)
+    abort(401, message='Unauthorized - Invalid Token.')
 
 
 def resolve_auth(
