@@ -97,8 +97,14 @@ const AuthAPI = (
         action(
             access_token,
             (response: ErrorResponse): boolean => {
+                console.log(response)
                 if (response.status === 401) {
-                    if (response.statusText === 'Unauthorized - Invalid Token.') {
+
+                    const body = response.body as {
+                        'message': string
+                    }
+
+                    if (body.message === 'Unauthorized - Invalid Token.') {
                         request.get(`${url}/refresh`)
                             .set('Accept', 'application/json')
                             .set('Refresh', refresh_token)
@@ -123,7 +129,7 @@ const AuthAPI = (
 
                         return true;
                     }
-                    else if (response.text === 'Unauthorized - New Token Required.') {
+                    else if (body.message === 'Unauthorized - New Token Required.') {
                         tokenRevoked();
                         return false;
                     }
