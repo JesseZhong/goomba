@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
 import ActionTypes from '../actions/ActionTypes';
-import { ReceiveDirectoryPayload } from '../actions/DirectoryPayload';
+import { ReceiveDirectoriesPayload } from '../actions/DirectoryPayload';
 import { Directories } from '../directories/Directory';
 
 class TagStore extends ReduceStore<Directories, ActionPayload> {
@@ -17,7 +17,7 @@ class TagStore extends ReduceStore<Directories, ActionPayload> {
     public reduce(state: Directories, action: ActionPayload): Directories {
         switch(action.type) {
             case ActionTypes.RECEIVE_DIRECTORIES:
-                const receiveAction: ReceiveDirectoryPayload = action as ReceiveDirectoryPayload;
+                const receiveAction: ReceiveDirectoriesPayload = action as ReceiveDirectoriesPayload;
                 if (receiveAction) {
                     state = receiveAction.directories;
                 }

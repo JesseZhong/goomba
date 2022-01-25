@@ -45,23 +45,26 @@ instance/
 
 # Environments
 .env
+.env.*
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
-
-.data/
-*-error.log
-
-*youtube*
-
+db/
+.cert/
 TODO
-
 
 # Dependencies
 node_modules/
 
-db/
-.cert/
+# Outputs
+!cdk/lib/
+cdk/**/*.js
+cdk/**/*.d.ts
+cdk/cdk.out/
+ssr-build/
+
+# Yarn
+yarn-error.log

@@ -272,10 +272,6 @@ class StreamVideo(Resource):
             Get a video's info along with a temporary
             link to use to stream the video.
         """
-        videos = get_videos(
-            show_keys=True
-        )
-
         if not args or 'video_id' not in args:
             abort(400, 'Missing ID.')
         video_id = args['video_id']
@@ -283,6 +279,10 @@ class StreamVideo(Resource):
         # Validate the id.
         if not verify_id(video_id):
             abort(400, 'Invalid video ID.')
+
+        videos = get_videos(
+            show_keys=True
+        )
 
         abort_if_not_exist(videos, video_id)
         video = videos[video_id]
@@ -304,10 +304,6 @@ class DownloadVideo(Resource):
             Get a video's info along with a temporary
             link to use to download the video.
         """
-        videos = get_videos(
-            show_keys=True
-        )
-
         if not args or 'video_id' not in args:
             abort(400, 'Missing ID.')
         video_id = args['video_id']
@@ -315,6 +311,10 @@ class DownloadVideo(Resource):
         # Validate the id.
         if not verify_id(video_id):
             abort(400, 'Invalid video ID.')
+
+        videos = get_videos(
+            show_keys=True
+        )
 
         abort_if_not_exist(videos, video_id)
         video = videos[video_id]
@@ -326,3 +326,27 @@ class DownloadVideo(Resource):
         )
 
         return video, 200
+
+
+class VideoMeta(Resource):
+
+    def get(self, video_id: str):
+        """
+        
+        """
+        if not video_id:
+            abort(400, 'Missing ID.')
+
+        videos = get_videos()
+
+        if video_id not in videos:
+            abort(400, message='Video does not exist.')
+
+        video = videos[video_id]
+
+        return {
+            'id': video['id'],
+            'name': video['name'],
+            'thumbnail_url': video['thumbnail_url'] if 'thumbnail_url' in video else None
+        }, 200
+

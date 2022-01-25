@@ -23,7 +23,6 @@
     "isolatedModules": true,
     "rootDir": "./",
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": [

@@ -6,7 +6,7 @@ from flask_restful import Api
 from api.authorization import RefreshAccess, RequestAccess, RequestAuthorization
 from api.directories import Directories, Directory
 from api.tags import Tags
-from api.videos import DownloadVideo, StreamVideo, Video, Videos
+from api.videos import DownloadVideo, StreamVideo, Video, Videos, VideoMeta
 from api.images import ImageUpload
 
 
@@ -19,7 +19,7 @@ api = Api(app)
 
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', SITE_URL)
+    response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add(
         'Access-Control-Allow-Headers',
         'Content-Type, Accept, Authorization, Code, Content-Type, State, Refresh, X-Requested-With'
@@ -39,6 +39,7 @@ api.add_resource(Videos, '/videos')
 api.add_resource(Video, '/videos/<video_id>')
 api.add_resource(StreamVideo, '/videos/<video_id>/stream')
 api.add_resource(DownloadVideo, '/videos/<video_id>/download')
+api.add_resource(VideoMeta, '/videos/<video_id>/meta')
 
 api.add_resource(Directories, '/directories')
 api.add_resource(Directory, '/directories/<directory_id>')

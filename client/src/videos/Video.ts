@@ -1,7 +1,7 @@
 export interface Video {
     id: string;
     name: string;
-    stream_key: string;
+    stream_key?: string;
     stream_url?: string;
     download_key?: string;
     download_url?: string;

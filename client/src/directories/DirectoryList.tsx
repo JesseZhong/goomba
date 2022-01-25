@@ -3,14 +3,19 @@ import { Directories, Directory } from './Directory';
 import DirectoryCard from './DirectoryCard';
 
 const DirectoryList = (props: {
-    directories: Directories
+    directories: Directories | Directory[],
     className?: string
 }) => {
-    const directories = [...props.directories.values()];
+    const directories = props.directories
+        ? [...props.directories.values()]
+        : props.directories;
 
-    const [current, setCurrent] = React.useState()
+    const [current, setCurrent] = React.useState();
 
-    const onClick = (e: React.MouseEvent<HTMLDivElement>, dir: Directory) => {
+    const onClick = (
+        e: React.MouseEvent<HTMLDivElement>,
+        dir: Directory
+    ) => {
 
     }
 

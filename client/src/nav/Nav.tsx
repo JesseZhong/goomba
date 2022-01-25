@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHashtag, faCog, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faHashtag, faCog, faSearch, faStream } from '@fortawesome/free-solid-svg-icons';
 import { Session } from '../auth/Session';
 import image from '../assets/goobs.png';
 import './Nav.sass';
@@ -47,6 +47,12 @@ const Nav = (props: {
                         to='/tags'
                     >
                         <FontAwesomeIcon icon={faHashtag} />
+                    </Link>
+                    <Link
+                        className='nav-link'
+                        to='/videos'
+                    >
+                        <FontAwesomeIcon icon={faStream} />
                     </Link>
                     {
                         session.is_admin &&

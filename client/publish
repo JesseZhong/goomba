@@ -1,8 +1,0 @@
-#!/bin/bash
-
-export REACT_APP_SITE_DOMAIN=$SITE_URL
-export REACT_APP_API_URL=$API_URL
-
-yarn install
-yarn run build
-sls deploy -r $AWS_REGION --state $STAGE

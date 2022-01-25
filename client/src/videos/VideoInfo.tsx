@@ -21,10 +21,10 @@ const VideoInfo = (props: {
         >
             {
                 video.date_aired &&
-                <span className='mt-2'>
+                <span className='mt-2 info-line'>
                     <FontAwesomeIcon
                         icon={faClock}
-                        className='icon'
+                        className='icon airtime'
                     />
                     <span className='ms-2'>
                         {
@@ -45,10 +45,10 @@ const VideoInfo = (props: {
             }
             {
                 video.member &&
-                <span className='mt-2'>
+                <span className='mt-2 info-line'>
                     <FontAwesomeIcon
                         icon={faStar}
-                        className='icon'
+                        className='icon member'
                     />
                     <span className='ms-2'>
                         Membership Stream
@@ -57,10 +57,10 @@ const VideoInfo = (props: {
             }
             {
                 video.download_available &&
-                <span className='mt-2'>
+                <span className='mt-2 info-line'>
                     <FontAwesomeIcon
                         icon={faDownload}
-                        className='icon'
+                        className='icon download'
                     />
                     <span className='ms-2'>
                         Download Available

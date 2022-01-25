@@ -8,19 +8,17 @@
 		"files.exclude": {
 			"**/.git": true,
 			"**/.gitignore": true,
-			"**/.svn": true,
-			"**/.hg": true,
-			"**/CVS": true,
-			"**/.DS_Store": true,
-			"yarn.lock": true,
-			"webpack.config.js": true,
-			"tsconfig.json": true,
+			"**/yarn.lock": true,
 			"**/node_modules": true,
-			"browserslist": true,
-			"**/*.js": true,
-			"**/.data": true,
+			"**/browserslist": true,
+			"**/craco.config.js": true,
+			"**/tsconfig.json": true,
+			"**/webpack.*.js": false,
 			"**/build": true,
-			"**/dist": true
+			"**/dist": true,
+			"cdk/**/*.js": true,
+			"cdk/**/*.d.ts": true,
+			"cdk/cdk.out/": true
 		}
 	}
 }

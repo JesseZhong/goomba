@@ -1,16 +1,19 @@
 import * as React from 'react';
 import _ from 'lodash';
-import { AppState } from "./containers/AppContainer";
+import { AppState } from './containers/AppContainer';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import PageNotFound from './not-found/PageNotFound';
 import VideosByDate from './video-views/VideosByDate';
 import VideoPlayer from './videos/VideoPlayer';
+import VideoPreview from './videos/VideoPreview';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
-import Nav from './nav/Nav';
-import Denied from './auth/Denied';
 import SessionActions from './actions/SessionActions';
 import ManagePage from './manage/ManagePage';
+import Denied from './auth/Denied';
+import Nav from './nav/Nav';
+import chadgura from './assets/chadgura.png';
 
 
 const titles: string[] = [
@@ -28,10 +31,12 @@ const titles: string[] = [
 // Load session.
 SessionActions.load();
 
+const title = _.sample(titles) ?? 'Goob';
+
 const App = (state: AppState) => {
     
     // Give a random title.
-    document.title = _.sample(titles) ?? 'Goob';
+    document.title = title;
 
     const route = () => {
         if (state.session?.access_token) {
@@ -46,7 +51,11 @@ const App = (state: AppState) => {
                             <VideoPlayer {...props} />
                         )} />
                         <Route path='/manage' render={(props: any) => (
-                            <ManagePage {...props} videos={state.videos} />
+                            <ManagePage
+                                {...props}
+                                directories={state.directories}
+                                videos={state.videos}
+                            />
                         )} />
                         <Route exact path='/videos' render={(props: any) => (
                             <VideosByDate {...props} videos={state.videos} />
@@ -68,6 +77,11 @@ const App = (state: AppState) => {
                     >
                         <Redirect to='/requestauth' />
                     </Route>
+                    <Route
+                        exact
+                        path='/watch/:id'
+                        component={VideoPreview}
+                    />
                     <Route
                         exact
                         path='/denied'
@@ -97,9 +111,41 @@ const App = (state: AppState) => {
     }
 
     return (
-        <div className='page'>
-            {route()}
-        </div>
+        <>
+            <Helmet
+                htmlAttributes={{
+                    lang: 'en'
+                }}
+            >
+                <meta charSet='utf-8' />
+                <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
+                <meta name='theme-color' content='#000000' />
+                
+                <meta property='og:type' content='website' />
+                <meta property='og:title' content={title} />
+                <meta property='og:url' content={window.location.href} />
+                <meta property='og:image' content={chadgura} />
+                <meta property='og:description' content='OH NYOOO' />
+
+                <meta name='twitter:card' content='summary_large_image' />
+
+                <link rel='manifest' href='%PUBLIC_URL%/manifest.json' />
+                <link rel='shortcut icon' href='%PUBLIC_URL%/favicon.png' />
+                <script
+                    src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js'
+                    integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB'
+                    crossOrigin='anonymous'
+                />
+                <script
+                    src='https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js'
+                    integrity='sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13'
+                    crossOrigin='anonymous'
+                />
+            </Helmet>
+            <div className='page'>
+                {route()}
+            </div>
+        </>
     )
 }
 

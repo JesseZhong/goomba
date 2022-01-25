@@ -32,7 +32,7 @@ const VideoPlayer = (props: {
         ? existingTimes[id]
         : -1;
 
-    const [video, setVideo] = React.useState<Video | null>(null);
+    const [video, setVideo] = React.useState<Video | undefined>(undefined);
 
     React.useEffect(() => {
             VideoActions.getStream(
@@ -108,15 +108,17 @@ const VideoPlayer = (props: {
         );
 
     return (
-        <div className='video-player' tabIndex={0}>
-            <div className='navi d-flex justify-content-end p-2'>
-                <FontAwesomeIcon
-                    icon={faArrowLeft}
-                    onClick={() => history.goBack()}
-                />
+        <>
+            <div className='video-player' tabIndex={0}>
+                <div className='navi d-flex justify-content-end p-2'>
+                    <FontAwesomeIcon
+                        icon={faArrowLeft}
+                        onClick={() => history.goBack()}
+                    />
+                </div>
+                {videoPlayer}
             </div>
-            {videoPlayer}
-        </div>
+        </>
     );
 }
 
