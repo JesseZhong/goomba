@@ -1,15 +1,17 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router';
-import { Video } from './Video';
-import VideoMetaActions from '../actions/VideoMetaActions';
-import VideoMeta from './VideoMeta';
+import { Video } from '../videos/Video';
+import VideoMeta from '../videos/VideoMeta';
+import VideoMetaAPI from './VideoMetaAPI';
 
 
 interface VideoParam {
     id: string
 }
 
-const VideoPreview = () => {
+const VideoPreview = (props: {
+    api_url: string
+}) => {
     const history = useHistory();
     const params = useParams<VideoParam>();
 
@@ -22,7 +24,8 @@ const VideoPreview = () => {
     const [video, setVideo] = React.useState<Video | undefined>(undefined);
 
     React.useEffect(() => {
-            VideoMetaActions.get(
+
+            VideoMetaAPI(props.api_url).get(
                 id,
                 (video: Video) => {
                     setVideo(video);

@@ -6,7 +6,7 @@ module.exports = {
     // Enable sourcemaps for debugging webpack's output.
     devtool: "source-map",
 
-    entry: "./src/SSRHandler.ts",
+    entry: "./src/ssr/SSRHandler.ts",
 
     output: {
         path: path.resolve("ssr-build"),
@@ -53,6 +53,10 @@ module.exports = {
                 loader: "source-map-loader"
             }
         ]
+    },
+
+    externals: {
+        "aws-sdk": "SSM"
     },
 
     // Override the recommended limits.

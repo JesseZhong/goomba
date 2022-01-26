@@ -9,6 +9,7 @@ import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as route53 from '@aws-cdk/aws-route53';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as ssm from '@aws-cdk/aws-ssm';
 import { CloudFrontAllowedMethods, ViewerProtocolPolicy } from '@aws-cdk/aws-cloudfront';
 
 export class SsrStack extends cdk.Stack {
@@ -58,6 +59,26 @@ export class SsrStack extends cdk.Stack {
       }
     );
 
+    new ssm.StringParameter(
+      this,
+      'api-url-param',
+      {
+        parameterName: 'API_URL',
+        description: 'URL to the gremlin API.',
+        stringValue: process.env.API_URL ?? ''
+      }
+    );
+
+    new ssm.StringParameter(
+      this,
+      'banner-url-param',
+      {
+        parameterName: 'BANNER_URL',
+        description: 'URL for the banner image.',
+        stringValue: process.env.BANNER_URL ?? ''
+      }
+    );
+
     // Configure the Lambda@Edge function for
     // serving SSR versions of the client/site.
     const ssrEdgeFunction = new lambda.Function(
@@ -69,12 +90,7 @@ export class SsrStack extends cdk.Stack {
           memorySize: 128,
           timeout: Duration.seconds(5),
           handler: 'index.handler',
-          description: `Generated on: ${new Date().toISOString()}`,
-          environment: {
-            REACT_APP_SITE_DOMAIN: process.env.SITE_URL ?? '',
-            REACT_APP_API_URL: process.env.API_URL ?? '',
-            REACT_APP_BANNER_URL: process.env.BANNER_URL ?? ''
-          }
+          description: `Generated on: ${new Date().toISOString()}`
         }
     );
 

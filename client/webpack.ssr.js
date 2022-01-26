@@ -3,7 +3,7 @@ const path = require("path");
 module.exports = {
     mode: "production",
 
-    entry: "./src/SSRHandler.ts",
+    entry: "./src/ssr/SSRHandler.ts",
 
     output: {
         path: path.resolve("ssr-build"),
@@ -50,6 +50,10 @@ module.exports = {
                 loader: "source-map-loader"
             }
         ]
+    },
+
+    externals: {
+        "aws-sdk": "SSM"
     },
 
     // Override the recommended limits.

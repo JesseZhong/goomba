@@ -58,7 +58,7 @@ const handler = async (
                         //     }
                         // ]
                     },
-                    body: AppIndexSSR
+                    body: await AppIndexSSR()
                 }
             }
         }

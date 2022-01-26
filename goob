@@ -188,6 +188,34 @@ case "$arg1" in
     roles | role | r)
 
     ;;
+    deploy)
+        if [[ -e '.env.deploy' ]]
+        then
+            . .env.deploy
+        fi
+
+        export REACT_APP_SITE_DOMAIN=$SITE_URL
+        export REACT_APP_API_URL=$API_URL
+        export REACT_APP_BANNER_URL=$BANNER_URL
+
+        cd ./client/
+
+        yarn install
+        yarn run build
+
+        if [[ "$arg2" = 'dev' ]]
+        then
+            echo 'Creating a development build.'
+            yarn run build-ssr-dev
+        else
+            yarn run build-ssr
+        fi
+
+        cd ../cdk/
+        yarn install
+        yarn run build
+        yarn cdk deploy
+    ;;
     *)
         echo "$usage"
         exit
