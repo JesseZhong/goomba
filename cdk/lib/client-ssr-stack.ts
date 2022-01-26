@@ -69,7 +69,12 @@ export class SsrStack extends cdk.Stack {
           memorySize: 128,
           timeout: Duration.seconds(5),
           handler: 'index.handler',
-          description: `Generated on: ${new Date().toISOString()}`
+          description: `Generated on: ${new Date().toISOString()}`,
+          environment: {
+            REACT_APP_SITE_DOMAIN: process.env.SITE_URL ?? '',
+            REACT_APP_API_URL: process.env.API_URL ?? '',
+            REACT_APP_BANNER_URL: process.env.BANNER_URL ?? ''
+          }
         }
     );
 
