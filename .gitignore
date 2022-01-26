@@ -65,6 +65,7 @@ cdk/**/*.js
 cdk/**/*.d.ts
 cdk/cdk.out/
 ssr-build/
+cdk.context.json
 
 # Yarn
 yarn-error.log

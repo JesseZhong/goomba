@@ -1,7 +1,10 @@
 const path = require("path");
 
 module.exports = {
-    mode: "production",
+    mode: "development",
+
+    // Enable sourcemaps for debugging webpack's output.
+    devtool: "source-map",
 
     entry: "./src/SSRHandler.ts",
 

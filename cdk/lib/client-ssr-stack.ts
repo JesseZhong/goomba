@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT-0
 
 import * as cdk from '@aws-cdk/core';
-import { CfnParameter, Duration } from '@aws-cdk/core';
+import { Duration } from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as s3deploy from '@aws-cdk/aws-s3-deployment';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
@@ -24,16 +24,12 @@ export class SsrStack extends cdk.Stack {
       throw new Error('Site URL undefined.');
     }
 
-    const siteBucketName = new CfnParameter(this, domain, {
-      type: 'String',
-      description: 'Name of the site bucket.'
-    });
-
     // Create a bucket to store the static version of the site.
     const siteBucket = new s3.Bucket(
       this,
-      'ssr-site', {
-        bucketName: siteBucketName.valueAsString,
+      'ssr-site',
+      {
+        bucketName: domain,
         websiteIndexDocument: 'index.html',
         websiteErrorDocument: 'error.html',
         publicReadAccess: false
@@ -66,28 +62,36 @@ export class SsrStack extends cdk.Stack {
     // serving SSR versions of the client/site.
     const ssrEdgeFunction = new lambda.Function(
       this,
-        'ssrEdgeHandler', {
-        runtime: lambda.Runtime.NODEJS_12_X,
-        code: lambda.Code.fromAsset('../client/ssr-build'),
-        memorySize: 128,
-        timeout: Duration.seconds(5),
-        handler: 'index.handler'
-      }
+        'ssr-lambda-edge',
+        {
+          runtime: lambda.Runtime.NODEJS_12_X,
+          code: lambda.Code.fromAsset('../client/ssr-build'),
+          memorySize: 128,
+          timeout: Duration.seconds(5),
+          handler: 'index.handler',
+          description: `Generated on: ${new Date().toISOString()}`
+        }
     );
 
-    // Declare a function version tracker for the SSR function.
-    const ssrEdgeFunctionVersion = new lambda.Version(
+    // Declare a function aliasing for targeting latest SSR function.
+    const ssrEdgeFunctionAlias = new lambda.Alias(
       this,
-      'ssrEdgeHandlerVersion',
-      { lambda: ssrEdgeFunction }
-    );
+      'ssr-lambda-edge-alias',
+      {
+        aliasName: 'live',
+        version: ssrEdgeFunction.currentVersion
+      }
+    )
 
     // Lookup an existing hosted zone for the specified domain.
     const hostedZone = route53.HostedZone.fromLookup(
       this,
       'hosted-zone',
       {
-        domainName: domain
+        domainName: domain.replace(
+          /^(.*\.|)(?<domain>[^\/]*\..{2,5})$/i,
+          '$<domain>'
+        )
       }
     );
 
@@ -126,51 +130,65 @@ export class SsrStack extends cdk.Stack {
 
         originConfigs: [
           {
+            // Make site bucket the origin,
+            // allowing access via OAI.
             s3OriginSource: {
               s3BucketSource: siteBucket,
               originAccessIdentity: originAccessIdentity
             },
+            
             behaviors: [
               {
                 isDefaultBehavior: true,
                 allowedMethods: CloudFrontAllowedMethods.GET_HEAD,
+
+                // Enforce HTTPS.
                 viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+
+                // Make sure to forward User-Agent for
+                // Lambda@Edge to distinguish between user and bot.
+                forwardedValues: {
+                  headers: [
+                    'User-Agent'
+                  ],
+                  queryString: false
+                },
+
+                // Trigger Lambda@Edge on all origin requests.
+                // It will inspect whether the request is from a bot
+                // or user, and serve an SSR version of the client/site
+                // if the request is from a bot.
                 lambdaFunctionAssociations: [
                   {
                     eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-                    lambdaFunction: ssrEdgeFunctionVersion
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            customOriginSource: {
-              domainName: domain,
-              originProtocolPolicy: cloudfront.OriginProtocolPolicy.HTTPS_ONLY,
-              allowedOriginSSLVersions: [
-                cloudfront.OriginSslPolicy.SSL_V3,
-                cloudfront.OriginSslPolicy.TLS_V1_2
-              ]
-            },
-            behaviors: [
-              {
-                allowedMethods: CloudFrontAllowedMethods.GET_HEAD_OPTIONS,
-                viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-                lambdaFunctionAssociations: [
-                  {
-                    eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-                    lambdaFunction: ssrEdgeFunctionVersion
+                    lambdaFunction: ssrEdgeFunctionAlias.version
                   }
                 ]
               }
             ]
           }
+        ],
+
+        // Forward non-root routes to client to handle, instead
+        // of being rejected by S3 as a non-existent object path.
+        errorConfigurations: [
+          {
+            errorCode: 403,
+            responsePagePath: '/index.html',
+            responseCode: 200,
+            errorCachingMinTtl: 300
+          },
+          {
+            errorCode: 404,
+            responsePagePath: '/index.html',
+            responseCode: 200,
+            errorCachingMinTtl: 300
+          }
         ]
       }
     );
 
-    new cdk.CfnOutput(this, 'SSR Site', {
+    new cdk.CfnOutput(this, 'CloudFront URL', {
       value: `https://${distribution.distributionDomainName}`
     });
   }

@@ -5,10 +5,10 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DirectoryValidation from './DirectoryValidation';
 import DirectoryActions from '../actions/DirectoryActions';
-import uuid from 'node-uuid';
 import ImageUpload from '../common/ImageUpload';
 import DirectoryCard from './DirectoryCard';
 import OptionalField from '../common/OptionalField';
+import { v4 as uuid } from 'uuid';
 import './DirectoryEdit.sass';
 
 
@@ -20,7 +20,7 @@ const DirectoryEdit = (props: {
 }) => {
 
     const directory = props.directory ?? {
-        id: uuid.v4()
+        id: uuid()
     } as Directory;
 
     const [showPutError, setShowPutError] = React.useState(false);

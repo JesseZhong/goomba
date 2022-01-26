@@ -1,5 +1,5 @@
 import React from 'react';
-import uuid from 'node-uuid';
+import { v4 as uuid } from 'uuid';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Video } from './Video';
@@ -36,7 +36,7 @@ const VideoEdit = (props: {
 }) => {
 
     const video = props.video ?? {
-        id: uuid.v4(),
+        id: uuid(),
         name: '',
         stream_key: ''
     } as Video;

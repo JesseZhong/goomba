@@ -1,12 +1,11 @@
 import * as React from 'react';
-import _ from 'lodash';
+import sample from 'lodash/sample';
 import { AppState } from './containers/AppContainer';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PageNotFound from './not-found/PageNotFound';
 import VideosByDate from './video-views/VideosByDate';
 import VideoPlayer from './videos/VideoPlayer';
-import VideoPreview from './videos/VideoPreview';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
 import SessionActions from './actions/SessionActions';
@@ -31,7 +30,7 @@ const titles: string[] = [
 // Load session.
 SessionActions.load();
 
-const title = _.sample(titles) ?? 'Goob';
+const title = sample(titles) ?? 'Goob';
 
 const App = (state: AppState) => {
     
@@ -77,11 +76,6 @@ const App = (state: AppState) => {
                     >
                         <Redirect to='/requestauth' />
                     </Route>
-                    <Route
-                        exact
-                        path='/watch/:id'
-                        component={VideoPreview}
-                    />
                     <Route
                         exact
                         path='/denied'

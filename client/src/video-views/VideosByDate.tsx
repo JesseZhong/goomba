@@ -2,7 +2,7 @@ import React from 'react';
 import VideoActions from '../actions/VideoActions';
 import { Videos } from '../videos/Video';
 import VideoList from '../videos/VideoList';
-import _ from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 
 const VideosByDate = (props: {
@@ -15,7 +15,7 @@ const VideosByDate = (props: {
         []
     );
 
-    const videos = _.orderBy(
+    const videos = orderBy(
         [...props.videos.values()],
         ['date_aired'],
         ['desc']

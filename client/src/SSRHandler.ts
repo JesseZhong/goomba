@@ -1,10 +1,19 @@
 import AppIndexSSR from './AppIndexSSR';
+import path from 'path';
+import { Crawler } from 'es6-crawler-detect';
+
 
 interface EdgeEvent {
     Records: {
         cf: {
             request: {
-                uri: string
+                uri: string,
+                headers: {
+                    [key: string]: {
+                        key: string,
+                        value: string
+                    }[]
+                }
             }
         }
     }[]
@@ -13,37 +22,51 @@ interface EdgeEvent {
 const handler = async (
     event: EdgeEvent
 ) => {
-    try {
-        const request = event.Records[0].cf.request;
-        if (request.uri === '/edgessr') {
+    const request = event.Records[0].cf.request;
 
-            return {
-                status: '200',
-                statusDescription: 'OK',
-                headers: {
-                    'cache-control': [
-                        {
-                            key: 'Cache-Control',
-                            value: 'max-age=100'
-                        }
-                    ],
-                    'content-type': [
-                        {
-                            key: 'Content-Type',
-                            value: 'text/html'
-                        }
-                    ]
-                },
-                body: AppIndexSSR
+    try {
+        // Check that a route or index is requested.
+        if (!path.extname(request.uri) || request.uri === '/index.html') {
+
+            // Join all user agents.
+            const userAgent = request.headers['user-agent'].map(
+                x => x.value
+            ).join(' ').trim();
+
+            const detector = new Crawler();
+            if (detector.isCrawler(userAgent)) {
+                return {
+                    status: '200',
+                    statusDescription: 'OK',
+                    headers: {
+                        'cache-control': [
+                            {
+                                key: 'Cache-Control',
+                                value: 'max-age=100'
+                            }
+                        ],
+                        'content-type': [
+                            {
+                                key: 'Content-Type',
+                                value: 'text/html'
+                            }
+                        ],
+                        // 'content-encoding': [
+                        //     {
+                        //         key: 'Content-Encoding',
+                        //         value: 'gzip'
+                        //     }
+                        // ]
+                    },
+                    body: AppIndexSSR
+                }
             }
         }
-        else {
-            return request;
-        }
+        
+        return request;
     }
-    catch (error) {
-        console.log(`Error ${error}`);
-        return `Error ${error}`;
+    catch {
+        return request;
     }
 }
 

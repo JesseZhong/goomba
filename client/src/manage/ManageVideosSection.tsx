@@ -5,7 +5,7 @@ import VideoActions from '../actions/VideoActions';
 import { Videos } from '../videos/Video';
 import VideoEdit from '../videos/VideoEdit';
 import VideoList from '../videos/VideoList';
-import _ from 'lodash';
+import orderBy from 'lodash/orderBy';
 
 
 const ManageVideosSection = (props: {
@@ -20,7 +20,7 @@ const ManageVideosSection = (props: {
         []
     );
 
-    const videos = _.orderBy(
+    const videos = orderBy(
         [...props.videos.values()],
         ['date_added'],
         ['desc']

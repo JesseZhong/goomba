@@ -1,15 +1,42 @@
 import React from 'react';
-import AppContainer from './containers/AppContainer';
 import ReactDOMServer from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { Route, StaticRouter, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import './index.sass';
+import VideoMetaSSR from './videos/VideoMetaSSR';
+import { ssrWindow } from 'ssr-window';
 
 
 const appString = ReactDOMServer.renderToString(
-    <StaticRouter>
-        <AppContainer />
-    </StaticRouter>
+    <>
+        <Helmet
+            htmlAttributes={{
+                lang: 'en'
+            }}
+        >
+            <meta property='og:type' content='website' />
+            <meta property='og:title' content='Goomba' />
+            <meta property='og:url' content={ssrWindow.location.href} />
+            <meta property='og:image' content={process.env.REACT_APP_BANNER_URL} />
+            <meta property='og:description' content='OH NYOOO' />
+
+            <meta name='twitter:card' content='summary_large_image' />
+        </Helmet>
+        <StaticRouter>
+            <Switch>
+                <Route
+                    exact
+                    path='/watch/:id'
+                    component={VideoMetaSSR}
+                />
+                <Route
+                    path='*'
+                    render={() => (
+                        <></>
+                    )}
+                />
+            </Switch>
+        </StaticRouter>
+    </>
 );
 const helmet = Helmet.renderStatic();
 
