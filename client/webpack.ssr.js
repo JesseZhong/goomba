@@ -1,10 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const env = require('dotenv').config({
-    path: '../.env.deploy'
-});
-
 module.exports = {
     mode: 'production',
 
@@ -61,8 +57,8 @@ module.exports = {
 
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.API_URL': JSON.stringify(env.parsed['API_URL']),
-            'process.env.BANNER_URL': JSON.stringify(env.parsed['BANNER_URL']),
+            'process.env.API_URL': JSON.stringify(process.env.API_URL),
+            'process.env.BANNER_URL': JSON.stringify(process.env.BANNER_URL),
 
             // Avoid critical dependency error
             // with superagent and formidable.
