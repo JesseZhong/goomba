@@ -19,7 +19,7 @@ IMAGE_UPLOAD_EXPIRY = getenv(
     60
 )
 
-IMAGE_KEY_REGEX = '^[a-z0-9_-]+\.(png|gif|jpeg|jpg)$'
+IMAGE_KEY_REGEX = '^[^\\^{}%`\"<>|]{1,}\.(png|gif|jpeg|jpg)$'
 
 
 class ImageUpload(Resource):
