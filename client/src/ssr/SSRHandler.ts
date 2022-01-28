@@ -22,7 +22,12 @@ interface EdgeEvent {
 const handler = async (
     event: EdgeEvent
 ) => {
-    const request = event.Records[0].cf.request;
+    const request = event?.Records?.[0]?.cf?.request;
+    if (!request) {
+
+        // Nothing if nothing passed. Shouldn't happen in live environment.
+        return request;
+    }
 
     try {
         // Check that a route or index is requested.
@@ -35,37 +40,50 @@ const handler = async (
 
             const detector = new Crawler();
             if (detector.isCrawler(userAgent)) {
-                return {
-                    status: '200',
-                    statusDescription: 'OK',
-                    headers: {
-                        'cache-control': [
-                            {
-                                key: 'Cache-Control',
-                                value: 'max-age=100'
-                            }
-                        ],
-                        'content-type': [
-                            {
-                                key: 'Content-Type',
-                                value: 'text/html'
-                            }
-                        ],
-                        // 'content-encoding': [
-                        //     {
-                        //         key: 'Content-Encoding',
-                        //         value: 'gzip'
-                        //     }
-                        // ]
-                    },
-                    body: await AppIndexSSR()
+
+                const api_url = process.env.API_URL;
+                const banner_url = process.env.BANNER_URL;
+
+                if (api_url && banner_url) {
+
+                    const content = await AppIndexSSR(
+                        api_url,
+                        banner_url,
+                        request.uri
+                    );
+                    return {
+                        status: '200',
+                        statusDescription: 'OK',
+                        headers: {
+                            'cache-control': [
+                                {
+                                    key: 'Cache-Control',
+                                    value: 'max-age=100'
+                                }
+                            ],
+                            'content-type': [
+                                {
+                                    key: 'Content-Type',
+                                    value: 'text/html'
+                                }
+                            ],
+                            // 'content-encoding': [
+                            //     {
+                            //         key: 'Content-Encoding',
+                            //         value: 'gzip'
+                            //     }
+                            // ]
+                        },
+                        body: content
+                    }
                 }
             }
         }
         
         return request;
     }
-    catch {
+    catch (error) {
+        console.log(error);
         return request;
     }
 }

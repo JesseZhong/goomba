@@ -1,40 +1,31 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import { Route, StaticRouter, Switch } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { ssrWindow } from 'ssr-window';
-import VideoMetaSSR from './VideoMetaSSR';
-import { SSM, AWSError } from 'aws-sdk';
+import VideoMetaAPI from './VideoMetaAPI';
+import VideoMeta from '../videos/VideoMeta';
 
-const getHtml = async () => {
-    const ssm = new SSM({
 
-    });
+const getHtml = async (
+    api_url: string,
+    banner_url: string,
+    route?: string
+) => {
 
-    const getParam = async (
-        name: string
-    ) => await new Promise<string>(
-        (
-            resolve: (value: string) => void,
-            reject: (reason?: any) => void
-        ) => ssm.getParameter(
-            { Name: name },
-            (
-                error: AWSError,
-                data: SSM.GetParameterResult
-            ) => {
-                if (error) {
-                    reject(error.message);
-                }
-                else {
-                    resolve(data.Parameter?.Value ?? '');
-                }
-            }
-        )
-    );
+    let content = <></>;
+    if (route) {
+        const result = RegExp(
+            '^/watch/([0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})',
+            'i'
+        ).exec(route);
 
-    const api_url = await getParam('API_URL');
-    const banner_url = await getParam('BANNER_URL');
+        if (result && result.length > 1) {
+
+            const video = await VideoMetaAPI(api_url).get(result[1]);
+
+            content = <VideoMeta video={video} />;
+        }
+    }
 
     const appString = ReactDOMServer.renderToString(
         <>
@@ -51,42 +42,24 @@ const getHtml = async () => {
 
                 <meta name='twitter:card' content='summary_large_image' />
             </Helmet>
-            <StaticRouter>
-                <Switch>
-                    <Route
-                        exact
-                        path='/watch/:id'
-                        render={(props: any) => (
-                            <VideoMetaSSR
-                                {...props}
-                                api_url={api_url}
-                            />
-                        )}
-                    />
-                    <Route
-                        path='*'
-                        render={() => (
-                            <></>
-                        )}
-                    />
-                </Switch>
-            </StaticRouter>
+            {content}
         </>
     );
     const helmet = Helmet.renderStatic();
+
     return `
-    <!doctype html>
-    <html ${helmet.htmlAttributes.toString()}>
-        <head>
-            ${helmet.title.toString()}
-            ${helmet.meta.toString()}
-            ${helmet.link.toString()}
-        </head>
-        <body ${helmet.bodyAttributes.toString()}>
-            <div id="root">${appString}</div>
-        </body>
-    </html>
-    `;
+<!doctype html>
+<html ${helmet.htmlAttributes.toString()}>
+    <head>
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
+        ${helmet.link.toString()}
+    </head>
+    <body ${helmet.bodyAttributes.toString()}>
+        <div id="root">${appString}</div>
+    </body>
+</html>
+`;
 };
 
 export default getHtml;

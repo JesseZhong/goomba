@@ -35,7 +35,6 @@ module.exports = {
     // dependencies, which allows browsers to cache those libraries between builds.
     externals: {
         "react": "React",
-        "react-dom": "ReactDOM",
-        "aws-sdk": "SSM"
+        "react-dom": "ReactDOM"
     }
 };

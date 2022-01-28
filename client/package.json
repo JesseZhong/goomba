@@ -13,7 +13,9 @@
     "start": "PORT=4200 yarn react-start",
     "build": "craco build",
     "build-ssr": "webpack --config webpack.ssr.js",
-    "build-ssr-dev": "webpack --config webpack.ssr-dev.js"
+    "build-ssr-dev": "webpack --config webpack.ssr-dev.js",
+    "ssr-test-bot": "node -e 'require(\"./src/ssr/tests/run.js\").bot()'",
+    "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -47,10 +49,10 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@types/react-infinite": "^0.0.35",
     "@types/uuid": "^8.3.4",
-    "aws-sdk": "^2.1063.0",
     "bootstrap": "^5.1.3",
     "classnames": "^2.2.6",
     "cross-env": "^6.0.3",
+    "dotenv": "^14.3.2",
     "es6-crawler-detect": "^3.3.0",
     "flux": "^4.0.1",
     "formik": "^2.1.4",

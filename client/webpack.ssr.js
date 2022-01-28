@@ -1,15 +1,22 @@
-const path = require("path");
+const path = require('path');
+const webpack = require('webpack');
+
+const env = require('dotenv').config({
+    path: '../.env.deploy'
+});
 
 module.exports = {
-    mode: "production",
+    mode: 'production',
 
-    entry: "./src/ssr/SSRHandler.ts",
+    target: 'node',
+
+    entry: './src/ssr/SSRHandler.ts',
 
     output: {
-        path: path.resolve("ssr-build"),
-        filename: "index.js",
-        library: "index",
-        libraryTarget: "umd",
+        path: path.resolve('ssr-build'),
+        filename: 'index.js',
+        library: 'index',
+        libraryTarget: 'umd',
 
         // Fixes issue with window & document being
         // referenced in non-browser environment, like
@@ -19,9 +26,9 @@ module.exports = {
 
     resolve: {
         extensions: [
-            ".ts",
-            ".tsx",
-            ".js"
+            '.ts',
+            '.tsx',
+            '.js'
         ]
     },
 
@@ -30,10 +37,10 @@ module.exports = {
             {
                 test: /\.ts(x?)$/,
                 exclude: /node_modules/,
-                loader: "ts-loader",
+                loader: 'ts-loader',
                 options: {
                     compilerOptions: {
-                        "noEmit": false
+                        'noEmit': false
                     }
                 }
             },
@@ -41,20 +48,27 @@ module.exports = {
                 // NOTE: Load any SASS files as just files.
                 // No need to be loaded properly in SSR.
                 test: /\.(png|jpe?g|gif|s[ac]ss)$/i,
-                loader: "file-loader"
+                loader: 'file-loader'
             },
             // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
             {
-                enforce: "pre",
+                enforce: 'pre',
                 test: /\.js$/,
-                loader: "source-map-loader"
+                loader: 'source-map-loader'
             }
         ]
     },
 
-    externals: {
-        "aws-sdk": "SSM"
-    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env.API_URL': JSON.stringify(env.parsed['API_URL']),
+            'process.env.BANNER_URL': JSON.stringify(env.parsed['BANNER_URL']),
+
+            // Avoid critical dependency error
+            // with superagent and formidable.
+            "global.GENTLY": false
+        })
+    ],
 
     // Override the recommended limits.
     performance: {
