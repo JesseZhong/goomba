@@ -5,7 +5,8 @@ from flask import request
 from flask_restful import Resource, abort
 from datetime import datetime, timedelta
 from functools import wraps
-from gremlin.discord.auth import DiscordAuth
+from gremlin.discord.auth import DiscordAuth, ExpiredTokenError, InvalidTokenError
+#from api.mockauth import ExpiredToken, InvalidToken, MockAuth as DiscordAuth
 from api.db import get, open_db, transact_get, transact_update, update
 
 
@@ -42,8 +43,11 @@ def permissions_check(
     user = None
     try:
         user = discord.get_user(token)
-    except KeyError:
-        # No user returned if token expired.
+
+    except ExpiredTokenError:
+        abort(401, message='Unauthorized - Invalid Token.')
+
+    except InvalidTokenError:
         abort(401, message='Unauthorized - New Token Required.')
 
     username = ''

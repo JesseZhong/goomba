@@ -117,6 +117,8 @@ case "$arg1" in
         hash -p "$script_path/$base" "$base"
     ;;
     dev | run)
+        export STAGE=DEVELOPMENT
+        
         # GNOME desktop environment.
         if [[ -n $(command_exists "gnome-terminal") ]]
         then

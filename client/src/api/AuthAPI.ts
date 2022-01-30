@@ -97,7 +97,6 @@ const AuthAPI = (
         action(
             access_token,
             (response: ErrorResponse): boolean => {
-                console.log(response)
                 if (response.status === 401) {
 
                     const body = response.body as {

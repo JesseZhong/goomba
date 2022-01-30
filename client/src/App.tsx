@@ -123,9 +123,6 @@ const App = (state: AppState) => {
                 <meta property='og:description' content='OH NYOOO' />
 
                 <meta name='twitter:card' content='summary_large_image' />
-
-                <link rel='manifest' href='%PUBLIC_URL%/manifest.json' />
-                <link rel='shortcut icon' href='%PUBLIC_URL%/favicon.png' />
                 <script
                     src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js'
                     integrity='sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB'
