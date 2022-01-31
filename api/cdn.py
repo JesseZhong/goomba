@@ -7,7 +7,6 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from botocore.signers import CloudFrontSigner
 from urllib.parse import quote_plus
-import re
 
 
 load_dotenv()

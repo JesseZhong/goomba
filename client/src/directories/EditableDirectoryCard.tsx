@@ -2,34 +2,26 @@ import React from 'react';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HoverButtonGroup from '../common/HoverButtonGroup';
-import { Video } from './Video';
-import VideoCard from './VideoCard';
-import VideoEdit from './VideoEdit';
+import { Directory } from './Directory';
+import DirectoryEdit from './DirectoryEdit';
+import DirectoryCard from './DirectoryCard';
 
 
-const EditableVideoCard = (props: {
-    video: Video,
+const EditableDirectoryCard = (props: {
+    directory: Directory,
     className?: string
 }) => {
-    const video = props.video;
+    const directory = props.directory;
     const [edit, setEdit] = React.useState(false);
 
     const wrap = React.createRef<HTMLDivElement>();
 
     return (
-        <div
-            ref={wrap}
-            className={props.className}
-            style={{
-                position: 'relative'
-            }}
-        >
+        <div>
             {
                 edit
-                ? <VideoEdit
-                    video={video}
-                    finished={() => setEdit(false)}
-                    className='my-3'
+                ? <DirectoryEdit
+                    directory={directory}
                 />
                 : <>
                     <HoverButtonGroup
@@ -42,11 +34,11 @@ const EditableVideoCard = (props: {
                             <FontAwesomeIcon icon={faEdit} />
                         </button>
                     </HoverButtonGroup>
-                    <VideoCard video={video} />
+                    <DirectoryCard directory={directory} />
                 </>
             }
         </div>
     );
 }
 
-export default EditableVideoCard;
+export default EditableDirectoryCard;

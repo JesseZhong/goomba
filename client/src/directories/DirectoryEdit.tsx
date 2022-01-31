@@ -20,7 +20,8 @@ const DirectoryEdit = (props: {
 }) => {
 
     const directory = props.directory ?? {
-        id: uuid()
+        id: uuid(),
+        name: ''
     } as Directory;
 
     const [showPutError, setShowPutError] = React.useState(false);

@@ -5,7 +5,7 @@ from datetime import timedelta
 from flask import request
 from flask_restful import Resource, abort
 from api.authorization import admin_required, auth_required, resolve_auth
-from api.cdn import CDN_URL, gen_cdn_url
+from api.cdn import CDN_URL, gen_cdn_url, encode_object_key
 from api.db import get, open_db, transact_get, transact_update, update
 
 from api.validation import verify_id, verify_schema
@@ -21,7 +21,7 @@ def set_thumbnail_url(video: Dict[str, str]):
     """
     if 'thumbnail_key' in video:
         thumbnail_key = video['thumbnail_key']
-        video['thumbnail_url'] = f'{CDN_URL}/images/{thumbnail_key}'
+        video['thumbnail_url'] = f'{CDN_URL}/images/{encode_object_key(thumbnail_key)}'
 
 
 def get_videos(

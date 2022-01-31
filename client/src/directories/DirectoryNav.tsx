@@ -1,14 +1,16 @@
 import React from 'react';
 import { Directories, Directory } from './Directory';
-import EditableDirectoryCard from './EditableDirectoryCard';
+import DirectoryCard from './DirectoryCard';
 
-const DirectoryList = (props: {
+const DirectoryNav = (props: {
     directories: Directories | Directory[],
     className?: string
 }) => {
     const directories = props.directories
         ? [...props.directories.values()]
         : props.directories;
+
+    const [current, setCurrent] = React.useState();
 
     const onClick = (
         e: React.MouseEvent<HTMLDivElement>,
@@ -24,10 +26,9 @@ const DirectoryList = (props: {
                 directories.map(
                     dir =>
                         <div
-                            key={dir.id}
                             onClick={e => onClick(e, dir)}
                         >
-                            <EditableDirectoryCard directory={dir} />
+                            <DirectoryCard directory={dir} />
                         </div>
                 )
             }
@@ -35,4 +36,4 @@ const DirectoryList = (props: {
     )
 }
 
-export default DirectoryList;
+export default DirectoryNav;

@@ -12,7 +12,10 @@ const ImageActions = {
     upload: (
         image_key: string,
         file: File,
-        success: (image_key: string) => void,
+        success: (
+            image_key: string,
+            image_url?: string
+        ) => void,
         event?: events.EventEmitter
     ) => {
         imageApi.upload(

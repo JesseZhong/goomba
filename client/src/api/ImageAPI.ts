@@ -18,7 +18,8 @@ interface PresignedUpload {
         'x-amz-security-token': string,
         policy: string,
         'x-amz-signature': string
-    }
+    },
+    image_url?: string
 }
 
 const ImageAPI = (
@@ -28,7 +29,10 @@ const ImageAPI = (
     upload(
         image_key: string,
         file: File,
-        success: (image_key: string) => void,
+        success: (
+            image_key: string,
+            image_url?: string
+        ) => void,
         event?: events.EventEmitter
     ): void {
         access(
@@ -68,7 +72,10 @@ const ImageAPI = (
                                 .send(data)
                                 .end((error: any, response: Response) => {
                                     if (!error && response.ok) {
-                                        success(result.fields.key);
+                                        success(
+                                            result.fields.key,
+                                            result.image_url
+                                        );
                                     }
                                 });
                         }

@@ -9,22 +9,20 @@ export interface Directory {
 
 export class Directories extends Map<string, Directory> {
 
-    private root: Directory[];
+    private root: Directory[] = [];
 
     constructor(
-        entries?: readonly (readonly [string, Directory])[] | null
+        directories?: Object
     ) {
-        super(entries);
-        this.root = entries?.filter(
-            (value: readonly [string, Directory]) => {
-                return !value[1]?.parent
+        super();
+        if (directories) {
+            for (const [key, directory] of Object.entries(directories)) {
+                if (!directory?.['parent']) {
+                    this.root.push(directory);
+                }
+                this.set(key, directory);
             }
-        )
-        .map(
-            (value: readonly [string, Directory]) => {
-                return value[1];
-            }
-        ) ?? [];
+        }
     }
 
     public get_root(): readonly Directory[] {

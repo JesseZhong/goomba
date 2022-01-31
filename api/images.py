@@ -8,6 +8,8 @@ from botocore.exceptions import ClientError
 from api.authorization import admin_required
 import re
 
+from api.cdn import CDN_URL, encode_object_key
+
 
 load_dotenv()
 IMAGE_BUCKET = getenv('IMAGE_BUCKET')
@@ -52,6 +54,9 @@ class ImageUpload(Resource):
                 'images/' + image_key,
                 ExpiresIn=IMAGE_UPLOAD_EXPIRY
             )
+
+            # Add URL to the response.
+            response['image_url'] = f'{CDN_URL}/images/{encode_object_key(image_key)}'
 
             return response, 200
         

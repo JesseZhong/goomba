@@ -9,7 +9,9 @@ const DirectoryCard = (props: {
     
     return (
         <div>
-            
+            <span>
+                {directory.name}
+            </span>
         </div>
     );
 }

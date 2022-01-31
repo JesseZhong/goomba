@@ -4,12 +4,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import DirectoryList from '../directories/DirectoryList';
 import DirectoryEdit from '../directories/DirectoryEdit';
-
+import DirectoryActions from '../actions/DirectoryActions';
 
 
 const ManageDirectoriesSection = (props: {
     directories: Directories
 }) => {
+    React.useEffect(() => {
+            DirectoryActions.get();
+        },
+        []
+    );
 
     const directories = props.directories;
 

@@ -8,7 +8,10 @@ const ImageUpload = (props: {
     name?: string,
     className?: string,
     value?: string,
-    onChange?: (file_key: string) => void
+    onChange?: (
+        file_key: string,
+        image_url?: string
+    ) => void
 }) => {
     const [value, setValue] = React.useState(props.value ?? '');
     const [progress, setProgress] = React.useState<number | undefined>(undefined);
@@ -38,10 +41,16 @@ const ImageUpload = (props: {
                         ImageActions.upload(
                             filename,
                             file,
-                            () => {
-                                setValue(filename);
+                            (
+                                file_key: string,
+                                image_url?: string
+                            ) => {
+                                setValue(file_key);
                                 setProgress(undefined);
-                                props.onChange?.(filename);
+                                props.onChange?.(
+                                    file_key,
+                                    image_url
+                                );
                             },
                             progressEvent
                         );

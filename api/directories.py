@@ -94,7 +94,7 @@ class Directory(Resource):
 class Directories(Resource):
 
     @auth_required
-    def get(self):
+    def get(self, *args):
         """
             Get all available directories.
         """

@@ -199,7 +199,13 @@ const VideoEdit = (props: {
                                         </span>
                                         <ImageUpload
                                             value={values.thumbnail_key}
-                                            onChange={(file_key: string) => setFieldValue('thumbnail_key', file_key)}
+                                            onChange={(
+                                                file_key: string,
+                                                image_url?: string
+                                            ) => {
+                                                setFieldValue('thumbnail_key', file_key);
+                                                setFieldValue('thumbnail_url', image_url);
+                                            }}
                                         />
                                     </div>
                                     <ErrorMessage
