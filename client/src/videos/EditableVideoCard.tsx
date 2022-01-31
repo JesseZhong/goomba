@@ -1,10 +1,8 @@
 import React from 'react';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import HoverButtonGroup from '../common/HoverButtonGroup';
 import { Video } from './Video';
 import VideoCard from './VideoCard';
 import VideoEdit from './VideoEdit';
+import ManageButtons from '../common/ManageButtons';
 
 
 const EditableVideoCard = (props: {
@@ -32,16 +30,11 @@ const EditableVideoCard = (props: {
                     className='my-3'
                 />
                 : <>
-                    <HoverButtonGroup
+                    <ManageButtons
                         owner={wrap}
-                    >
-                        <button
-                            type='button'
-                            onClick={() => setEdit(true)}
-                        >
-                            <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                    </HoverButtonGroup>
+                        onEditClick={() => setEdit(true)}
+                        onRemoveConfirm={() => {}}
+                    />
                     <VideoCard video={video} />
                 </>
             }

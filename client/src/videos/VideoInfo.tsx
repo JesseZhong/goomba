@@ -11,12 +11,13 @@ const VideoInfo = (props: {
 }) => {
 
     const video = props.video;
+    const className = props.className;
 
     return(
         <div
             className={
-                'video-info d-flex flex-column justify-content-between '
-                + props.className ?? ''
+                'video-info d-flex flex-column justify-content-between'
+                + (className ? ` ${className}` : '')
             }
         >
             {

@@ -33,11 +33,13 @@ const VideoList = (props: {
         ? undefined
         : (props.onClick ?? ToVideoPlayer);
 
+    const className = props.className;
+
     return (
         <div
             className={
-                'video-list d-flex flex-wrap flex-row ' +
-                props.className
+                'video-list d-flex flex-wrap flex-row' +
+                (className ? ` ${className}` : '')
             }
         >
             {
