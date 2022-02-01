@@ -37,8 +37,8 @@ const DirectoryAPI = (
 
     put(
         directory: Directory,
-        success: (directory: Directory) => void,
-        onerror: (error: any) => void
+        success?: (directory: Directory) => void,
+        onerror?: (error: any) => void
     ): void {
         access(
             (
@@ -57,12 +57,12 @@ const DirectoryAPI = (
                             ) {
                                 console.error(error)
                             }
-                            onerror(error);
+                            onerror?.(error);
                             return;
                         }
 
                         if (response.status === 201) {
-                            success(response.body);
+                            success?.(response.body);
                         }
                     })
             }
@@ -71,8 +71,8 @@ const DirectoryAPI = (
 
     remove(
         id: string,
-        success: () => void,
-        onerror: (error: any) => void
+        success?: () => void,
+        onerror?: (error: any) => void
     ): void {
         access(
             (
@@ -90,12 +90,12 @@ const DirectoryAPI = (
                             ) {
                                 console.error(error)
                             }
-                            onerror(error);
+                            onerror?.(error);
                             return;
                         }
 
                         if (response.status === 204) {
-                            success();
+                            success?.();
                         }
                     })
             }

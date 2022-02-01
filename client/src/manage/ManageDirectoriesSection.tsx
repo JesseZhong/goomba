@@ -1,10 +1,10 @@
 import React from 'react';
 import { Directories } from '../directories/Directory';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import DirectoryList from '../directories/DirectoryList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import DirectoryActions from '../actions/DirectoryActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 const ManageDirectoriesSection = (props: {
@@ -17,7 +17,6 @@ const ManageDirectoriesSection = (props: {
     );
 
     const directories = props.directories;
-
     const [directoryAdd, setDirectoryAdd] = React.useState(false);
 
     return (

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Directory } from './Directory';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DirectoryValidation from './DirectoryValidation';
 import DirectoryActions from '../actions/DirectoryActions';
@@ -37,13 +35,6 @@ const DirectoryEdit = (props: {
                 props.className ?? ''
             }
         >
-            <button
-                type='button'
-                className='btn close-btn'
-                onClick={finished}
-            >
-                <FontAwesomeIcon icon={faTimes} />
-            </button>
             <Formik
                 initialValues={directory}
                 validationSchema={DirectoryValidation}

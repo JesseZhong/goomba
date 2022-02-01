@@ -9,26 +9,22 @@ const DirectoryList = (props: {
     const directories = props.directories
         ? [...props.directories.values()]
         : props.directories;
-
-    const onClick = (
-        e: React.MouseEvent<HTMLDivElement>,
-        dir: Directory
-    ) => {
-
-    }
+    const className = props.className;
 
     return (
-        <div className={'d-flex flex-wrap ' + props.className}>
+        <div
+            className={
+                'd-flex flex-wrap ' +
+                (className ? ` ${className}` : '')
+            }
+        >
             {
                 directories &&
                 directories.map(
-                    dir =>
-                        <div
-                            key={dir.id}
-                            onClick={e => onClick(e, dir)}
-                        >
-                            <EditableDirectoryCard directory={dir} />
-                        </div>
+                    dir => <EditableDirectoryCard
+                        key={dir.id}
+                        directory={dir}
+                    />
                 )
             }
         </div>

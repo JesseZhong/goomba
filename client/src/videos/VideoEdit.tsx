@@ -1,7 +1,5 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Video } from './Video';
 import VideoCard from './VideoCard';
 import VideoActions from '../actions/VideoActions';
@@ -54,13 +52,6 @@ const VideoEdit = (props: {
                 props.className ?? ''
             }
         >
-            <button
-                type='button'
-                className='btn close-btn'
-                onClick={finished}
-            >
-                <FontAwesomeIcon icon={faTimes} />
-            </button>
             <Formik
                 initialValues={video}
                 validationSchema={VideoValidation}

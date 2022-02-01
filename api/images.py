@@ -6,9 +6,10 @@ from boto3 import client
 from botocore.client import Config
 from botocore.exceptions import ClientError
 from api.authorization import admin_required
+from api.cdn import gen_image_url
 import re
 
-from api.cdn import CDN_URL, encode_object_key
+
 
 
 load_dotenv()
@@ -56,7 +57,8 @@ class ImageUpload(Resource):
             )
 
             # Add URL to the response.
-            response['image_url'] = f'{CDN_URL}/images/{encode_object_key(image_key)}'
+            response['image_key'] = image_key
+            response['image_url'] = gen_image_url(image_key)
 
             return response, 200
         

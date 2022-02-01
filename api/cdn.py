@@ -90,3 +90,12 @@ def gen_cdn_url(
         url,
         duration
     )
+
+
+def gen_image_url(
+    image_key: str
+):
+    """
+        Creates a URL to an image.
+    """
+    return f'{CDN_URL}/images/{encode_object_key(image_key)}'

@@ -34,6 +34,7 @@ const EditableVideoCard = (props: {
                         owner={wrap}
                         onEditClick={() => setEdit(true)}
                         onRemoveConfirm={() => {}}
+                        overlay
                     />
                     <VideoCard video={video} />
                 </>

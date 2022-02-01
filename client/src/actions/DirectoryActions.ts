@@ -24,8 +24,8 @@ const DirectoryActions = {
 
     put(
         directory: Directory,
-        success: () => void,
-        onerror: (error: any) => void
+        success?: () => void,
+        onerror?: (error: any) => void
     ) {
         directoryApi.put(
             directory,
@@ -34,7 +34,7 @@ const DirectoryActions = {
                     type: ActionTypes.PUT_DIRECTORY,
                     directory: confirmedDirectory
                 } as PutDirectoryPayload);
-                success();
+                success?.();
             },
             onerror
         )
@@ -42,8 +42,8 @@ const DirectoryActions = {
 
     remove(
         id: string,
-        success: () => void,
-        onerror: (error: any) => void
+        success?: () => void,
+        onerror?: (error: any) => void
     ): void {
         directoryApi.remove(
             id,
@@ -52,7 +52,7 @@ const DirectoryActions = {
                     type: ActionTypes.REMOVE_DIRECTORY,
                     id: id
                 } as RemoveDirectoryPayload);
-                success();
+                success?.();
             },
             onerror
         )

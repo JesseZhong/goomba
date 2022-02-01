@@ -16,7 +16,7 @@
         },
         "banner": {
             "type": "string",
-            "pattern": "^(http(s?):)([/|.|\\w|\\s|-])*\\.(?:gif|png|bmp|jpeg|jpg|webm)"
+            "pattern": "^[^\\^{}%`\"<>|]{1,}\\.(?:gif|png|bmp|jpeg|jpg|webm)$"
         },
         "parent": {
             "type": "string",

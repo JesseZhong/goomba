@@ -2,6 +2,7 @@ export interface Directory {
     id: string;
     name: string;
     banner?: string;
+    banner_url?: string;
     parent?: string;
     children?: string[];
     videos?: string[];

@@ -1,10 +1,9 @@
 import React from 'react';
-import { faEdit } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import HoverButtonGroup from '../common/HoverButtonGroup';
 import { Directory } from './Directory';
 import DirectoryEdit from './DirectoryEdit';
 import DirectoryCard from './DirectoryCard';
+import ManageButtons from '../common/ManageButtons';
+import DirectoryActions from '../actions/DirectoryActions';
 
 
 const EditableDirectoryCard = (props: {
@@ -17,23 +16,24 @@ const EditableDirectoryCard = (props: {
     const wrap = React.createRef<HTMLDivElement>();
 
     return (
-        <div>
+        <div
+            ref={wrap}
+            style={{
+                position: 'relative'
+            }}
+        >
             {
                 edit
                 ? <DirectoryEdit
                     directory={directory}
+                    finished={() => setEdit(false)}
                 />
                 : <>
-                    <HoverButtonGroup
+                    <ManageButtons
                         owner={wrap}
-                    >
-                        <button
-                            type='button'
-                            onClick={() => setEdit(true)}
-                        >
-                            <FontAwesomeIcon icon={faEdit} />
-                        </button>
-                    </HoverButtonGroup>
+                        onEditClick={() => setEdit(true)}
+                        onRemoveConfirm={() => DirectoryActions.remove(directory.id)}
+                    />
                     <DirectoryCard directory={directory} />
                 </>
             }

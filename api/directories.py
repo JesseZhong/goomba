@@ -1,10 +1,11 @@
 from os import abort
 from typing import Dict
 from api.authorization import admin_required, auth_required
+from api.cdn import gen_image_url
 from api.db import get, open_db, transact_get, transact_update
+from api.validation import verify_id, verify_schema
 from flask_restful import Resource, abort
 
-from api.validation import verify_id, verify_schema
 
 class Directory(Resource):
 
@@ -24,6 +25,10 @@ class Directory(Resource):
 
         # Acquire and validate the request body.
         directory = verify_schema('schemas/put_directory.json')
+
+        # Strip banner URL.
+        if 'banner_url' in directory:
+            del directory['banner_url']
 
         # Complete put in a single transaction.
         db = open_db()
@@ -99,7 +104,15 @@ class Directories(Resource):
             Get all available directories.
         """
         try:
-            return get('directories')
+            directories = get('directories')
+
+            # Attach banner URLs.
+            for directory in directories.values():
+                if 'banner' in directory:
+                    banner = directory['banner']
+                    directory['banner_url'] = gen_image_url(banner)
+            print(directories)
+            return directories
         except Exception as e:
             print(e)
             abort(500)

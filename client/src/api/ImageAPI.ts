@@ -19,6 +19,7 @@ interface PresignedUpload {
         policy: string,
         'x-amz-signature': string
     },
+    image_key: string,
     image_url?: string
 }
 
@@ -73,7 +74,7 @@ const ImageAPI = (
                                 .end((error: any, response: Response) => {
                                     if (!error && response.ok) {
                                         success(
-                                            result.fields.key,
+                                            result.image_key,
                                             result.image_url
                                         );
                                     }
