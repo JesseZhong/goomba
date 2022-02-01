@@ -4,7 +4,7 @@ import ActionTypes from '../actions/ActionTypes';
 import { ReceiveDirectoriesPayload } from '../actions/DirectoryPayload';
 import { Directories } from '../directories/Directory';
 
-class TagStore extends ReduceStore<Directories, ActionPayload> {
+class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
 
     public constructor() {
         super(AppDispatcher);
@@ -28,4 +28,4 @@ class TagStore extends ReduceStore<Directories, ActionPayload> {
     }
 }
 
-export default new TagStore();
+export default new DirectoryStore();

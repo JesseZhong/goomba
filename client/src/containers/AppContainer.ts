@@ -7,12 +7,15 @@ import { Videos } from '../videos/Video';
 import TagStore from '../stores/TagStore';
 import { Directories } from '../directories/Directory';
 import DirectoryStore from '../stores/DirectoryStore';
+import DirectoryEditStore from '../stores/DirectoryEditStore';
+import { PendingDirectoryEdit } from '../manage/PendingDirectoryEdit';
 
 function getStores() {
     return [
         SessionStore,
         VideoStore,
         DirectoryStore,
+        DirectoryEditStore,
         TagStore
     ]
 }
@@ -21,6 +24,7 @@ export interface AppState {
     session: Session,
     videos: Videos,
     directories: Directories,
+    pendingDirectoryEdit: PendingDirectoryEdit | undefined,
     tags: string[]
 }
 
@@ -29,6 +33,7 @@ function getState(): AppState {
         session: SessionStore.getState(),
         videos: VideoStore.getState(),
         directories: DirectoryStore.getState(),
+        pendingDirectoryEdit: DirectoryEditStore.getState(),
         tags: TagStore.getState()
     }
 }

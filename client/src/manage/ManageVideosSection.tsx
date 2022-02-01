@@ -1,15 +1,18 @@
 import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import VideoActions from '../actions/VideoActions';
 import { Videos } from '../videos/Video';
+import VideoActions from '../actions/VideoActions';
 import VideoEdit from '../videos/VideoEdit';
-import VideoList from '../videos/VideoList';
+import EditMultiSelectVideoList from '../videos/EditMultiSelectVideoList';
+import DirectoryEditActions from '../actions/DirectoryEditActions';
+import { PendingDirectoryEdit } from './PendingDirectoryEdit';
 import orderBy from 'lodash/orderBy';
 
 
 const ManageVideosSection = (props: {
-    videos: Videos
+    videos: Videos,
+    pendingDirectoryEdit: PendingDirectoryEdit
 }) => {
     React.useEffect(() => {
             VideoActions.getVideos({
@@ -19,6 +22,8 @@ const ManageVideosSection = (props: {
         },
         []
     );
+
+    const pendingDirEdit = props.pendingDirectoryEdit;
 
     const videos = orderBy(
         [...props.videos.values()],
@@ -42,7 +47,7 @@ const ManageVideosSection = (props: {
             </div>
 
             <div
-                className='d-flex flex-column mt-5'
+                className='d-flex flex-column'
             >
                 {
                     videoAdd &&
@@ -50,10 +55,13 @@ const ManageVideosSection = (props: {
                         finished={() => setVideoAdd(false)}
                     />
                 }
-                <VideoList
+                <EditMultiSelectVideoList
                     videos={videos}
-                    editable
-                    disableClick
+                    disableEdit={!!pendingDirEdit.directory}
+                    selected={pendingDirEdit.selectedVideos}
+                    onSelected={(videos: Set<string>) => {
+                        DirectoryEditActions.selectVideos(videos);
+                    }}
                 />
             </div>
         </>

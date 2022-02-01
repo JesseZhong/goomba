@@ -13,7 +13,7 @@
 			"**/browserslist": true,
 			"**/craco.config.js": true,
 			"**/tsconfig.json": true,
-			"**/webpack.*.js": false,
+			"**/webpack.*.js": true,
 			"**/build": true,
 			"**/dist": true,
 			"cdk/**/*.js": true,

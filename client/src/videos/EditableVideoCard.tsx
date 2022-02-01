@@ -7,6 +7,8 @@ import ManageButtons from '../common/ManageButtons';
 
 const EditableVideoCard = (props: {
     video: Video,
+    onClick?: (video: Video) => void,
+    disableEdit?: boolean,
     className?: string
 }) => {
     const video = props.video;
@@ -21,6 +23,7 @@ const EditableVideoCard = (props: {
             style={{
                 position: 'relative'
             }}
+            onClick={() => props.onClick?.(video)}
         >
             {
                 edit
@@ -30,12 +33,15 @@ const EditableVideoCard = (props: {
                     className='my-3'
                 />
                 : <>
-                    <ManageButtons
-                        owner={wrap}
-                        onEditClick={() => setEdit(true)}
-                        onRemoveConfirm={() => {}}
-                        overlay
-                    />
+                    {
+                        !props.disableEdit &&
+                        <ManageButtons
+                            owner={wrap}
+                            onEditClick={() => setEdit(true)}
+                            onRemoveConfirm={() => {}}  // TODO: Remove
+                            overlay
+                        />
+                    }
                     <VideoCard video={video} />
                 </>
             }

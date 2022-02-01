@@ -55,6 +55,7 @@ const App = (state: AppState) => {
                                 {...props}
                                 directories={state.directories}
                                 videos={state.videos}
+                                pendingDirectoryEdit={state.pendingDirectoryEdit}
                             />
                         )} />
                         <Route exact path='/videos' render={(props: any) => (

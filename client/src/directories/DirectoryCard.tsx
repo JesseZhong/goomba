@@ -4,13 +4,19 @@ import './DirectoryCard.sass';
 
 
 const DirectoryCard = (props: {
-    directory: Directory
+    directory: Directory,
+    className?: string
 }) => {
-
     const directory = props.directory;
-    
+    const className = props.className;
+
     return (
-        <div className='directory-card'>
+        <div
+            className={
+                'directory-card' +
+                (className ? ` ${className}` : '')
+            }
+        >
             <div className='banner'>
                 {
                     directory.banner_url

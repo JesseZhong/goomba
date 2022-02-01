@@ -1,14 +1,16 @@
 import React from 'react';
 import { Directories } from '../directories/Directory';
-import DirectoryList from '../directories/DirectoryList';
+import DirectorySelectList from '../directories/DirectorySelectList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import DirectoryActions from '../actions/DirectoryActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { PendingDirectoryEdit } from './PendingDirectoryEdit';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 const ManageDirectoriesSection = (props: {
-    directories: Directories
+    directories: Directories,
+    pendingDirectoryEdit: PendingDirectoryEdit
 }) => {
     React.useEffect(() => {
             DirectoryActions.get();
@@ -33,16 +35,14 @@ const ManageDirectoriesSection = (props: {
                 </div>
             </div>
 
-            <div
-                className='d-flex flex-column mt-5'
-            >
+            <div className='d-flex flex-column'>
                 {
                     directoryAdd &&
                     <DirectoryEdit
                         finished={() => setDirectoryAdd(false)}
                     />
                 }
-                <DirectoryList
+                <DirectorySelectList
                     directories={directories}
                 />
             </div>
