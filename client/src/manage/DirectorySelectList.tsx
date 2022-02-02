@@ -36,6 +36,14 @@ const DirectorySelectList = (props: {
     }
 
     /**
+     * Undo any selected videos and directory.
+     */
+    const reset = () => {
+        DirectoryEditActions.reset();
+        setSelected(undefined);
+    }
+
+    /**
      * Apply any pending selected videos for a directory.
      */
     const confirmSelection = () => {
@@ -50,16 +58,10 @@ const DirectorySelectList = (props: {
 
             // Push changes.
             DirectoryActions.put(directory);
-        }
-        setSelected(undefined);
-    }
 
-    /**
-     * Undo any selected videos and directory.
-     */
-    const reset = () => {
-        DirectoryEditActions.reset();
-        setSelected(undefined);
+            // Reset pending after done.
+            reset();
+        }
     }
 
     return (

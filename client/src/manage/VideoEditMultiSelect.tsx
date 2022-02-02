@@ -1,6 +1,7 @@
 import React from 'react';
 import { Video, Videos } from '../videos/Video';
 import VideoCardEditable from './VideoCardEditable';
+import './VideoEditMultiSelect.sass';
 
 
 const EditMultiSelectVideoList = (props: {
@@ -14,15 +15,14 @@ const EditMultiSelectVideoList = (props: {
         ? [...props.videos.values()]
         : props.videos;
 
+    const selected = props.selected;
     const onSelected = props.onSelected;
     const className = props.className;
-
-    const [selected, setSelected] = React.useState<Set<string>>(props.selected ?? new Set());
 
     return (
         <div
             className={
-                'video-list d-flex flex-wrap flex-row' +
+                'video-edit-multiselect d-flex flex-wrap flex-row' +
                 (className ? ` ${className}` : '')
             }
         >
@@ -30,27 +30,37 @@ const EditMultiSelectVideoList = (props: {
                 videos &&
                 videos.map(
                     (video: Video) =>
-                        <VideoCardEditable
+                        <div
                             key={video.id}
-                            video={video}
-                            disableEdit={props.disableEdit}
-                            onClick={(
-                                video: Video
-                            ) => {
-                                const id = video.id;
+                            className='video-section'
+                        >
+                            {
+                                selected?.has(video.id) &&
+                                <div className='selected-border' />
+                            }
+                            <VideoCardEditable
+                                video={video}
+                                disableEdit={props.disableEdit}
+                                onClick={(
+                                    video: Video
+                                ) => {
+                                    const id = video.id;
 
-                                // Toggle: Remove if it already exists.
-                                if (selected.has(id)) {
-                                    selected.delete(id);
-                                }
-                                else {
-                                    selected.add(id);
-                                }
+                                    // Assign to new set to trigger rerender.
+                                    const newSelected = new Set(selected);
 
-                                setSelected(selected);
-                                onSelected?.(selected);
-                            }}
-                        />
+                                    // Toggle: Remove if it already exists.
+                                    if (newSelected?.has(id)) {
+                                        newSelected.delete(id);
+                                    }
+                                    else {
+                                        newSelected.add(id);
+                                    }
+
+                                    onSelected?.(newSelected);
+                                }}
+                            />
+                        </div>
                 )
             }
         </div>

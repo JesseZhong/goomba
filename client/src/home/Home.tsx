@@ -5,9 +5,10 @@ import { Directories, Directory } from '../directories/Directory';
 import DirectoryNav from '../directories/DirectoryNav';
 import VideosByDate from '../video-views/VideosByDate';
 import { Videos } from '../videos/Video';
+import compact from 'lodash/compact';
+
 
 const RECENT_VIDS = 10;
-
 
 const Home = (props: {
     directories: Directories,
@@ -23,18 +24,23 @@ const Home = (props: {
 
     const [currentDir, setCurrentDir] = React.useState<Directory | undefined>(undefined);
 
+    const currentVideos = compact(
+        currentDir?.videos?.map(
+            vid => props.videos.get(vid)
+        )
+    );
 
     return (
         <div className='d-flex flex-column'>
             <DirectoryNav
                 directories={props.directories}
                 onChange={setCurrentDir}
-                className='my-4'
+                className='mb-4'
             />
             {
                 currentDir
                 ? <VideosByDate
-                    videos={props.videos}
+                    videos={currentVideos}
                 />
                 : 
                 <div className='d-flex flex-column mt-3'>

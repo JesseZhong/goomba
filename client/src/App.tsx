@@ -12,8 +12,8 @@ import SessionActions from './actions/SessionActions';
 import ManagePage from './manage/ManagePage';
 import Denied from './auth/Denied';
 import Nav from './nav/Nav';
-import chadgura from './assets/chadgura.png';
 import Home from './home/Home';
+import chadgura from './assets/chadgura.png';
 
 
 const titles: string[] = [

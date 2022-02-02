@@ -1,15 +1,16 @@
 @import "../theme"
 
-div.edit-select-directory-card
-    position: relative
+$ring-pos: -2px
 
+div.directory-edit-select
+    position: relative
 
     div.selected-ring
         position: absolute
-        top: -2px
-        bottom: -2px
-        left: -2px
-        right: -2px
+        top: $ring-pos
+        bottom: $ring-pos
+        left: $ring-pos
+        right: $ring-pos
         border: 5px solid $success
         border-radius: 50%
 

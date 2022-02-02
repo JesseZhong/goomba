@@ -1,6 +1,8 @@
 import React from 'react';
 import { Directories, Directory } from './Directory';
 import DirectoryCard from './DirectoryCard';
+import './DirectoryNav.sass';
+
 
 const DirectoryNav = (props: {
     directories: Directories,
@@ -34,18 +36,30 @@ const DirectoryNav = (props: {
 
     return (
         <div className={
-                'd-flex flex-wrap ' +
+                'directory-nav d-flex flex-wrap ' +
                 (className ? ` ${className}` : '')
             }
         >
             {
                 current &&
-                <button
-                    onClick={navUp}
-                >
-                    Back
-                </button>
+                <div className='banner'>
+                    {
+                        current.banner_url &&
+                        <img
+                            className='banner-img'
+                            src={current.banner_url}
+                            alt={current.name}
+                        />
+                    }
+                    <button
+                        onClick={navUp}
+                        className='back-btn'
+                    >
+                        Back
+                    </button>
+                </div>
             }
+            <div className='mt-4 d-flex flex-row flex-wrap'>
             {
                 children &&
                 children.map(
@@ -59,6 +73,7 @@ const DirectoryNav = (props: {
                         </div>
                 )
             }
+            </div>
         </div>
     )
 }

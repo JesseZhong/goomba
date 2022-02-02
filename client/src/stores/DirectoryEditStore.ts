@@ -27,19 +27,24 @@ class DirectoryEditStore extends ReduceStore<DirectoryEditPending, ActionPayload
                         directory: selectDirAction.directory
                     }
                 }
-                return state;
+                return {
+                    directory: state.directory,
+                    selectedVideos: state.selectedVideos
+                };
 
             case ActionTypes.DIRECTORY_EDIT_VID_SELECT:
                 const selectVidAction = action as SelectVideosPayload;
                 if (selectVidAction) {
                     state.selectedVideos = selectVidAction.videos;
                 }
-                return state;
+                return {
+                    directory: state.directory,
+                    selectedVideos: state.selectedVideos
+                };
 
             case ActionTypes.DIRECTORY_EDIT_RESET:
                 if (action) {
-                    state.directory = undefined;
-                    state.selectedVideos = undefined;
+                    return {};
                 }
                 return state;
                 

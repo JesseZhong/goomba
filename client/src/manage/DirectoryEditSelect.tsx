@@ -30,7 +30,7 @@ const EditSelectDirectoryCard = (props: {
         <div
             ref={wrap}
             className={
-                'edit-select-directory-card' +
+                'directory-edit-select' +
                 (className ? ` ${className}` : '')
             }
         >
@@ -51,8 +51,7 @@ const EditSelectDirectoryCard = (props: {
                     />
                     {
                         selected &&
-                        <div className='selected-ring'>
-                        </div>
+                        <div className='selected-ring' />
                     }
                     <DirectoryCard
                         directory={directory}
