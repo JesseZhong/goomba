@@ -1,0 +1,30 @@
+@import "../theme"
+
+div.edit-select-directory-card
+    position: relative
+
+
+    div.selected-ring
+        position: absolute
+        top: -2px
+        bottom: -2px
+        left: -2px
+        right: -2px
+        border: 5px solid $success
+        border-radius: 50%
+
+    div.vid-edit-controls
+        position: absolute
+        bottom: -1.6em
+        left: 1em
+
+        > button
+            border: none
+            background: none
+            text-shadow: 0 0 0.7em black
+
+            &.confirm
+                color: $success
+            
+            &.cancel
+                color: $danger

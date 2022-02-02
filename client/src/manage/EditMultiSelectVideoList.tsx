@@ -1,7 +1,6 @@
 import React from 'react';
-import { Video, Videos } from './Video';
+import { Video, Videos } from '../videos/Video';
 import EditableVideoCard from './EditableVideoCard';
-import './VideoList.sass';
 
 
 const EditMultiSelectVideoList = (props: {

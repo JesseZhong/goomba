@@ -1,6 +1,6 @@
 import React from 'react';
 import { Directories } from '../directories/Directory';
-import DirectorySelectList from '../directories/DirectorySelectList';
+import DirectorySelectList from './DirectorySelectList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import DirectoryActions from '../actions/DirectoryActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -44,6 +44,7 @@ const ManageDirectoriesSection = (props: {
                 }
                 <DirectorySelectList
                     directories={directories}
+                    pendingDirectoryEdit={props.pendingDirectoryEdit}
                 />
             </div>
         </>

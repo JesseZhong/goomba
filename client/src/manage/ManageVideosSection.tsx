@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Videos } from '../videos/Video';
 import VideoActions from '../actions/VideoActions';
 import VideoEdit from '../videos/VideoEdit';
-import EditMultiSelectVideoList from '../videos/EditMultiSelectVideoList';
 import DirectoryEditActions from '../actions/DirectoryEditActions';
+import EditMultiSelectVideoList from './EditMultiSelectVideoList';
 import { PendingDirectoryEdit } from './PendingDirectoryEdit';
 import orderBy from 'lodash/orderBy';
 

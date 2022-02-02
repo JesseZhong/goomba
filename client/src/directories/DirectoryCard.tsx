@@ -1,10 +1,12 @@
 import React from 'react';
+import { MouseEventHandler } from 'react-bootstrap/node_modules/@types/react';
 import { Directory } from './Directory';
 import './DirectoryCard.sass';
 
 
 const DirectoryCard = (props: {
     directory: Directory,
+    onClick?: MouseEventHandler<HTMLDivElement>,
     className?: string
 }) => {
     const directory = props.directory;
@@ -16,6 +18,7 @@ const DirectoryCard = (props: {
                 'directory-card' +
                 (className ? ` ${className}` : '')
             }
+            onClick={props.onClick}
         >
             <div className='banner'>
                 {

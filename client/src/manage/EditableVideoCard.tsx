@@ -1,7 +1,7 @@
 import React from 'react';
-import { Video } from './Video';
-import VideoCard from './VideoCard';
-import VideoEdit from './VideoEdit';
+import { Video } from '../videos/Video';
+import VideoCard from '../videos/VideoCard';
+import VideoEdit from '../videos/VideoEdit';
 import ManageButtons from '../common/ManageButtons';
 
 

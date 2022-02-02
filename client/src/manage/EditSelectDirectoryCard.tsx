@@ -1,10 +1,9 @@
 import React from 'react';
-import { Directory } from './Directory';
-import DirectoryEdit from './DirectoryEdit';
-import DirectoryCard from './DirectoryCard';
+import { Directory } from '../directories/Directory';
+import DirectoryEdit from '../directories/DirectoryEdit';
+import DirectoryCard from '../directories/DirectoryCard';
 import ManageButtons from '../common/ManageButtons';
 import DirectoryActions from '../actions/DirectoryActions';
-import HoverButtonGroup from '../common/HoverButtonGroup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './EditSelectDirectoryCard.sass';
@@ -15,6 +14,8 @@ const EditSelectDirectoryCard = (props: {
     selected?: boolean,
     onClick?: () => void,
     onEdit?: () => void,
+    onConfirm?: () => void,
+    onCancel?: () => void,
     className?: string
 }) => {
     const directory = props.directory;
@@ -24,6 +25,7 @@ const EditSelectDirectoryCard = (props: {
     const [edit, setEdit] = React.useState(false);
 
     const wrap = React.createRef<HTMLDivElement>();
+    const card = React.createRef<HTMLDivElement>();
 
     return (
         <div
@@ -48,31 +50,42 @@ const EditSelectDirectoryCard = (props: {
                         }}
                         onRemoveConfirm={() => DirectoryActions.remove(directory.id)}
                     />
-                    <div
+                    {
+                        selected &&
+                        <div className='selected-ring'>
+                        </div>
+                    }
+                    <DirectoryCard
+                        directory={directory}
                         onClick={props.onClick}
-                    >
-                        <DirectoryCard
-                            directory={directory}
-                            className={selected ? 'selected' : ''}
-                        />
-                        {
-                            selected &&
-                            <HoverButtonGroup
-                                owner={wrap}
+                    />
+                    {
+                        selected &&
+                        <div
+                            className='vid-edit-controls'
+                        >
+                            <button
+                                className='confirm'
+                                type='button'
+                                onClick={props.onConfirm}
                             >
-                                <button
-                                    type='button'
-                                >
-                                    <FontAwesomeIcon icon={faCheck} />
-                                </button>
-                                <button
-                                    type='button'
-                                >
-                                    <FontAwesomeIcon icon={faTimes} />
-                                </button>
-                            </HoverButtonGroup>
-                        }
-                    </div>
+                                <FontAwesomeIcon
+                                    icon={faCheck}
+                                    size='2x'
+                                />
+                            </button>
+                            <button
+                                className='cancel'
+                                type='button'
+                                onClick={props.onCancel}
+                            >
+                                <FontAwesomeIcon
+                                    icon={faTimes}
+                                    size='2x'
+                                />
+                            </button>
+                        </div>
+                    }
                 </>
             }
         </div>
