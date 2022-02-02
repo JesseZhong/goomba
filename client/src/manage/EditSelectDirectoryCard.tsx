@@ -25,7 +25,6 @@ const EditSelectDirectoryCard = (props: {
     const [edit, setEdit] = React.useState(false);
 
     const wrap = React.createRef<HTMLDivElement>();
-    const card = React.createRef<HTMLDivElement>();
 
     return (
         <div

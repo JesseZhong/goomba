@@ -6,7 +6,8 @@ import orderBy from 'lodash/orderBy';
 
 
 const VideosByDate = (props: {
-    videos: Videos
+    videos: Videos,
+    topToShow?: number
 }) => {
 
     React.useEffect(() => {
@@ -15,11 +16,16 @@ const VideosByDate = (props: {
         []
     );
 
-    const videos = orderBy(
+    const orderedVideos = orderBy(
         [...props.videos.values()],
         ['date_aired'],
         ['desc']
     );
+
+    const topToShow = props.topToShow;
+    const videos = topToShow
+        ? orderedVideos.splice(0, topToShow)
+        : orderedVideos;
 
     return (
         <div>

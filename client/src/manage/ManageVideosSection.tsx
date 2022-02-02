@@ -2,7 +2,6 @@ import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Videos } from '../videos/Video';
-import VideoActions from '../actions/VideoActions';
 import VideoEdit from '../videos/VideoEdit';
 import DirectoryEditActions from '../actions/DirectoryEditActions';
 import EditMultiSelectVideoList from './EditMultiSelectVideoList';
@@ -14,15 +13,6 @@ const ManageVideosSection = (props: {
     videos: Videos,
     pendingDirectoryEdit: PendingDirectoryEdit
 }) => {
-    React.useEffect(() => {
-            VideoActions.getVideos({
-                show_hidden: true,
-                show_keys: true
-            });
-        },
-        []
-    );
-
     const pendingDirEdit = props.pendingDirectoryEdit;
 
     const videos = orderBy(

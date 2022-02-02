@@ -20,9 +20,6 @@ export class Directories extends Map<string, Directory> {
         super();
         if (directories) {
             for (const [key, directory] of Object.entries(directories)) {
-                if (!directory?.['parent']) {
-                    this.root.push(directory);
-                }
                 this.set(key, directory);
             }
         }

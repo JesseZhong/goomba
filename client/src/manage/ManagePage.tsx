@@ -1,5 +1,7 @@
 import React from 'react';
-import { Directories, Directory } from '../directories/Directory';
+import DirectoryActions from '../actions/DirectoryActions';
+import VideoActions from '../actions/VideoActions';
+import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
 import ManageDirectoriesSection from './ManageDirectoriesSection';
 import ManageVideosSection from './ManageVideosSection';
@@ -10,6 +12,15 @@ const ManagePage = (props: {
     videos: Videos,
     pendingDirectoryEdit: PendingDirectoryEdit
 }) => {
+    React.useEffect(() => {
+            DirectoryActions.get();
+            VideoActions.getVideos({
+                show_hidden: true,
+                show_keys: true
+            });
+        },
+        []
+    );
 
     return (
         <div>

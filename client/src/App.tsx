@@ -13,6 +13,7 @@ import ManagePage from './manage/ManagePage';
 import Denied from './auth/Denied';
 import Nav from './nav/Nav';
 import chadgura from './assets/chadgura.png';
+import Home from './home/Home';
 
 
 const titles: string[] = [
@@ -47,23 +48,42 @@ const App = (state: AppState) => {
                         session={state.session}
                     />
                     <Switch>
-                        <Route path='/watch/:id' render={(props: any) => (
-                            <VideoPlayer {...props} />
-                        )} />
-                        <Route path='/manage' render={(props: any) => (
-                            <ManagePage
-                                {...props}
-                                directories={state.directories}
-                                videos={state.videos}
-                                pendingDirectoryEdit={state.pendingDirectoryEdit}
-                            />
-                        )} />
-                        <Route exact path='/videos' render={(props: any) => (
-                            <VideosByDate {...props} videos={state.videos} />
-                        )} />
-                        <Route exact path='/'>
-                            <Redirect to='/videos' />
-                        </Route>
+                        <Route
+                            path='/watch/:id'
+                            render={(props: any) => (
+                                <VideoPlayer {...props} />
+                            )}
+                        />
+                        <Route
+                            path='/manage'
+                            render={(props: any) => (
+                                <ManagePage
+                                    {...props}
+                                    directories={state.directories}
+                                    videos={state.videos}
+                                    pendingDirectoryEdit={state.pendingDirectoryEdit}
+                                />
+                            )}
+                        />
+                        <Route
+                            exact
+                            path='/videos'
+                            render={(props: any) => (
+                                <VideosByDate
+                                    {...props}
+                                    videos={state.videos}
+                                />
+                            )}
+                        />
+                        <Route exact path='/'
+                            render={(props: any) => (
+                                <Home
+                                    {...props}
+                                    directories={state.directories}
+                                    videos={state.videos}
+                                />
+                            )}
+                        />
                         <Route path='*' component={PageNotFound} />
                     </Switch>
                 </>
