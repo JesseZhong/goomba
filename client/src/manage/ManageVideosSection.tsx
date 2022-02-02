@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Videos } from '../videos/Video';
 import VideoEdit from '../videos/VideoEdit';
 import DirectoryEditActions from '../actions/DirectoryEditActions';
-import EditMultiSelectVideoList from './EditMultiSelectVideoList';
-import { PendingDirectoryEdit } from './PendingDirectoryEdit';
+import EditMultiSelectVideoList from './VideoEditMultiSelect';
+import { DirectoryEditPending } from './DirectoryEditPending';
 import orderBy from 'lodash/orderBy';
 
 
 const ManageVideosSection = (props: {
     videos: Videos,
-    pendingDirectoryEdit: PendingDirectoryEdit
+    pendingDirectoryEdit: DirectoryEditPending
 }) => {
     const pendingDirEdit = props.pendingDirectoryEdit;
 

@@ -1,15 +1,15 @@
 import React from 'react';
 import { Directories, Directory } from '../directories/Directory';
 import DirectoryEditActions from '../actions/DirectoryEditActions';
-import EditSelectDirectoryCard from './EditSelectDirectoryCard';
-import { PendingDirectoryEdit } from '../manage/PendingDirectoryEdit';
+import EditSelectDirectoryCard from './DirectoryEditSelect';
+import { DirectoryEditPending } from './DirectoryEditPending';
 import DirectoryActions from '../actions/DirectoryActions';
 import './DirectorySelectList.sass';
 
 
 const DirectorySelectList = (props: {
     directories: Directories | Directory[],
-    pendingDirectoryEdit: PendingDirectoryEdit
+    pendingDirectoryEdit: DirectoryEditPending
     className?: string
 }) => {
     const directories = props.directories

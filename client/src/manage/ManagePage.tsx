@@ -5,12 +5,12 @@ import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
 import ManageDirectoriesSection from './ManageDirectoriesSection';
 import ManageVideosSection from './ManageVideosSection';
-import { PendingDirectoryEdit } from './PendingDirectoryEdit';
+import { DirectoryEditPending } from './DirectoryEditPending';
 
 const ManagePage = (props: {
     directories: Directories,
     videos: Videos,
-    pendingDirectoryEdit: PendingDirectoryEdit
+    pendingDirectoryEdit: DirectoryEditPending
 }) => {
     React.useEffect(() => {
             DirectoryActions.get();

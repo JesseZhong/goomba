@@ -1,23 +1,23 @@
 import { ReduceStore } from 'flux/utils';
 import ActionTypes from '../actions/ActionTypes';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
-import { PendingDirectoryEdit } from '../manage/PendingDirectoryEdit';
+import { DirectoryEditPending } from '../manage/DirectoryEditPending';
 import { SelectDirectoryPayload, SelectVideosPayload } from '../actions/DirectoryEditPayload';
 
-class DirectoryEditStore extends ReduceStore<PendingDirectoryEdit, ActionPayload> {
+class DirectoryEditStore extends ReduceStore<DirectoryEditPending, ActionPayload> {
 
     public constructor() {
         super(AppDispatcher);
     }
 
-    public getInitialState(): PendingDirectoryEdit {
+    public getInitialState(): DirectoryEditPending {
         return {};
     }
 
     public reduce(
-        state: PendingDirectoryEdit,
+        state: DirectoryEditPending,
         action: ActionPayload
-    ): PendingDirectoryEdit {
+    ): DirectoryEditPending {
 
         switch(action.type) {
             case ActionTypes.DIRECTORY_EDIT_DIR_SELECT:

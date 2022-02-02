@@ -5,7 +5,7 @@ import VideoEdit from '../videos/VideoEdit';
 import ManageButtons from '../common/ManageButtons';
 
 
-const EditableVideoCard = (props: {
+const VideoCardEditable = (props: {
     video: Video,
     onClick?: (video: Video) => void,
     disableEdit?: boolean,
@@ -49,4 +49,4 @@ const EditableVideoCard = (props: {
     );
 }
 
-export default EditableVideoCard;
+export default VideoCardEditable;

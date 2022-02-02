@@ -6,7 +6,7 @@ import ManageButtons from '../common/ManageButtons';
 import DirectoryActions from '../actions/DirectoryActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import './EditSelectDirectoryCard.sass';
+import './DirectoryEditSelect.sass';
 
 
 const EditSelectDirectoryCard = (props: {

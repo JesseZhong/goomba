@@ -1,6 +1,6 @@
 import React from 'react';
 import { Video, Videos } from '../videos/Video';
-import EditableVideoCard from './EditableVideoCard';
+import VideoCardEditable from './VideoCardEditable';
 
 
 const EditMultiSelectVideoList = (props: {
@@ -30,7 +30,7 @@ const EditMultiSelectVideoList = (props: {
                 videos &&
                 videos.map(
                     (video: Video) =>
-                        <EditableVideoCard
+                        <VideoCardEditable
                             key={video.id}
                             video={video}
                             disableEdit={props.disableEdit}

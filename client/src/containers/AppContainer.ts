@@ -8,7 +8,7 @@ import TagStore from '../stores/TagStore';
 import { Directories } from '../directories/Directory';
 import DirectoryStore from '../stores/DirectoryStore';
 import DirectoryEditStore from '../stores/DirectoryEditStore';
-import { PendingDirectoryEdit } from '../manage/PendingDirectoryEdit';
+import { DirectoryEditPending } from '../manage/DirectoryEditPending';
 
 function getStores() {
     return [
@@ -24,7 +24,7 @@ export interface AppState {
     session: Session,
     videos: Videos,
     directories: Directories,
-    pendingDirectoryEdit: PendingDirectoryEdit | undefined,
+    pendingDirectoryEdit: DirectoryEditPending | undefined,
     tags: string[]
 }
 

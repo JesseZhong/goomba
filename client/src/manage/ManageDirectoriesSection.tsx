@@ -3,13 +3,13 @@ import { Directories } from '../directories/Directory';
 import DirectorySelectList from './DirectorySelectList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PendingDirectoryEdit } from './PendingDirectoryEdit';
+import { DirectoryEditPending } from './DirectoryEditPending';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 const ManageDirectoriesSection = (props: {
     directories: Directories,
-    pendingDirectoryEdit: PendingDirectoryEdit
+    pendingDirectoryEdit: DirectoryEditPending
 }) => {
     const directories = props.directories;
     const [directoryAdd, setDirectoryAdd] = React.useState(false);
