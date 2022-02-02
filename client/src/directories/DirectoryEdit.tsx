@@ -78,6 +78,29 @@ const DirectoryEdit = (props: {
 
                                 <div className='row mb-3'>
                                     <div className='col-2'>
+                                        Avatar
+                                    </div>
+                                    <div className='col-8 d-flex flex-column'>
+                                        <ImageUpload
+                                            value={values.avatar}
+                                            onChange={(
+                                                file_key: string,
+                                                image_url?: string
+                                            ) => {
+                                                setFieldValue('avatar', file_key);
+                                                setFieldValue('avatar_url', image_url);
+                                            }}
+                                        />
+                                        <ErrorMessage
+                                            name='thumbnail'
+                                            component='div'
+                                            className='text-danger ms-2'
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className='row mb-3'>
+                                    <div className='col-2'>
                                         Banner
                                     </div>
                                     <div className='col-8 d-flex flex-column'>

@@ -1,6 +1,8 @@
 export interface Directory {
     id: string;
     name: string;
+    avatar?: string;
+    avatar_url?: string;
     banner?: string;
     banner_url?: string;
     parent?: string;

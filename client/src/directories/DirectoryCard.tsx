@@ -20,17 +20,17 @@ const DirectoryCard = (props: {
             }
             onClick={props.onClick}
         >
-            <div className='banner'>
+            <div className='avatar'>
                 {
-                    directory.banner_url
-                    ? <div className='banner-img'>
+                    directory.avatar_url
+                    ? <div className='avatar-img'>
                         <img
-                            src={directory.banner_url}
+                            src={directory.avatar_url}
                             alt={directory.name}
                         />
                         <img
                             className='filter'
-                            src={directory.banner_url}
+                            src={directory.avatar_url}
                             alt={directory.name}
                         />
                     </div>

@@ -7,6 +7,19 @@ from api.validation import verify_id, verify_schema
 from flask_restful import Resource, abort
 
 
+def set_image_urls(directory: Dict[str, str]):
+    """
+        Attach avatar and banner URLs to the directory.
+    """
+    if 'avatar' in directory:
+        avatar = directory['avatar']
+        directory['avatar_url'] = gen_image_url(avatar)
+
+    if 'banner' in directory:
+        banner = directory['banner']
+        directory['banner_url'] = gen_image_url(banner)
+
+
 class Directory(Resource):
 
     @admin_required
@@ -26,7 +39,9 @@ class Directory(Resource):
         # Acquire and validate the request body.
         directory = verify_schema('schemas/put_directory.json')
 
-        # Strip banner URL.
+        # Strip URLs before saving.
+        if 'avatar_url' in directory:
+            del directory['avatar_url']
         if 'banner_url' in directory:
             del directory['banner_url']
 
@@ -46,6 +61,9 @@ class Directory(Resource):
                     'directories',
                     directories
                 )
+
+            # Re-attach URLs before responding.
+            set_image_urls(directory)
 
             return directory, 201
 
@@ -106,12 +124,10 @@ class Directories(Resource):
         try:
             directories = get('directories')
 
-            # Attach banner URLs.
+            # Attach image URLs.
             for directory in directories.values():
-                if 'banner' in directory:
-                    banner = directory['banner']
-                    directory['banner_url'] = gen_image_url(banner)
-            print(directories)
+                set_image_urls(directory)
+                    
             return directories
         except Exception as e:
             print(e)

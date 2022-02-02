@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
 import ActionTypes from '../actions/ActionTypes';
-import { ReceiveDirectoriesPayload } from '../actions/DirectoryPayload';
+import { PutDirectoryPayload, ReceiveDirectoriesPayload } from '../actions/DirectoryPayload';
 import { Directories } from '../directories/Directory';
 
 class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
@@ -22,6 +22,15 @@ class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
                     state = receiveAction.directories;
                 }
                 return state;
+
+            case ActionTypes.PUT_DIRECTORY:
+                const putAction: PutDirectoryPayload = action as PutDirectoryPayload;
+                if (putAction) {
+                    const directory = putAction.directory;
+                    state.set(directory.id, directory);
+                }
+                return new Directories(Object.fromEntries(state));
+
             default:
                 return state;
         }

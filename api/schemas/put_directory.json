@@ -14,6 +14,10 @@
             "maxLength": 200,
             "pattern": "^[^\\^{}%`\"'~<>#|]{1,}$"
         },
+        "avatar": {
+            "type": "string",
+            "pattern": "^[^\\^{}%`\"<>|]{1,}\\.(?:gif|png|bmp|jpeg|jpg|webm)$"
+        },
         "banner": {
             "type": "string",
             "pattern": "^[^\\^{}%`\"<>|]{1,}\\.(?:gif|png|bmp|jpeg|jpg|webm)$"
