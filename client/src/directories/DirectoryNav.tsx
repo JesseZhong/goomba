@@ -59,7 +59,6 @@ const DirectoryNav = (props: {
                     </button>
                 </div>
             }
-            <div className='mt-4 d-flex flex-row flex-wrap'>
             {
                 children &&
                 children.map(
@@ -67,13 +66,12 @@ const DirectoryNav = (props: {
                         <div
                             key={dir.id}
                             onClick={() => navDown(dir)}
-                            className='mx-3'
+                            className='mx-3 mt-4'
                         >
                             <DirectoryCard directory={dir} />
                         </div>
                 )
             }
-            </div>
         </div>
     )
 }
