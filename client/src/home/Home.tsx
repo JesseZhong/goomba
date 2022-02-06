@@ -8,7 +8,7 @@ import { Videos } from '../videos/Video';
 import compact from 'lodash/compact';
 
 
-const RECENT_VIDS = 10;
+const RECENT_VIDS = 20;
 
 const Home = (props: {
     directories: Directories,
