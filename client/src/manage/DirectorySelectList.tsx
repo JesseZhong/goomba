@@ -97,7 +97,7 @@ const DirectorySelectList = (props: {
                             onConfirm={confirmSelection}
                             onCancel={reset}
                             selected={selected?.id === dir.id}
-                            className='mx-3'
+                            className='mt-4 ms-3'
                         />
                 )
             }
