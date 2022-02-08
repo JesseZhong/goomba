@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { faCircleNotch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from './Session';
@@ -10,11 +10,11 @@ const AwaitAccess = (
         session: Session
     }
 ) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
 
     const goMain = () => {
-        history.push('/');
+        navigate('/');
     }
 
     // NOTE: Discord OAuth service seems to call this route twice,
@@ -96,7 +96,7 @@ const AwaitAccess = (
         state,
         code,
         goMain,
-        () => history.push('/denied')
+        () => navigate('/denied')
     );
 
     return (

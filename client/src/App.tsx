@@ -1,7 +1,7 @@
 import * as React from 'react';
 import sample from 'lodash/sample';
 import { AppState } from './containers/AppContainer';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PageNotFound from './not-found/PageNotFound';
 import VideosByDate from './video-views/VideosByDate';
@@ -14,6 +14,8 @@ import Denied from './auth/Denied';
 import Nav from './nav/Nav';
 import Home from './home/Home';
 import chadgura from './assets/chadgura.png';
+import DirectoryVideos from './home/DirectoryVideos';
+import RecentVideos from './home/RecentVideos';
 
 
 const titles: string[] = [
@@ -47,81 +49,73 @@ const App = (state: AppState) => {
                         className='mb-1'
                         session={state.session}
                     />
-                    <Switch>
+                    <Routes>
                         <Route
                             path='/watch/:id'
-                            render={(props: any) => (
-                                <VideoPlayer {...props} />
-                            )}
+                            element={<VideoPlayer />}
                         />
                         <Route
                             path='/manage'
-                            render={(props: any) => (
+                            element={
                                 <ManagePage
-                                    {...props}
                                     directories={state.directories}
                                     videos={state.videos}
                                     pendingDirectoryEdit={state.pendingDirectoryEdit}
                                 />
-                            )}
+                            }
                         />
                         <Route
-                            exact
                             path='/videos'
-                            render={(props: any) => (
-                                <VideosByDate
-                                    {...props}
-                                    videos={state.videos}
-                                />
-                            )}
+                            element={<VideosByDate videos={state.videos} />}
                         />
-                        <Route exact path='/'
-                            render={(props: any) => (
-                                <Home
-                                    {...props}
-                                    directories={state.directories}
-                                    videos={state.videos}
-                                />
-                            )}
+                        <Route
+                            path='/home'
+                            element={<Home directories={state.directories} />}
+                        >
+                            <Route
+                                path=':dirName'
+                                element={
+                                    <DirectoryVideos
+                                        directories={state.directories}
+                                        videos={state.videos}
+                                    />
+                                }
+                            />
+                            <Route
+                                index
+                                element={<RecentVideos videos={state.videos} />}
+                            />
+                        </Route>
+                        <Route
+                            path='/'
+                            element={<Navigate replace to='/home' />}
                         />
-                        <Route path='*' component={PageNotFound} />
-                    </Switch>
+                        <Route path='*' element={PageNotFound} />
+                    </Routes>
                 </>
             );
         }
         else {
             return (
-                <Switch>
+                <Routes>
                     <Route
-                        exact
                         path='/'
-                    >
-                        <Redirect to='/requestauth' />
-                    </Route>
-                    <Route
-                        exact
-                        path='/denied'
-                        component={Denied}
+                        element={<Navigate replace to='/requestauth' />}
                     />
+                    <Route path='/denied' element={Denied} />
                     <Route
-                        exact
                         path='/requestauth'
-                        render={(props: any) =>
-                            <RequestAuthorization {...props}
-                                session={state.session}
-                            />}
+                        element={<RequestAuthorization session={state.session} />}
                     />
                     <Route
-                        exact
                         path='/authorized'
-                        render={(props: any) =>
-                            <FetchingAccess {...props}
-                                session={state.session}
-                            />
-                        }
+                        element={<FetchingAccess session={state.session} />}
                     />
-                    <Route path='*' render={() => <Redirect to='/denied' />} />
-                </Switch>
+                    <Route
+                        path='*'
+                        element={<Navigate replace to='/denied' />}
+                    />
+                </Routes>
             )
         }
     }

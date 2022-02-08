@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactHlsPlayer from 'react-hls-player';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Video } from './Video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -9,22 +9,18 @@ import VideoInfo from './VideoInfo';
 import './VideoPlayer.sass';
 
 
-interface VideoParam {
-    id: string
-}
-
 const VideoPlayer = (props: {
     id?: string
 }) => {
-    const history = useHistory();
-    const params = useParams<VideoParam>();
+    const navigate = useNavigate();
+    const params = useParams();
 
     const playerRef = React.createRef<HTMLVideoElement>();
 
     // Make sure an ID was provided, or else 404.
-    const id = props.id ?? params?.id;
+    const id = props.id ?? params?.['id'] ?? '';
     if (!id) {
-        history.push('/not-found');
+        navigate('/not-found');
     }
 
     const existingTimes = VideoActions.getTimes();
@@ -42,11 +38,11 @@ const VideoPlayer = (props: {
                 },
                 () => {
                     // Video can't be found, kick to the 404.
-                    history.push('/not-found');
+                    navigate('/not-found');
                 }
             );
         },
-        [id, history]
+        [id, navigate]
     );
 
     // Records the current video time, and save into local storage.
@@ -113,7 +109,7 @@ const VideoPlayer = (props: {
                 <div className='navi d-flex justify-content-end p-2'>
                     <FontAwesomeIcon
                         icon={faArrowLeft}
-                        onClick={() => history.goBack()}
+                        onClick={() => navigate(-1)}
                     />
                 </div>
                 {videoPlayer}

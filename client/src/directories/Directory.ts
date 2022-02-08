@@ -13,6 +13,7 @@ export interface Directory {
 export class Directories extends Map<string, Directory> {
 
     private root: Directory[] = [];
+    private lookup: Map<string, Directory> = new Map();
 
     constructor(
         directories?: Object
@@ -27,6 +28,10 @@ export class Directories extends Map<string, Directory> {
 
     public get_root(): readonly Directory[] {
         return this.root;
+    }
+
+    public get_lookup(): Map<string, Directory> {
+        return this.lookup;
     }
 
     public get_children(
@@ -59,6 +64,10 @@ export class Directories extends Map<string, Directory> {
     public set(key: string, value: Directory): this {
         if (!value.parent) {
             this.root.push(value);
+            this.lookup.set(
+                encodeURI(value.name),
+                value
+            );
         }
 
         return super.set(key, value);

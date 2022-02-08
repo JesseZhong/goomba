@@ -1,36 +1,18 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import { History } from 'history';
+import { useNavigate } from 'react-router-dom';
 import { Video, Videos } from './Video';
 import VideoCard from './VideoCard';
 import './VideoList.sass';
 
 
-const ToVideoPlayer = (
-    video: Video,
-    history?: History<unknown>
-) => {
-    history?.push(`/watch/${video.id}`);
-}
-
 const VideoList = (props: {
     videos: Videos | Video[],
-    onClick?: (
-        video: Video,
-        history?: History<unknown>
-    ) => void,
-    disableClick?: boolean,
-    editable?: boolean,
     className?: string
 }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
     const videos = props.videos instanceof Videos
         ? [...props.videos.values()]
         : props.videos;
-        
-    const onClick = props.disableClick
-        ? undefined
-        : (props.onClick ?? ToVideoPlayer);
 
     const className = props.className;
 
@@ -47,11 +29,8 @@ const VideoList = (props: {
                     (video: Video) =>
                         <div
                             key={video.id}
-                            className={
-                                'd-flex flex-row justify-content-around'
-                                + (onClick ? ' clickable' : '')
-                            }
-                            onClick={() => onClick?.(video, history)}
+                            className='d-flex flex-row justify-content-around'
+                            onClick={() => navigate(`/watch/${video.id}`)}
                         >
                             <VideoCard video={video} />
                         </div>

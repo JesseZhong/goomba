@@ -1,38 +1,31 @@
 import React from 'react';
-import { Directories, Directory } from './Directory';
+import { NavLink } from 'react-router-dom';
+import { Directories } from './Directory';
 import DirectoryCard from './DirectoryCard';
 import './DirectoryNav.sass';
 
 
 const DirectoryNav = (props: {
     directories: Directories,
-    onChange?: (directory?: Directory) => void,
+    directoryName?: string,
     className?: string
 }) => {
     const directories = props.directories;
+    const dirLookup = directories.get_lookup();
     const className = props.className;
-    const [current, setCurrent] = React.useState<Directory | undefined>(undefined);
+    const dirName = props.directoryName;
+
+    const current = dirName && dirLookup.has(dirName)
+        ? dirLookup.get(dirName)
+        : undefined;
 
     const children = current
         ? directories.get_children(current.id)
         : directories.get_root();
 
-    const changeDirectory = (
-        dir?: Directory
-    ) => {
-        setCurrent(dir);
-        props.onChange?.(dir);
-    }
-
-    const navDown = (
-        dir?: Directory
-    ) => changeDirectory(dir);
-
-    const navUp = () => changeDirectory(
-        current?.parent
-        ? directories.get(current.parent)
-        : undefined
-    );
+    const parent = current?.parent && directories.has(current?.parent)
+        ? directories.get(current.parent)?.name
+        : '/';
 
     return (
         <div className={
@@ -51,25 +44,28 @@ const DirectoryNav = (props: {
                             alt={current.name}
                         />
                     }
-                    <button
-                        onClick={navUp}
-                        className='back-btn'
-                    >
-                        Back
-                    </button>
+                    {
+                        parent &&
+                        <NavLink
+                            to={encodeURI(parent)}
+                            className='back'
+                        >
+                            Back
+                        </NavLink>
+                    }
                 </div>
             }
             {
                 children &&
                 children.map(
                     dir =>
-                        <div
+                        <NavLink
                             key={dir.id}
-                            onClick={() => navDown(dir)}
-                            className='mx-3 mt-4'
+                            to={encodeURI(dir.name)}
+                            className='mt-4 ms-3'
                         >
                             <DirectoryCard directory={dir} />
-                        </div>
+                        </NavLink>
                 )
             }
         </div>

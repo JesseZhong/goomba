@@ -24,7 +24,7 @@ export interface AppState {
     session: Session,
     videos: Videos,
     directories: Directories,
-    pendingDirectoryEdit: DirectoryEditPending | undefined,
+    pendingDirectoryEdit: DirectoryEditPending,
     tags: string[]
 }
 
