@@ -82,12 +82,12 @@ class Video(Resource):
         """
 
         if not args or 'video_id' not in args:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
         video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
-            abort(400, 'Invalid video ID.')
+            abort(400, message='Invalid video ID.')
         
         # Acquire and validate request body.
         video = verify_schema('schemas/put_video.json')
@@ -190,12 +190,12 @@ class Video(Resource):
     def delete(self, args: Dict[str, str]):
 
         if not args or 'video_id' not in args:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
         video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
-            abort(400, 'Invalid video ID.')
+            abort(400, message='Invalid video ID.')
 
         videos = get_videos()
         abort_if_not_exist(videos, video_id)
@@ -281,12 +281,12 @@ class StreamVideo(Resource):
             link to use to stream the video.
         """
         if not args or 'video_id' not in args:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
         video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
-            abort(400, 'Invalid video ID.')
+            abort(400, message='Invalid video ID.')
 
         videos = get_videos(
             show_keys=True
@@ -313,12 +313,12 @@ class DownloadVideo(Resource):
             link to use to download the video.
         """
         if not args or 'video_id' not in args:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
         video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
-            abort(400, 'Invalid video ID.')
+            abort(400, message='Invalid video ID.')
 
         videos = get_videos(
             show_keys=True
@@ -343,7 +343,7 @@ class VideoMeta(Resource):
         
         """
         if not video_id:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
 
         videos = get_videos()
 

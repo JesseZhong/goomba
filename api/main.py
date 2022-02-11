@@ -11,7 +11,6 @@ from api.images import ImageUpload
 
 
 load_dotenv()
-DB_DIR = getenv('DB_DIR', './db')
 SITE_URL = getenv('SITE_URL')
 
 app = Flask(__name__)
