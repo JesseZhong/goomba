@@ -22,6 +22,12 @@ Simple-to-use private streaming site, created primarily to host live streams by 
     <figcaption><i>Link preview cards in a Discord message.</i></figcaption>
 </figure>
 
+* Directories for organizing and grouping videos.
+<figure>
+    <img src='./docs/directory.png' width=500 />
+    <figcaption><i>All available videos for Gura in her own directory.</i></figcaption>
+</figure>
+
 * Admin management panel for adding and editting videos and directories.
 <figure>
     <img src='./docs/manage.png' width=500 />
@@ -29,6 +35,12 @@ Simple-to-use private streaming site, created primarily to host live streams by 
 </figure>
 
 * Auto-saves user's playback position.
+
+
+## Upcoming Features ##
+
+* Tagging.
+* Direct downloads.
 
 
 ## Infrastructure ##
