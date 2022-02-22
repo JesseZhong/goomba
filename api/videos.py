@@ -75,15 +75,14 @@ class Video(Resource):
 
 
     @admin_required
-    def put(self, args: Dict[str, str]):
+    def put(self, video_id: str):
         """
             Adds or updates a video listing.
             Also updates tags.
         """
 
-        if not args or 'video_id' not in args:
+        if not video_id:
             abort(400, message='Missing ID.')
-        video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
@@ -187,11 +186,10 @@ class Video(Resource):
 
 
     @admin_required
-    def delete(self, args: Dict[str, str]):
+    def delete(self, video_id: str):
 
-        if not args or 'video_id' not in args:
+        if not video_id:
             abort(400, message='Missing ID.')
-        video_id = args['video_id']
 
         # Validate the id.
         if not verify_id(video_id):
@@ -275,15 +273,14 @@ class Videos(Resource):
 class StreamVideo(Resource):
 
     @auth_required
-    def get(self, args: Dict[str, str]):
+    def get(self, video_id: str):
         """
             Get a video's info along with a temporary
             link to use to stream the video.
         """
-        if not args or 'video_id' not in args:
+        if not video_id:
             abort(400, message='Missing ID.')
-        video_id = args['video_id']
-
+        
         # Validate the id.
         if not verify_id(video_id):
             abort(400, message='Invalid video ID.')
@@ -307,15 +304,14 @@ class StreamVideo(Resource):
 class DownloadVideo(Resource):
 
     @auth_required
-    def get(self, args: Dict[str, str]):
+    def get(self, video_id: str):
         """
             Get a video's info along with a temporary
             link to use to download the video.
         """
-        if not args or 'video_id' not in args:
+        if not video_id:
             abort(400, message='Missing ID.')
-        video_id = args['video_id']
-
+        
         # Validate the id.
         if not verify_id(video_id):
             abort(400, message='Invalid video ID.')

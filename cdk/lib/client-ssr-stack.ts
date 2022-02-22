@@ -59,26 +59,6 @@ export class SsrStack extends cdk.Stack {
       }
     );
 
-    new ssm.StringParameter(
-      this,
-      'api-url-param',
-      {
-        parameterName: 'API_URL',
-        description: 'URL to the gremlin API.',
-        stringValue: process.env.API_URL ?? ''
-      }
-    );
-
-    new ssm.StringParameter(
-      this,
-      'banner-url-param',
-      {
-        parameterName: 'BANNER_URL',
-        description: 'URL for the banner image.',
-        stringValue: process.env.BANNER_URL ?? ''
-      }
-    );
-
     // Configure the Lambda@Edge function for
     // serving SSR versions of the client/site.
     const ssrEdgeFunction = new lambda.Function(

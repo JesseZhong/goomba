@@ -118,7 +118,7 @@ def auth_required(func):
     @wraps(func)
     def check_auth(*args, **kwargs):
         resolve_auth()
-        return func(args, kwargs)
+        return func(*args, **kwargs)
     
     return check_auth
 
@@ -131,7 +131,7 @@ def admin_required(func):
     @wraps(func)
     def check_admin(*args, **kwargs):
         resolve_auth(check_admin=True)
-        return func(args, kwargs)
+        return func(*args, **kwargs)
     
     return check_admin
 

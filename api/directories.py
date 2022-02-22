@@ -23,15 +23,14 @@ def set_image_urls(directory: Dict[str, str]):
 class Directory(Resource):
 
     @admin_required
-    def put(self, args: Dict[str, str]):
+    def put(self, directory_id: str):
         """
             Add or update a directory.
         """
 
-        if not args or 'directory_id' not in args:
+        if not directory_id:
             abort(400, 'Missing ID.')
-        directory_id = args['directory_id']
-
+        
         # Validate the id.
         if not verify_id(directory_id):
             abort(400, 'Invalid directory ID.')
@@ -75,14 +74,13 @@ class Directory(Resource):
 
 
     @admin_required
-    def delete(self, args: Dict[str, str]):
+    def delete(self, directory_id: str):
         """
             Remove a directory if it exists.
         """
 
-        if not args or 'directory_id' not in args:
+        if not directory_id:
             abort(400, 'Missing ID.')
-        directory_id = args['directory_id']
 
         # Validate the id.
         if not verify_id(directory_id):
@@ -117,7 +115,7 @@ class Directory(Resource):
 class Directories(Resource):
 
     @auth_required
-    def get(self, *args):
+    def get(self):
         """
             Get all available directories.
         """
