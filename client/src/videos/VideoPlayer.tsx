@@ -107,10 +107,18 @@ const VideoPlayer = (props: {
         <>
             <div className='video-player' tabIndex={0}>
                 <div className='navi d-flex justify-content-end p-2'>
-                    <FontAwesomeIcon
-                        icon={faArrowLeft}
+                    <div
+                        className='back d-flex flex-nowrap align-items-center'
                         onClick={() => navigate(-1)}
-                    />
+                    >
+                        <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            className='me-2'
+                        />
+                        <span className='back-text'>
+                            back
+                        </span>
+                    </div>
                 </div>
                 {videoPlayer}
             </div>

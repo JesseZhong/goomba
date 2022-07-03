@@ -1,11 +1,46 @@
 @import "../theme"
 
+@keyframes backhover
+    0%
+        background-color: transparent
+    100%
+        background-color: rgba(black, 50%)
+
+
 div.video-player
 
     width: 100%
     height: 100%
     min-height: 100vh
+    position: relative
 
     video
         width: 100%
         height: auto
+
+    div.navi
+        width: 100%
+        position: absolute
+        z-index: 10
+        &:hover
+            background: linear-gradient(rgba(black, 35%), transparent)
+
+        div.back
+            font-size: 1.5em
+            color: white
+            padding: 0.2em 0.5em
+            border-radius: 50%
+
+            span.back-text
+                overflow-x: hidden
+                width: 0px
+            
+            &:hover
+                cursor: pointer
+                animation: backhover 1s ease
+                -webkit-animation: backhover 1s ease
+                background-color: rgba(black, 50%)
+                border-radius: 20% / 50%
+
+                & > span.back-text
+                    width: 2.6em
