@@ -1,7 +1,7 @@
 // @ts-nocheck
 // Type checking disabled that mock helper methods won't error on build.
 import request from 'superagent';
-import AuthAPI, { AuthAPIClient } from '../api/AuthAPI';
+import AuthAPI, { AuthAPIClient, TokenResponse } from '../api/AuthAPI';
 
 jest.mock('superagent');
 
@@ -47,8 +47,30 @@ describe('Auth API', () => {
         });
     });
 
-    describe('request access', () => {
+    describe('when requesting access', () => {
 
+        describe('with a valid state and code', () => {
+
+            it('should return access and refresh tokens', async () => {
+
+                const tokens = {
+                    access_token: 'LET ME IN!!!',
+                    refresh_token: 'MOAR POWER!!!',
+                    scope: 'I guess...'
+                } as TokenResponse;
+
+                request.__setMockResponse({
+                    'body': tokens
+                });
+
+                const actual = await api.requestAccess(
+                    'fake state',
+                    'fake code'
+                );
+
+                expect(actual).toBe(tokens);
+            });
+        });
     });
 
     describe('access', () => {

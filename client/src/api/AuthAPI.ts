@@ -17,7 +17,7 @@ export interface AuthAPIClient {
     requestAccess(
         state: string,
         code: string
-    ): Promise<TokenResponse | null>;
+    ): Promise<TokenResponse>;
 
     access(
         access_token: string,
@@ -61,25 +61,17 @@ const AuthAPI = (
             );
     },
 
-    requestAccess(
+    async requestAccess(
         state: string,
         code: string
-    ): Promise<TokenResponse | null> {
+    ): Promise<TokenResponse> {
         return request.get(`${url}/access`)
             .set('Accept', 'application/json')
             .set('State', state)
             .set('Code', code)
             .then(
                 (response: Response) => {
-
                     return response.body as TokenResponse;
-                },
-                (error: any) => {
-                    if (error) {
-                        console.error(error);
-                    }
-
-                    return null;
                 }
             );
     },
