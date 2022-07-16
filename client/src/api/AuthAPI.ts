@@ -2,75 +2,86 @@ import request, { Response } from 'superagent';
 import { ErrorResponse } from './ErrorResponse';
 
 
-interface TokenResponse {
+export interface TokenResponse {
     access_token: string;
     refresh_token: string;
     is_admin?: boolean;
     scope: string;
 }
 
+export interface AuthAPIClient {
+    requestAuthorization(
+        state: string
+    ): Promise<string>;
+
+    requestAccess(
+        state: string,
+        code: string
+    ): Promise<TokenResponse | null>;
+
+    access(
+        access_token: string,
+        refresh_token: string,
+        action: <Resource>(
+            access_token: string,
+            errorHandler?: (response: ErrorResponse) => boolean
+        ) => Promise<Resource>,
+        tokensReceived: (
+            access_token: string,
+            refresh_token: string
+        ) => void,
+        tokenRevoked: () => void
+    ): void;
+}
+
 
 const AuthAPI = (
     url: string
-) => ({
-    requestAuthorization(
-        state: string,
-        received: (auth_url: string) => void,
-        onerror?: (error: any) => void
-    ): void {
-        request.get(`${url}/authorize`)
+): AuthAPIClient => ({
+
+    async requestAuthorization(
+        state: string
+    ): Promise<string> {
+        return request.get(`${url}/authorize`)
             .set('Accept', 'application/json')
             .set('State', state)
-            .end((error: any, response: Response) => {
-                if (error) {
-                    onerror?.(error);
-                    return console.error(error);
-                }
+            .then(
+                (response: Response) => {
 
-                // Throw an exception if the wrong state was
-                // passed back. Might be a man-in-the middle attack.
-                const returnState = response.body['state'];
-                if (state !== returnState) {
-                    console.log(`Incorrect state passed back. ${state} != ${returnState}`);
+                    // Throw an exception if the wrong state was
+                    // passed back. Might be a man-in-the middle attack.
+                    const returnState = response.body['state'];
+                    if (state !== returnState) {
+                        throw new Error(`Incorrect state passed back. ${state} != ${returnState}`);
+                    }
+                    else {
+                        return response.body['auth_url'];
+                    }
                 }
-                else {
-                    received(response.body['auth_url']);
-                }
-            });
+            );
     },
 
     requestAccess(
         state: string,
-        code: string,
-        received: (
-            access_token: string,
-            refresh_token: string,
-            is_admin?: boolean
-        ) => void,
-        onerror?: (error: any) => void
-    ): void {
-        request.get(`${url}/access`)
+        code: string
+    ): Promise<TokenResponse | null> {
+        return request.get(`${url}/access`)
             .set('Accept', 'application/json')
             .set('State', state)
             .set('Code', code)
-            .end((error: any, response: Response) => {
-                if (error) {
-                    onerror?.(error);
-                    return console.error(error);
+            .then(
+                (response: Response) => {
+
+                    return response.body as TokenResponse;
+                },
+                (error: any) => {
+                    if (error) {
+                        console.error(error);
+                    }
+
+                    return null;
                 }
-
-                const {
-                    access_token,
-                    refresh_token,
-                    is_admin
-                } = response.body as TokenResponse;
-
-                received(
-                    access_token,
-                    refresh_token,
-                    is_admin
-                );
-            });
+            );
     },
 
     /**
@@ -84,10 +95,10 @@ const AuthAPI = (
     access(
         access_token: string,
         refresh_token: string,
-        action: (
+        action: <Resource>(
             access_token: string,
             errorHandler?: (response: ErrorResponse) => boolean
-        ) => void,
+        ) => Promise<Resource>,
         tokensReceived: (
             access_token: string,
             refresh_token: string
