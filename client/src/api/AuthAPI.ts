@@ -19,19 +19,18 @@ export interface AuthAPIClient {
         code: string
     ): Promise<TokenResponse>;
 
-    access(
+    access<Resource>(
         access_token: string,
         refresh_token: string,
         action: <Resource>(
-            access_token: string,
-            errorHandler?: (response: ErrorResponse) => boolean
+            access_token: string
         ) => Promise<Resource>,
         tokensReceived: (
             access_token: string,
             refresh_token: string
         ) => void,
         tokenRevoked: () => void
-    ): void;
+    ): Promise<Resource>;
 }
 
 
@@ -79,27 +78,24 @@ const AuthAPI = (
     /**
      * Access an endpoint that requires authorization.
      * Handles token refreshes.
-     * @param access_token
-     * @param refresh_token 
-     * @param action 
-     * @param tokensReceived 
      */
-    access(
+    async access<Resource>(
         access_token: string,
         refresh_token: string,
         action: <Resource>(
-            access_token: string,
-            errorHandler?: (response: ErrorResponse) => boolean
+            access_token: string
         ) => Promise<Resource>,
         tokensReceived: (
             access_token: string,
             refresh_token: string
         ) => void,
         tokenRevoked: () => void
-    ): void {
-        action(
-            access_token,
-            (response: ErrorResponse): boolean => {
+    ): Promise<Resource> {
+
+        return action<Resource>(
+            access_token
+        ).catch(
+            async (response: ErrorResponse) => {
                 if (response.status === 401) {
 
                     const body = response.body as {
@@ -107,13 +103,11 @@ const AuthAPI = (
                     }
 
                     if (body.message === 'Unauthorized - Invalid Token.') {
-                        request.get(`${url}/refresh`)
+
+                        return request.get(`${url}/refresh`)
                             .set('Accept', 'application/json')
                             .set('Refresh', refresh_token)
-                            .end((error: any, response: Response) => {
-                                if (error) {
-                                    return console.error(error);
-                                }
+                            .then((response: Response) => {
 
                                 const {
                                     access_token,
@@ -126,24 +120,18 @@ const AuthAPI = (
                                 );
 
                                 // Attempt action again.
-                                action(access_token)
+                                return action<Resource>(access_token);
                             });
-
-                        return true;
                     }
                     else if (body.message === 'Unauthorized - New Token Required.') {
                         tokenRevoked();
-                        return false;
-                    }
-                    else {
-                        return false;
+                        throw new Error();
                     }
                 }
-                else {
-                    return false;
-                }
+
+                return Promise.reject(response);
             }
-        )
+        );
     }
 });
 

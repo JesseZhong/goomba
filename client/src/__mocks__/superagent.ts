@@ -12,6 +12,7 @@ const defaultResponse: Response = {
     toError: jest.fn()
 };
 
+
 class Request {
 
     mockError?: any;
@@ -20,15 +21,35 @@ class Request {
 
     mockResponse: Response = defaultResponse;
 
-    get = jest.fn().mockReturnThis();
-    post = jest.fn().mockReturnThis();
+    mockResponses: Map<string, Response> = new Map();
+
+    mockUrl?: string;
+
+    private withUrl = (url: string) => {
+        this.mockUrl = url;
+        return this;
+    };
+
+    private getResponse = () => this.mockResponses.size &&
+            this.mockUrl &&
+            this.mockResponses.has(this.mockUrl) 
+        ? this.mockResponses.get(this.mockUrl)
+        : this.mockResponse;
+
+    get = this.withUrl;
+    post = this.withUrl;
+    put = this.withUrl;
+    delete = this.withUrl;
+
     send = jest.fn().mockReturnThis();
     query = jest.fn().mockReturnThis();
     field = jest.fn().mockReturnThis();
     set = jest.fn().mockReturnThis();
     accept = jest.fn().mockReturnThis();
     timeout = jest.fn().mockReturnThis();
-    then = (callback: (response: Response) => void) => {
+
+    then = (callback: (response?: Response) => void) => {
+
         return new Promise(
             (
                 resolve: (value: unknown) => void,
@@ -38,7 +59,7 @@ class Request {
                     return reject(this.mockError);
                 }
 
-                return resolve(callback(this.mockResponse));
+                return resolve(callback(this.getResponse()));
             }
         )
     };
@@ -46,29 +67,45 @@ class Request {
     end = jest.fn().mockImplementation((
         callback: (error: any, response: any) => void
     ) => {
+        const response = this.getResponse();
+
         if (this.mockDelay) {
             const delayTimer = setTimeout(
                 callback,
                 0,
                 this.mockError,
-                this.mockResponse
+                response
             );
         }
         else {
             callback(
                 this.mockError,
-                this.mockResponse
+                response
             );
         }
     });
 
     __setMockDelay = (value: boolean) => this.mockDelay = value;
 
-    __setMockResponse = (response: {}) => {
+    __setDefaultMockResponse = (response: {}) => {
         this.mockResponse = {
-            ...this.mockResponse,
+            ...defaultResponse,
             ...response
         };
+    }
+
+    __setMockResponses = (responses: { [key: string]: {} }) => {
+        if (responses) {
+            for (const [url, response] of Object.entries(responses)) {
+                this.mockResponses.set(
+                    url,
+                    {
+                        ...defaultResponse,
+                        ...response
+                    }
+                );
+            }
+        }
     }
 
     __setMockError = (error: any) => this.mockError = error;
