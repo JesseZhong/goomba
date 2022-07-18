@@ -22,7 +22,7 @@ export interface AuthAPIClient {
     access<Resource>(
         access_token: string,
         refresh_token: string,
-        action: <Resource>(
+        action: (
             access_token: string
         ) => Promise<Resource>,
         tokensReceived: (
@@ -82,7 +82,7 @@ const AuthAPI = (
     async access<Resource>(
         access_token: string,
         refresh_token: string,
-        action: <Resource>(
+        action: (
             access_token: string
         ) => Promise<Resource>,
         tokensReceived: (
@@ -92,7 +92,7 @@ const AuthAPI = (
         tokenRevoked: () => void
     ): Promise<Resource> {
 
-        return action<Resource>(
+        return action(
             access_token
         ).catch(
             async (response: ErrorResponse) => {
@@ -120,7 +120,7 @@ const AuthAPI = (
                                 );
 
                                 // Attempt action again.
-                                return action<Resource>(access_token);
+                                return action(access_token);
                             });
                     }
                     else if (body.message === 'Unauthorized - New Token Required.') {

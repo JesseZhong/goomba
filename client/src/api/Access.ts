@@ -1,8 +1,5 @@
-import { ErrorResponse } from './ErrorResponse';
-
-export type Access = (
+export type Access = <Resource>(
     action: (
-        access_token: string,
-        errorHandler?: (response: ErrorResponse) => boolean
-    ) => void
-) => void
+        access_token: string
+    ) => Promise<Resource>
+) => Promise<Resource>;
