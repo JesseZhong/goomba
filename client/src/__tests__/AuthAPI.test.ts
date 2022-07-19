@@ -1,5 +1,5 @@
 // @ts-nocheck
-// Type checking disabled that mock helper methods won't error on build.
+// Type checking disabled so that mock helper methods won't error on build.
 import request from 'superagent';
 import AuthAPI, { AuthAPIClient, TokenResponse } from '../api/AuthAPI';
 

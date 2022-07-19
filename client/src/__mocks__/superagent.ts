@@ -41,6 +41,7 @@ class Request {
     put = this.withUrl;
     delete = this.withUrl;
 
+    auth = jest.fn().mockReturnThis();
     send = jest.fn().mockReturnThis();
     query = jest.fn().mockReturnThis();
     field = jest.fn().mockReturnThis();
