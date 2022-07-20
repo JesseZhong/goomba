@@ -14,6 +14,10 @@ describe('Auth API', () => {
         api = AuthAPI(url);
     });
 
+    afterEach(() => {
+        request.__mockClear();
+    });
+
     describe('when requesting authorization', () => {
 
         it('should return a valid auth url', async () => {

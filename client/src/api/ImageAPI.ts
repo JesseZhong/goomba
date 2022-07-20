@@ -1,11 +1,15 @@
 import request, { Response } from 'superagent';
 import events from 'events';
 import { Access } from './Access';
-import { ErrorResponse } from './ErrorResponse';
 
 interface Progress {
     percent?: string,
     direction?: string
+}
+
+export interface ImageUpload {
+    image_key: string,
+    image_url?: string
 }
 
 interface PresignedUpload {
@@ -27,26 +31,20 @@ const ImageAPI = (
     url: string,
     access: Access
 ) => ({
-    upload(
+    async upload(
         image_key: string,
         file: File,
-        success: (
-            image_key: string,
-            image_url?: string
-        ) => void,
         event?: events.EventEmitter
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) => 
+    ): Promise<ImageUpload> {
+        return await access(
+            async (token: string) =>
                 // Request presigned url to use for upload.
                 request.get(`${url}/images/${image_key}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (!error && response.ok) {
+                    .then((response: Response) => {
+
+                        if (response.ok) {
                             const result = response?.body as PresignedUpload;
                             const data = new FormData();
 
@@ -59,7 +57,7 @@ const ImageAPI = (
                             data.append('file', file);
 
                             // Attempt to upload the file.
-                            request.post(result.url)
+                            return request.post(result.url)
                                 .on('progress', (e: ProgressEvent) => {
                                     const progress = e as Progress;
 
@@ -71,25 +69,19 @@ const ImageAPI = (
                                     }
                                 })
                                 .send(data)
-                                .end((error: any, response: Response) => {
-                                    if (!error && response.ok) {
-                                        success(
-                                            result.image_key,
-                                            result.image_url
-                                        );
+                                .then((response: Response) => {
+                                    if (response.ok) {
+                                        return {
+                                            'image_key': result.image_key,
+                                            'image_url': result.image_url
+                                        }
                                     }
+
+                                    return Promise.reject(response);
                                 });
                         }
-                        else {
-                            if (error) {
-                                if (
-                                    error.status < 500 &&
-                                    !errorHandler?.(response as ErrorResponse)
-                                ) {
-                                    console.error(error)
-                                }
-                            }
-                        }
+                        
+                        return Promise.reject(response);
                     })
         );
     }

@@ -1,13 +1,13 @@
 interface Response {
-    status: () => number;
-    ok: () => boolean;
+    status: number;
+    ok: boolean;
     get: () => string;
     toError: () => void;
 }
 
 const defaultResponse: Response = {
-    status: () => 200,
-    ok: () => true,
+    status: 200,
+    ok: true,
     get: jest.fn(),
     toError: jest.fn()
 };
@@ -40,6 +40,7 @@ class Request {
     post = this.withUrl;
     put = this.withUrl;
     delete = this.withUrl;
+    del = this.withUrl;
 
     auth = jest.fn().mockReturnThis();
     send = jest.fn().mockReturnThis();
@@ -110,6 +111,14 @@ class Request {
     }
 
     __setMockError = (error: any) => this.mockError = error;
+
+    __mockClear = () => {
+        this.mockError = undefined;
+        this.mockDelay = undefined;
+        this.mockResponse = defaultResponse;
+        this.mockResponses.clear();
+        this.mockUrl = undefined;
+    }
 }
 
 export default new Request();
