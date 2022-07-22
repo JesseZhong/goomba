@@ -36,11 +36,11 @@ class Request {
         ? this.mockResponses.get(this.mockUrl)
         : this.mockResponse;
 
-    get = this.withUrl;
-    post = this.withUrl;
-    put = this.withUrl;
-    delete = this.withUrl;
-    del = this.withUrl;
+    get = jest.fn(this.withUrl);
+    post = jest.fn(this.withUrl);
+    put = jest.fn(this.withUrl);
+    delete = jest.fn(this.withUrl);
+    del = jest.fn(this.withUrl);
 
     auth = jest.fn().mockReturnThis();
     send = jest.fn().mockReturnThis();

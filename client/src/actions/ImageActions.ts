@@ -9,21 +9,17 @@ const imageApi = ImageAPI(
 );
 
 const ImageActions = {
-    upload: (
+    
+    upload: async (
         image_key: string,
         file: File,
-        success: (
-            image_key: string,
-            image_url?: string
-        ) => void,
         event?: events.EventEmitter
     ) => {
-        imageApi.upload(
+        return await imageApi.upload(
             image_key,
             file,
-            success,
             event
-        )
+        );
     }
 }
 

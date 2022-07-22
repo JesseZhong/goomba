@@ -9,6 +9,14 @@ export interface VideoOptions {
     tags?: string[]
 }
 
+export interface VideoAPIClient {
+    getStream: (id: string) => Promise<Video>,
+    getDownload: (id: string) => Promise<Video>,
+    getVideos: (options?:  VideoOptions) => Promise<Videos>,
+    put: (video: Video) => Promise<Video>,
+    remove: (id: string) => Promise<void>
+}
+
 const VideoAPI = (
     url: string,
     access: Access
