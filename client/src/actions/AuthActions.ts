@@ -64,7 +64,17 @@ const AuthActions = {
     ) => authApi.requestAccess(
         state,
         code
-    )
+    ).then(({
+        access_token,
+        refresh_token,
+        is_admin
+    }) => {
+        saveSession(
+            access_token,
+            refresh_token,
+            is_admin
+        );
+    })
 }
 
 export default AuthActions;

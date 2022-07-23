@@ -95,7 +95,7 @@ const AuthAPI = (
         return action(
             access_token
         ).catch(
-            async (response: ErrorResponse) => {
+            async ({ response }: { response: ErrorResponse }) => {
                 if (response.status === 401) {
 
                     const body = response.body as {
