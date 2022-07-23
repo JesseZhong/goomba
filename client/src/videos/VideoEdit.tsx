@@ -65,14 +65,14 @@ const VideoEdit = (props: {
                         ? true
                         : undefined;
 
-                    VideoActions.put(
-                        newVideo,
-                        () => {
-                            setSubmitting(false);
-                            finished();
-                        },
-                        () => setShowPutError(true)
-                    );
+                    VideoActions.put(newVideo)
+                        .then(
+                            () => {
+                                setSubmitting(false);
+                                finished();
+                            },
+                            () => setShowPutError(true)
+                        );
                 }}
             >
                 {({ isSubmitting, values, setFieldValue }) => (

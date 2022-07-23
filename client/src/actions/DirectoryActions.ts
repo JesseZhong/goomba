@@ -11,51 +11,38 @@ const directoryApi = DirectoryAPI(
 );
 
 const DirectoryActions = {
-    get(): void {
-        directoryApi.get(
-            (directories: Directories) => {
+    async get(): Promise<void> {
+        return await directoryApi.get()
+            .then((directories: Directories) => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.RECEIVE_DIRECTORIES,
                     directories: directories
                 } as ReceiveDirectoriesPayload);
-            }
-        )
+            });
     },
 
-    put(
-        directory: Directory,
-        success?: () => void,
-        onerror?: (error: any) => void
-    ) {
-        directoryApi.put(
-            directory,
-            (confirmedDirectory: Directory) => {
+    async put(
+        directory: Directory
+    ): Promise<void> {
+        return await directoryApi.put(directory)
+            .then((confirmedDirectory: Directory) => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.PUT_DIRECTORY,
                     directory: confirmedDirectory
                 } as PutDirectoryPayload);
-                success?.();
-            },
-            onerror
-        )
+            });
     },
 
-    remove(
-        id: string,
-        success?: () => void,
-        onerror?: (error: any) => void
-    ): void {
-        directoryApi.remove(
-            id,
-            () => {
+    async remove(
+        id: string
+    ): Promise<void> {
+        return await directoryApi.remove(id)
+            .then(() => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.REMOVE_DIRECTORY,
                     id: id
                 } as RemoveDirectoryPayload);
-                success?.();
-            },
-            onerror
-        )
+            });
     }
 }
 

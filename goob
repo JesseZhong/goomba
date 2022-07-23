@@ -223,6 +223,11 @@ case "$arg1" in
         # Overriding exit code for CodeBuild until I figure out what's causing the 1.
         exit 0
     ;;
+    test)
+        cd ./client/
+
+        yarn test
+    ;;
     *)
         echo "$usage"
         exit

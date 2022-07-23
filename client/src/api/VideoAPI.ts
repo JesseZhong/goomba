@@ -1,7 +1,6 @@
 import request, { Response } from 'superagent';
 import { Video, Videos } from '../videos/Video';
 import { Access } from './Access';
-import { ErrorResponse } from './ErrorResponse';
 
 export interface VideoOptions {
     show_hidden?: boolean,
@@ -10,80 +9,50 @@ export interface VideoOptions {
     tags?: string[]
 }
 
+export interface VideoAPIClient {
+    getStream: (id: string) => Promise<Video>,
+    getDownload: (id: string) => Promise<Video>,
+    getVideos: (options?:  VideoOptions) => Promise<Videos>,
+    put: (video: Video) => Promise<Video>,
+    remove: (id: string) => Promise<void>
+}
+
 const VideoAPI = (
     url: string,
     access: Access
 ) => ({
 
-    getStream(
-        id: string,
-        received: (video: Video) => void,
-        onerror: (error: any) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
+    async getStream(
+        id: string
+    ): Promise<Video> {
+        return await access(
+            (token: string) =>
                 request.get(`${url}/videos/${id}/stream`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (
-                                error.status < 500 &&
-                                !errorHandler?.(response as ErrorResponse)
-                            ) {
-                                console.error(error)
-                            }
-                            onerror(error);
-                            return;
-                        }
-
-                        received(response.body);
+                    .then((response: Response) => {
+                        return response.body;
                     })
         );
     },
 
-    getDownload(
-        id: string,
-        received: (video: Video) => void,
-        onerror: (error: any) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) =>
+   async getDownload(
+        id: string
+    ): Promise<Video> {
+        return await access(
+            (token: string) =>
                 request.get(`${url}/videos/${id}/download`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (
-                                error.status < 500 &&
-                                !errorHandler?.(response as ErrorResponse)
-                            ) {
-                                console.error(error)
-                            }
-                            onerror(error);
-                            return;
-                        }
-
-                        received(response.body);
+                    .then((response: Response) => {
+                        return response.body;
                     })
         );
     },
 
-    getVideos(
-        received: (videos: Videos) => void,
-        options?: VideoOptions
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) => {
+    async getVideos(options?: VideoOptions): Promise<Videos> {
+        return await access(
+            async (token: string) => {
                 let queries: string[] = []
                 if (options?.show_hidden) {
                     queries.push('show_hidden=true');
@@ -101,89 +70,54 @@ const VideoAPI = (
                     queries.push(`tags=[${options.tags.join(',')}]`);
                 }
 
-                request.get(`${url}/videos${queries ? `?${queries.join('&')}` : ''}`)
+                return await request.get(`${url}/videos${queries ? `?${queries.join('&')}` : ''}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (
-                                error.status < 500 &&
-                                !errorHandler?.(response as ErrorResponse)
-                            ) {
-                                console.error(error)
-                            }
-                            return;
-                        }
+                    .then((response: Response) => {
 
-                        received(new Videos(response.body));
+                        return new Videos(response.body);
                     });
             }
         );
     },
 
-    put(
+    async put(
         video: Video,
-        success: (video: Video) => void,
-        onerror: (error: any) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) => {
-                request.put(`${url}/videos/${video.id}`)
+    ): Promise<Video> {
+        return await access(
+            async (token: string) => {
+                return await request.put(`${url}/videos/${video.id}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
                     .send(video)
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (
-                                error.status < 500 &&
-                                !errorHandler?.(response as ErrorResponse)
-                            ) {
-                                console.error(error)
-                            }
-                            onerror(error);
-                            return;
-                        }
+                    .then((response: Response) => {
 
                         if (response.status === 201) {
-                            success(response.body);
+                            return response.body;
                         }
-                    })
+
+                        return Promise.reject(response);
+                    });
             }
         );
     },
 
-    remove(
-        id: string,
-        success: () => void,
-        onerror: (error: any) => void
-    ): void {
-        access(
-            (
-                token: string,
-                errorHandler?: (response: ErrorResponse) => boolean
-            ) => {
-                request.del(`${url}/videos/${id}`)
+    async remove(
+        id: string
+    ): Promise<void> {
+        return await access(
+            async (token: string) => {
+                return await request.del(`${url}/videos/${id}`)
                     .set('Accept', 'application/json')
                     .auth(token, { type: 'bearer' })
-                    .end((error: any, response: Response) => {
-                        if (error) {
-                            if (
-                                error.status < 500 &&
-                                !errorHandler?.(response as ErrorResponse)
-                            ) {
-                                console.error(error)
-                            }
-                            onerror(error);
+                    .then((response: Response) => {
+
+                        if (response.status === 204) {
                             return;
                         }
 
-                        if (response.status === 204) {
-                            success();
-                        }
-                    })
+                        return Promise.reject(response);
+                    });
             }
         );
     }

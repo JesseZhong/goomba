@@ -31,16 +31,16 @@ const VideoPlayer = (props: {
     const [video, setVideo] = React.useState<Video | undefined>(undefined);
 
     React.useEffect(() => {
-            VideoActions.getStream(
-                id,
-                (video: Video) => {
-                    setVideo(video);
-                },
-                () => {
-                    // Video can't be found, kick to the 404.
-                    navigate('/not-found');
-                }
-            );
+            VideoActions.getStream(id)
+                .then(
+                    (video: Video) => {
+                        setVideo(video);
+                    },
+                    () => {
+                        // Video can't be found, kick to the 404.
+                        navigate('/not-found');
+                    }
+                );
         },
         [id, navigate]
     );

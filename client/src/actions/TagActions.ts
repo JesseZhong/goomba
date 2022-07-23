@@ -10,15 +10,14 @@ const tagsApi = TagsAPI(
 );
 
 const TagActions = {
-    get(): void {
-        tagsApi.getTags(
-            (tags: string[]) => {
+    async get(): Promise<void> {
+        return await tagsApi.getTags()
+            .then((tags: string[]) => {
                 AppDispatcher.dispatch({
                     type: ActionTypes.RECEIVE_TAGS,
                     tags: tags
                 } as TagsPayload);
-            }
-        );
+            });
     },
 }
 

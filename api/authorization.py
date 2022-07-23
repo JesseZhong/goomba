@@ -44,10 +44,10 @@ def permissions_check(
     try:
         user = discord.get_user(token)
 
-    except ExpiredTokenError:
+    except InvalidTokenError:
         abort(401, message='Unauthorized - Invalid Token.')
 
-    except InvalidTokenError:
+    except ExpiredTokenError:
         abort(401, message='Unauthorized - New Token Required.')
 
     username = ''

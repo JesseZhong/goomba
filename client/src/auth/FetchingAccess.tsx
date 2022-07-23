@@ -95,6 +95,7 @@ const AwaitAccess = (
     AuthActions.requestAccess(
         state,
         code,
+    ).then(
         goMain,
         () => navigate('/denied')
     );

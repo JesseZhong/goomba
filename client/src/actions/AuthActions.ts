@@ -1,6 +1,5 @@
 import { Access } from '../api/Access';
 import AuthAPI from '../api/AuthAPI';
-import { ErrorResponse } from '../api/ErrorResponse';
 import SessionStore from '../stores/SessionStore';
 import SessionActions from './SessionActions';
 
@@ -32,58 +31,50 @@ const resetSession = () => {
     SessionActions.set(session);
 }
 
-export const AuthAccess: Access = (
+export const AuthAccess: Access = <Resource>(
     action: (
-        access_token: string,
-        errorHandler?: (response: ErrorResponse) => boolean
-    ) => void
+        access_token: string
+    ) => Promise<Resource>
 ) => {
     const session = SessionStore.getState();
     if (session.access_token && session.refresh_token) {
-        authApi.access(
+        return authApi.access<Resource>(
             session.access_token,
             session.refresh_token,
             action,
             saveSession,
             resetSession
-        )
+        );
     }
+
+    throw new Error(`One or more tokens is undefined, Access: ${session.access_token}, Refresh: ${session.refresh_token}.`);
 }
 
 const AuthActions = {
     
     requestAuthorization: (
-        state: string,
-        received: (auth_url: string) => void,
-        onerror?: (error: any) => void
+        state: string
     ) => authApi.requestAuthorization(
-        state,
-        received,
-        onerror
+        state
     ),
 
     requestAccess: (
         state: string,
-        code: string,
-        received: (token: string) => void,
-        onerror?: (error: any) => void
+        code: string
     ) => authApi.requestAccess(
         state,
-        code,
-        (
-            access_token: string,
-            refresh_token: string,
-            is_admin?: boolean
-        ) => {
-            saveSession(
-                access_token,
-                refresh_token,
-                is_admin
-            );
-            received(access_token);
-        },
-        onerror
-    )
+        code
+    ).then(({
+        access_token,
+        refresh_token,
+        is_admin
+    }) => {
+        saveSession(
+            access_token,
+            refresh_token,
+            is_admin
+        );
+    })
 }
 
 export default AuthActions;

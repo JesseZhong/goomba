@@ -40,14 +40,14 @@ const DirectoryEdit = (props: {
                 validationSchema={DirectoryValidation}
                 onSubmit={(newDirectory, { setSubmitting }) => {
 
-                    DirectoryActions.put(
-                        newDirectory,
-                        () => {
-                            setSubmitting(false);
-                            finished();
-                        },
-                        () => setShowPutError(true)
-                    );
+                    DirectoryActions.put(newDirectory)
+                        .then(
+                            () => {
+                                setSubmitting(false);
+                                finished();
+                            },
+                            () => setShowPutError(true)
+                        );
                 }}
             >
                 {({ isSubmitting, values, setFieldValue }) => (

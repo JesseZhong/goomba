@@ -16,18 +16,21 @@ const RequestAuthorization = (
     // NOTE: Session id is passed so both the client
     // and API can verify it is the same user performing
     // these handshakes throughout the OAuth process.
-    AuthActions.requestAuthorization(
-        props.session?.session_id,
-        (auth_url: string) => {
+    AuthActions.requestAuthorization(props.session?.session_id)
+        .then(
+            (auth_url: string | null) => {
 
-            // Redirect the user to the OAuth URL
-            // as soon as it is received from the API.
-            // The user will have to confirm or deny
-            // if they'd like this app to have access
-            // to their identity.
-            window.location.href = auth_url;
-        }
-    )
+                if (auth_url) {
+
+                    // Redirect the user to the OAuth URL
+                    // as soon as it is received from the API.
+                    // The user will have to confirm or deny
+                    // if they'd like this app to have access
+                    // to their identity.
+                    window.location.href = auth_url;
+                }
+            }
+        );
 
     // Display waiting page while the OAuth URL
     // is being fetched from the API.

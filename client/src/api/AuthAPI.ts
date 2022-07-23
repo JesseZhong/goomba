@@ -2,101 +2,100 @@ import request, { Response } from 'superagent';
 import { ErrorResponse } from './ErrorResponse';
 
 
-interface TokenResponse {
+export interface TokenResponse {
     access_token: string;
     refresh_token: string;
     is_admin?: boolean;
     scope: string;
 }
 
-
-const AuthAPI = (
-    url: string
-) => ({
+export interface AuthAPIClient {
     requestAuthorization(
-        state: string,
-        received: (auth_url: string) => void,
-        onerror?: (error: any) => void
-    ): void {
-        request.get(`${url}/authorize`)
-            .set('Accept', 'application/json')
-            .set('State', state)
-            .end((error: any, response: Response) => {
-                if (error) {
-                    onerror?.(error);
-                    return console.error(error);
-                }
-
-                // Throw an exception if the wrong state was
-                // passed back. Might be a man-in-the middle attack.
-                const returnState = response.body['state'];
-                if (state !== returnState) {
-                    console.log(`Incorrect state passed back. ${state} != ${returnState}`);
-                }
-                else {
-                    received(response.body['auth_url']);
-                }
-            });
-    },
+        state: string
+    ): Promise<string>;
 
     requestAccess(
         state: string,
-        code: string,
-        received: (
-            access_token: string,
-            refresh_token: string,
-            is_admin?: boolean
-        ) => void,
-        onerror?: (error: any) => void
-    ): void {
-        request.get(`${url}/access`)
-            .set('Accept', 'application/json')
-            .set('State', state)
-            .set('Code', code)
-            .end((error: any, response: Response) => {
-                if (error) {
-                    onerror?.(error);
-                    return console.error(error);
-                }
+        code: string
+    ): Promise<TokenResponse>;
 
-                const {
-                    access_token,
-                    refresh_token,
-                    is_admin
-                } = response.body as TokenResponse;
-
-                received(
-                    access_token,
-                    refresh_token,
-                    is_admin
-                );
-            });
-    },
-
-    /**
-     * Access an endpoint that requires authorization.
-     * Handles token refreshes.
-     * @param access_token
-     * @param refresh_token 
-     * @param action 
-     * @param tokensReceived 
-     */
-    access(
+    access<Resource>(
         access_token: string,
         refresh_token: string,
         action: (
-            access_token: string,
-            errorHandler?: (response: ErrorResponse) => boolean
-        ) => void,
+            access_token: string
+        ) => Promise<Resource>,
         tokensReceived: (
             access_token: string,
             refresh_token: string
         ) => void,
         tokenRevoked: () => void
-    ): void {
-        action(
-            access_token,
-            (response: ErrorResponse): boolean => {
+    ): Promise<Resource>;
+}
+
+
+const AuthAPI = (
+    url: string
+): AuthAPIClient => ({
+
+    async requestAuthorization(
+        state: string
+    ): Promise<string> {
+        return request.get(`${url}/authorize`)
+            .set('Accept', 'application/json')
+            .set('State', state)
+            .then(
+                (response: Response) => {
+
+                    // Throw an exception if the wrong state was
+                    // passed back. Might be a man-in-the middle attack.
+                    const returnState = response.body['state'];
+                    if (state !== returnState) {
+                        throw new Error(`Incorrect state passed back. ${state} != ${returnState}`);
+                    }
+                    else {
+                        return response.body['auth_url'];
+                    }
+                }
+            );
+    },
+
+    async requestAccess(
+        state: string,
+        code: string
+    ): Promise<TokenResponse> {
+        return request.get(`${url}/access`)
+            .set('Accept', 'application/json')
+            .set('State', state)
+            .set('Code', code)
+            .then(
+                (response: Response) => {
+                    return response.body as TokenResponse;
+                }
+            );
+    },
+
+    /**
+     * Access an endpoint that requires authorization.
+     * Handles token refreshes.
+     */
+    async access<Resource>(
+        access_token: string,
+        refresh_token: string,
+        action: (
+            access_token: string
+        ) => Promise<Resource>,
+        tokensReceived: (
+            access_token: string,
+            refresh_token: string
+        ) => void,
+        tokenRevoked: () => void
+    ): Promise<Resource> {
+
+        return action(
+            access_token
+        ).catch(
+            async ({ response }: { response: ErrorResponse }) => {
                 if (response.status === 401) {
 
                     const body = response.body as {
@@ -104,13 +103,11 @@ const AuthAPI = (
                     }
 
                     if (body.message === 'Unauthorized - Invalid Token.') {
-                        request.get(`${url}/refresh`)
+
+                        return request.get(`${url}/refresh`)
                             .set('Accept', 'application/json')
                             .set('Refresh', refresh_token)
-                            .end((error: any, response: Response) => {
-                                if (error) {
-                                    return console.error(error);
-                                }
+                            .then((response: Response) => {
 
                                 const {
                                     access_token,
@@ -123,24 +120,18 @@ const AuthAPI = (
                                 );
 
                                 // Attempt action again.
-                                action(access_token)
+                                return action(access_token);
                             });
-
-                        return true;
                     }
                     else if (body.message === 'Unauthorized - New Token Required.') {
                         tokenRevoked();
-                        return false;
-                    }
-                    else {
-                        return false;
+                        throw new Error();
                     }
                 }
-                else {
-                    return false;
-                }
+
+                return Promise.reject(response);
             }
-        )
+        );
     }
 });
 
