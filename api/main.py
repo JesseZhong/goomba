@@ -1,13 +1,17 @@
 #!/bin/python
-from os import getenv
-from dotenv import load_dotenv
-from flask import Flask
-from flask_restful import Api
-from api.authorization import RefreshAccess, RequestAccess, RequestAuthorization
-from api.directories import Directories, Directory
-from api.tags import Tags
-from api.videos import DownloadVideo, StreamVideo, Video, Videos, VideoMeta
-from api.images import ImageUpload
+try:
+    from os import getenv
+    from dotenv import load_dotenv
+    from flask import Flask
+    from flask_restful import Api
+    from api.authorization import RefreshAccess, RequestAccess, RequestAuthorization
+    from api.directories import Directories, Directory
+    from api.tags import Tags
+    from api.videos import DownloadVideo, StreamVideo, Video, Videos, VideoMeta
+    from api.images import ImageUpload
+except ImportError as e:
+    print(e)
+    exit()
 
 
 load_dotenv()
