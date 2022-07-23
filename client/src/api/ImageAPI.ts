@@ -7,7 +7,7 @@ interface Progress {
     direction?: string
 }
 
-export interface ImageUpload {
+export interface ImageUploadData {
     image_key: string,
     image_url?: string
 }
@@ -35,7 +35,7 @@ const ImageAPI = (
         image_key: string,
         file: File,
         event?: events.EventEmitter
-    ): Promise<ImageUpload> {
+    ): Promise<ImageUploadData> {
         return await access(
             async (token: string) =>
                 // Request presigned url to use for upload.

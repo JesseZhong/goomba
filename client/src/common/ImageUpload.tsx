@@ -1,7 +1,9 @@
 import React from 'react';
 import events from 'events';
 import ImageActions from '../actions/ImageActions';
-import { basename } from 'path';
+import { ImageUploadData } from '../api/ImageAPI';
+
+const basename = (path: string) => path.split(/[\\/]/).pop();
 
 
 const ImageUpload = (props: {
@@ -37,22 +39,21 @@ const ImageUpload = (props: {
 
                     const file = event?.target?.files?.[0];
                     if (file) {
-                        const filename = basename(file.name);
+                        const filename = basename(file.name) ?? '';
                         ImageActions.upload(
                             filename,
                             file,
-                            (
-                                file_key: string,
-                                image_url?: string
-                            ) => {
-                                setValue(file_key);
+                            progressEvent
+                        )
+                        .then(
+                            (imageUpload: ImageUploadData) => {
+                                setValue(imageUpload.image_key);
                                 setProgress(undefined);
                                 props.onChange?.(
-                                    file_key,
-                                    image_url
+                                    imageUpload.image_key,
+                                    imageUpload.image_url
                                 );
                             },
-                            progressEvent
                         );
                     }
                 }}
