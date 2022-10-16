@@ -1,7 +1,6 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import DirectoryCard from './DirectoryCard';
-import { Directory } from './Directory';
 import avatar from '../assets/chadgura.png';
 
 
