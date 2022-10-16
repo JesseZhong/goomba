@@ -1,7 +1,7 @@
 // @ts-nocheck
 // Type checking disabled so that mock helper methods won't error on build.
 import request from 'superagent';
-import AuthAPI, { AuthAPIClient, TokenResponse } from '../api/AuthAPI';
+import AuthAPI, { AuthAPIClient, TokenResponse } from './AuthAPI';
 
 jest.mock('superagent');
 

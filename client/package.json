@@ -16,10 +16,22 @@
     "build-ssr": "webpack --config webpack.ssr.js",
     "build-ssr-dev": "webpack --config webpack.ssr-dev.js",
     "ssr-test-bot": "node -e 'require(\"./src/ssr/tests/run.js\").bot()'",
-    "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'"
+    "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-webpack5": "^6.5.12",
+    "@storybook/manager-webpack5": "^6.5.12",
+    "@storybook/node-logger": "^6.5.12",
+    "@storybook/preset-create-react-app": "^4.0.0",
+    "@storybook/react": "^6.5.12",
+    "@storybook/testing-library": "^0.0.13",
     "@types/classnames": "^2.2.10",
     "@types/flux": "^3.1.9",
     "@types/jest": "^27.x",
@@ -84,6 +96,16 @@
     "extends": [
       "react-app",
       "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
     ]
   }
 }
