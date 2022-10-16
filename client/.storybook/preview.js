@@ -1,9 +1,14 @@
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
-  controls: {
-    matchers: {
-      color: /(background|color)$/i,
-      date: /Date$/,
+  darkMode: {
+    dark: {
+      ...themes.dark,
+      appBg: 'black',
     },
+    light: {
+      ...themes.normal,
+      appBg: 'red',
+    },
+    default: 'dark',
+    classTarget: 'html',
   },
-}
+};
