@@ -1,17 +1,17 @@
 import React from 'react';
-import { MemoryRouter } from 'react-router-dom';
 import Nav from './Nav';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
 
 export default {
     title: 'Navigation/Nav',
-    component: Nav
+    component: Nav,
+    parameters: {
+        withRouter: true,
+    },
 } as ComponentMeta<typeof Nav>;
 
-const Template: ComponentStory<typeof Nav> = (args) => <MemoryRouter>
-    <Nav {...args} />
-</MemoryRouter>;
+const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
 
 export const Admin = Template.bind({});
 Admin.args = {

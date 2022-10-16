@@ -28,5 +28,5 @@ Empty.args = {
     video: {
         id: 'some-id',
         name: 'Empty Video Card Title',
-    }
+    },
 };
