@@ -23,7 +23,7 @@ const VideoCard = (props: {
             >
                 <div className='thumbnail'>
                     {
-                        video.thumbnail_key
+                        video.thumbnail_url
                         ? <img
                             className='img-fluid rounded-start'
                             src={video.thumbnail_url}
