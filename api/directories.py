@@ -29,11 +29,11 @@ class Directory(Resource):
         """
 
         if not directory_id:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
         
         # Validate the id.
         if not verify_id(directory_id):
-            abort(400, 'Invalid directory ID.')
+            abort(400, message='Invalid directory ID.')
 
         # Acquire and validate the request body.
         directory = verify_schema('schemas/put_directory.json')
@@ -80,11 +80,11 @@ class Directory(Resource):
         """
 
         if not directory_id:
-            abort(400, 'Missing ID.')
+            abort(400, message='Missing ID.')
 
         # Validate the id.
         if not verify_id(directory_id):
-            abort(400, 'Invalid directory ID.')
+            abort(400, message='Invalid directory ID.')
 
         db = open_db()
 

@@ -31,7 +31,7 @@ def verify_schema(
     try:
         data = request.get_json(force=True)
     except TypeError:
-        abort(400, 'Malformed request body.')
+        abort(400, message='Malformed request body.')
 
     # Grab local path.
     apiDir = path.dirname(path.realpath(__file__))

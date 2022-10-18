@@ -58,7 +58,7 @@ def permissions_check(
 
     except KeyError as e:
         print(e)
-        abort(418, 'I''m a little teapot.')
+        abort(418, message='I\'m a little teapot.')
 
     full_username = f'{username}#{discriminator}'
 
