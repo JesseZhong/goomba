@@ -1,3 +1,4 @@
+from email import message
 from os import getenv
 from dotenv import load_dotenv
 from typing import Dict
@@ -34,14 +35,14 @@ class ImageUpload(Resource):
         """
 
         if not image_key:
-            abort(400, 'Missing image key.')
+            abort(400, message='Missing image key.')
 
         if not re.match(
             IMAGE_KEY_REGEX,
             image_key,
             re.RegexFlag.IGNORECASE
         ):
-            abort(400, 'Invalid key.')
+            abort(400, message='Invalid key.')
 
         s3 = client(
             's3',

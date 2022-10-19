@@ -28,7 +28,9 @@ const titles: string[] = [
     'Gub Gubs',
     'Groombers',
     'Gubbers',
-    'Goobus'
+    'Goobus',
+    'Glombus',
+    'Gorbus',
 ]
 
 // Load session.
