@@ -13,10 +13,10 @@ COMMANDS
 
     users | user | u        Lists the allowed users for the app.
                             Subcommands:
-                                add | update                     Adds or updates a user to the allowable list. Prompts user for username.
-                                add | update <username> admin    Adds or updates a user as an admin.
-                                remove | delete                  Removes a user from the allowable list. Prompts for username.
-                                remove | delete <username>       Removes a user from the allowable list.
+                                add | update                     Adds or updates a user to the allowable list. Prompts user for user_id.
+                                add | update <user_id> admin     Adds or updates a user as an admin.
+                                remove | delete                  Removes a user from the allowable list. Prompts for user_id.
+                                remove | delete <user_id>        Removes a user from the allowable list.
 
     roles | role | r        Lists the allowed roles for the app.
                             Subcommands:
@@ -175,13 +175,13 @@ case "$arg1" in
     users | user | u)
         case "$arg2" in
             add | update)
-                username=$(prompt "username" $arg3)
+                user_id=$(prompt "user_id" $arg3)
                 [[ "$arg4" == "admin" ]] && admin="True" || admin="False"
-                func="u.put_user('$username', $admin)"
+                func="u.put_user('$user_id', $admin)"
             ;;
             delete | remove)
-                username=$(prompt "username" $arg3)
-                func="u.delete_user('$username')"
+                user_id=$(prompt "user_id" $arg3)
+                func="u.delete_user('$user_id')"
             ;;
             *)
                 func="u.list_users()"

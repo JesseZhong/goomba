@@ -1,8 +1,29 @@
+import requests
+from os import getenv
+from dotenv import load_dotenv
 from typing import Dict, Set
 from datetime import datetime
 from api.db import get, update
+from json import loads
 
 TIME_FORMAT = '%Y.%m.%d %H:%M:%S'
+
+load_dotenv()
+DISCORD_API = getenv('DISCORD_API', 'https://discord.com/api')
+BOT_TOKEN = getenv('BOT_TOKEN')
+
+def lookup_user(user_id: str):
+    response = requests.get(
+        f'{DISCORD_API}/users/{user_id}',
+        headers={
+            'Authorization': f'Bot {BOT_TOKEN}'
+        }
+    )
+    
+    if response.ok and response.content:
+        return loads(response.content)
+    else:
+        return None
 
 def list_users():
     """
@@ -11,39 +32,52 @@ def list_users():
     users = get('users')
 
     user_list = []
-    for username, user in users.items():
+    for user_id, user in users.items():
+        found_user = lookup_user(user_id)
+        username = found_user['username'] if found_user else ''
+
         if 'is_admin' in user and user['is_admin']:
-            user_list.append(f'{username} [admin]')
+            user_list.append(f'{username} ({user_id}) [admin]')
         else:
-            user_list.append(username)
+            user_list.append(f'{username} ({user_id})')
+
     print('Users: ' + ', '.join(user_list))
 
 
 def delete_user(
-    username: str
+    user_id: str
 ):
     """
         Attempts to delete a user from the db.
     """
     users = get('users')
 
-    if username in users:
-        del users[username]
+    if user_id in users:
+        del users[user_id]
         update('users', users)
 
 
 def put_user(
-    username: str,
+    user_id: str,
     is_admin: bool = False
 ):
     """
         Add a user and maybe a role.
     """
-    users = get('users')
-    users[username] = {
-        'is_admin': is_admin
-    }
-    update('users', users)
+    user = lookup_user(user_id)
+    if user:
+        username = user['username']
+        discriminator = user['discriminator']
+
+        users = get('users')
+        users[user_id] = {
+            'is_admin': is_admin
+        }
+        update('users', users)
+
+        print(f'Added {username}#{discriminator}.')
+    else:
+        print('User not found.')
 
 
 def list_roles():

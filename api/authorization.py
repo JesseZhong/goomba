@@ -50,25 +50,21 @@ def permissions_check(
     except ExpiredTokenError:
         abort(401, message='Unauthorized - New Token Required.')
 
-    username = ''
-    discriminator = ''
+    user_id = ''
     try:
-        username = user['username']
-        discriminator = user['discriminator']
+        user_id = user['id']
 
     except KeyError as e:
         print(e)
         abort(418, message='I\'m a little teapot.')
 
-    full_username = f'{username}#{discriminator}'
-
     permitted_users = get('users')
 
     # Check if the user has permission to view the resource.
-    if full_username in permitted_users:
+    if user_id in permitted_users:
 
         # Check if admin.
-        user = permitted_users[full_username]
+        user = permitted_users[user_id]
         is_admin = 'is_admin' in user and user['is_admin']
 
         # If the resource is restricted to admins only,
