@@ -34,12 +34,17 @@ def list_users():
     user_list = []
     for user_id, user in users.items():
         found_user = lookup_user(user_id)
-        username = found_user['username'] if found_user else ''
+
+        full_username = ''
+        if found_user:
+            username = found_user['username']
+            discriminator = found_user['discriminator']
+            full_username = f'{username}#{discriminator}'
 
         if 'is_admin' in user and user['is_admin']:
-            user_list.append(f'{username} ({user_id}) [admin]')
+            user_list.append(f'{full_username} ({user_id}) [admin]')
         else:
-            user_list.append(f'{username} ({user_id})')
+            user_list.append(f'{full_username} ({user_id})')
 
     print('Users: ' + ', '.join(user_list))
 
