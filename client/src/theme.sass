@@ -18,47 +18,47 @@ $theme-colors: ("primary": $primary, "secondary": $secondary, "success": $succes
 @import "bootstrap/scss/bootstrap"
 
 body
-    font-family: 'Roboto Mono', monospace
-    color: #dcddde !important
+  font-family: 'Roboto Mono', monospace
+  color: #dcddde !important
 
 @keyframes goob-card-animation
   0%
-    transform: translateY(-0.3rem)
-    opacity: 0.4
+  transform: translateY(-0.3rem)
+  opacity: 0.4
   50%
-    transform: translateY(0.1rem)
-    opacity: 0.8
+  transform: translateY(0.1rem)
+  opacity: 0.8
   100%
-    transform: translateY(0)
-    opacity: 1
+  transform: translateY(0)
+  opacity: 1
 
 @keyframes goob-nav-animation
   0%
-    transform: translateX(2rem)
-    opacity: 0.4
+  transform: translateX(2rem)
+  opacity: 0.4
   50%
-    transform: translateX(-0.3rem)
-    opacity: 0.8
+  transform: translateX(-0.3rem)
+  opacity: 0.8
   100%
-    transform: translateX(0)
-    opacity: 1
-    
+  transform: translateX(0)
+  opacity: 1
+  
 
 @mixin delayed-animation($anim, $number, $delay)
   @for $i from 1 to ($number + 1)
-    &:nth-child(#{$i})
-      opacity: 0
-      animation: (#{$anim}) (#{$i*$delay})
-      -webkit-animation: (#{$anim}) (#{$i*$delay})
+  &:nth-child(#{$i})
+    opacity: 0
+    animation: (#{$anim}) (#{$i*$delay})
+    -webkit-animation: (#{$anim}) (#{$i*$delay})
 
 div.card.goob
   @include delayed-animation($anim: goob-card-animation 0.4s normal forwards, $number: 8, $delay: 0.05s)
   border: 1px solid $primary
 
   &> div.card-body
-    background: black
+  background: black
 
 nav
   a
-    @include delayed-animation($anim: goob-nav-animation 0.4s normal forwards, $number: 6, $delay: 0.05s)
-    
+  @include delayed-animation($anim: goob-nav-animation 0.4s normal forwards, $number: 6, $delay: 0.05s)
+  

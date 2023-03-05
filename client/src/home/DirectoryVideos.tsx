@@ -8,30 +8,30 @@ import VideosByDate from '../video-views/VideosByDate';
 
 
 const DirectoryVideos = (props: {
-    directories: Directories,
-    videos: Videos
+  directories: Directories,
+  videos: Videos
 }) => {
-    const navigate = useNavigate();
-    const directories = props.directories.get_lookup();
-    const { dirName } = useParams();
+  const navigate = useNavigate();
+  const directories = props.directories.get_lookup();
+  const { dirName } = useParams();
 
-    // No ID passed or it doesn't exists? 404.
-    if (!dirName || !directories.has(dirName)) {
-        navigate('/not-found');
-        return <></>;
-    }
+  // No ID passed or it doesn't exists? 404.
+  if (!dirName || !directories.has(dirName)) {
+    navigate('/not-found');
+    return <></>;
+  }
 
-    const currentDir = directories.get(dirName);
+  const currentDir = directories.get(dirName);
 
-    const currentVideos = compact(
-        currentDir?.videos?.map(
-            vid => props.videos.get(vid)
-        )
-    );
+  const currentVideos = compact(
+    currentDir?.videos?.map(
+      vid => props.videos.get(vid)
+    )
+  );
 
-    return (
-        <VideosByDate videos={currentVideos} />
-    );
+  return (
+    <VideosByDate videos={currentVideos} />
+  );
 }
 
 export default DirectoryVideos;

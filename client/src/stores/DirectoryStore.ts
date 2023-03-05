@@ -6,35 +6,35 @@ import { Directories } from '../directories/Directory';
 
 class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
 
-    public constructor() {
-        super(AppDispatcher);
-    }
+  public constructor() {
+    super(AppDispatcher);
+  }
 
-    public getInitialState(): Directories {
-        return new Directories();
-    }
+  public getInitialState(): Directories {
+    return new Directories();
+  }
 
-    public reduce(state: Directories, action: ActionPayload): Directories {
-        switch(action.type) {
-            case ActionTypes.RECEIVE_DIRECTORIES:
-                const receiveAction: ReceiveDirectoriesPayload = action as ReceiveDirectoriesPayload;
-                if (receiveAction) {
-                    state = receiveAction.directories;
-                }
-                return state;
-
-            case ActionTypes.PUT_DIRECTORY:
-                const putAction: PutDirectoryPayload = action as PutDirectoryPayload;
-                if (putAction) {
-                    const directory = putAction.directory;
-                    state.set(directory.id, directory);
-                }
-                return new Directories(Object.fromEntries(state));
-
-            default:
-                return state;
+  public reduce(state: Directories, action: ActionPayload): Directories {
+    switch(action.type) {
+      case ActionTypes.RECEIVE_DIRECTORIES:
+        const receiveAction: ReceiveDirectoriesPayload = action as ReceiveDirectoriesPayload;
+        if (receiveAction) {
+          state = receiveAction.directories;
         }
+        return state;
+
+      case ActionTypes.PUT_DIRECTORY:
+        const putAction: PutDirectoryPayload = action as PutDirectoryPayload;
+        if (putAction) {
+          const directory = putAction.directory;
+          state.set(directory.id, directory);
+        }
+        return new Directories(Object.fromEntries(state));
+
+      default:
+        return state;
     }
+  }
 }
 
 export default new DirectoryStore();

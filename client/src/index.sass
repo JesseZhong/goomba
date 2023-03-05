@@ -7,8 +7,8 @@ html, body, div#root > div.container, .vh-100
   min-height: 100vh
 
 div.page
-    min-width: 100vh
-    min-height: 100vh 
+  min-width: 100vh
+  min-height: 100vh 
 
 
 body
@@ -19,20 +19,20 @@ ol.ordered-list
   list-style: none
 
   > li
-    margin-left: 1rem
-    counter-increment: $orderedList
-    position: relative
+  margin-left: 1rem
+  counter-increment: $orderedList
+  position: relative
 
-    &::before
-      content: counter($orderedList)
-      font-weight: bold
-      font-size: 82%
-      background: $primary
-      width: $size
-      height: $size
-      text-align: center
-      position: absolute
-      margin-left: -($size + 0.4rem)
-      border-radius: 50%
-      top: 8%
-    
+  &::before
+    content: counter($orderedList)
+    font-weight: bold
+    font-size: 82%
+    background: $primary
+    width: $size
+    height: $size
+    text-align: center
+    position: absolute
+    margin-left: -($size + 0.4rem)
+    border-radius: 50%
+    top: 8%
+  

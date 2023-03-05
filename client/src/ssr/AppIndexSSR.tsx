@@ -7,57 +7,57 @@ import VideoMeta from '../videos/VideoMeta';
 
 
 const getHtml = async (
-    api_url: string,
-    banner_url: string,
-    route?: string
+  api_url: string,
+  banner_url: string,
+  route?: string
 ) => {
 
-    let content = <></>;
-    if (route) {
-        const result = RegExp(
-            '^/watch/([0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})',
-            'i'
-        ).exec(route);
+  let content = <></>;
+  if (route) {
+    const result = RegExp(
+      '^/watch/([0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12})',
+      'i'
+    ).exec(route);
 
-        if (result && result.length > 1) {
+    if (result && result.length > 1) {
 
-            const video = await VideoMetaAPI(api_url).get(result[1]);
+      const video = await VideoMetaAPI(api_url).get(result[1]);
 
-            content = <VideoMeta video={video} />;
-        }
+      content = <VideoMeta video={video} />;
     }
+  }
 
-    const appString = ReactDOMServer.renderToString(
-        <>
-            <Helmet
-                htmlAttributes={{
-                    lang: 'en'
-                }}
-            >
-                <meta property='og:type' content='website' />
-                <meta property='og:title' content='Goomba' />
-                <meta property='og:url' content={ssrWindow.location.href} />
-                <meta property='og:image' content={banner_url} />
-                <meta property='og:description' content='OH NYOOO' />
+  const appString = ReactDOMServer.renderToString(
+    <>
+      <Helmet
+        htmlAttributes={{
+          lang: 'en'
+        }}
+      >
+        <meta property='og:type' content='website' />
+        <meta property='og:title' content='Goomba' />
+        <meta property='og:url' content={ssrWindow.location.href} />
+        <meta property='og:image' content={banner_url} />
+        <meta property='og:description' content='OH NYOOO' />
 
-                <meta name='twitter:card' content='summary_large_image' />
-            </Helmet>
-            {content}
-        </>
-    );
-    const helmet = Helmet.renderStatic();
+        <meta name='twitter:card' content='summary_large_image' />
+      </Helmet>
+      {content}
+    </>
+  );
+  const helmet = Helmet.renderStatic();
 
-    return `
+  return `
 <!doctype html>
 <html ${helmet.htmlAttributes.toString()}>
-    <head>
-        ${helmet.title.toString()}
-        ${helmet.meta.toString()}
-        ${helmet.link.toString()}
-    </head>
-    <body ${helmet.bodyAttributes.toString()}>
-        <div id="root">${appString}</div>
-    </body>
+  <head>
+    ${helmet.title.toString()}
+    ${helmet.meta.toString()}
+    ${helmet.link.toString()}
+  </head>
+  <body ${helmet.bodyAttributes.toString()}>
+    <div id="root">${appString}</div>
+  </body>
 </html>
 `;
 };

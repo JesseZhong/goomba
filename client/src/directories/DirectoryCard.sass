@@ -3,48 +3,48 @@
 $img-diameter: 7em
 
 div.directory-card
-    margin: 0.1em
-    position: relative
-    max-width: $img-diameter
+  margin: 0.1em
+  position: relative
+  max-width: $img-diameter
 
-    div.avatar
+  div.avatar
+    width: $img-diameter
+    height: $img-diameter
+    min-width: $img-diameter
+    min-height: $img-diameter
+    background: $background2
+    border-radius: 50%
+    overflow: hidden
+    text-align: center
+    position: relative
+
+    > div.avatar-img
+      position: relative
+      > img
         width: $img-diameter
         height: $img-diameter
         min-width: $img-diameter
         min-height: $img-diameter
-        background: $background2
-        border-radius: 50%
-        overflow: hidden
-        text-align: center
-        position: relative
-
-        > div.avatar-img
-            position: relative
-            > img
-                width: $img-diameter
-                height: $img-diameter
-                min-width: $img-diameter
-                min-height: $img-diameter
-                object-fit: cover
-                display: block
-                position: absolute
-
-                &.filter
-                    -webkit-mask: -webkit-linear-gradient(transparent 80%, black)
-                    -webkit-mask: linear-gradient(transparent 80%, black)
-                    filter: blur(0.4em) contrast(50%)
-        
-        > span
-            position: absolute
-            font-size: 5em
-            color: white
-            top: 50%
-            left: 50%
-            transform: translate(-50%, -50%)
-
-    span.name
-        font-size: 1.3em
+        object-fit: cover
+        display: block
         position: absolute
-        left: 50%
-        transform: translate(-50%, -60%)
-        text-shadow: 0 0 0.2em black
+
+        &.filter
+          -webkit-mask: -webkit-linear-gradient(transparent 80%, black)
+          -webkit-mask: linear-gradient(transparent 80%, black)
+          filter: blur(0.4em) contrast(50%)
+    
+    > span
+      position: absolute
+      font-size: 5em
+      color: white
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+
+  span.name
+    font-size: 1.3em
+    position: absolute
+    left: 50%
+    transform: translate(-50%, -60%)
+    text-shadow: 0 0 0.2em black
