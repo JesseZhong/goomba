@@ -20,7 +20,7 @@ describe('Auth API', () => {
 
   describe('when requesting authorization', () => {
 
-    it('should return a valid auth url', async () => {
+    it('returns a valid auth url', async () => {
 
       const state = 'fakestate';
       const auth_url = 'somethingsoemthingsomething';
@@ -38,7 +38,7 @@ describe('Auth API', () => {
 
     describe('with a falsified state', () => {
       
-      it('should throw an error', async () => {
+      it('throws an error', async () => {
         
         request.__setDefaultMockResponse({
           'body': {
@@ -56,7 +56,7 @@ describe('Auth API', () => {
 
     describe('with a valid state and code', () => {
 
-      it('should return access and refresh tokens', async () => {
+      it('returns access and refresh tokens', async () => {
 
         const tokens = {
           access_token: 'LET ME IN!!!',
@@ -94,7 +94,7 @@ describe('Auth API', () => {
 
     describe('with a valid token', () => {
 
-      it('should return the resource', async () => {
+      it('returns the resource', async () => {
 
         const getResource = async (
           _access_token: string
@@ -111,7 +111,7 @@ describe('Auth API', () => {
         expect(actual).toBe(fakeResource);
       });
 
-      it('should refresh an expired token', async () => {
+      it('refreshes an expired token', async () => {
 
         const access = 'shared access token';
         const oldRefresh = 'old refresh token';
@@ -131,13 +131,15 @@ describe('Auth API', () => {
           else {
             calls += 1;
             return Promise.reject({
-              'status': 401,
-              'body': {
-                'message': 'Unauthorized - Invalid Token.'
+              response: {
+                status: 401,
+                body: {
+                  message: 'Unauthorized - Invalid Token.'
+                },
               }
             });
           }
-        }
+        };
 
         // Simulate the refresh endpoint response.
         request.__setMockResponses({

@@ -96,7 +96,7 @@ const AuthAPI = (
       access_token
     ).catch(
       async ({ response }: { response: ErrorResponse }) => {
-        if (response.status === 401) {
+        if (response?.status === 401) {
 
           const body = response.body as {
             'message': string
