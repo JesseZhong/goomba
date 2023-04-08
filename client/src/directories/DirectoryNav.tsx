@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Directories } from './Directory';
-import DirectoryCard from './DirectoryCard';
+import DirectoryAvatar from './DirectoryAvatar';
 import './DirectoryNav.sass';
 
 
@@ -64,7 +64,7 @@ const DirectoryNav = (props: {
               to={encodeURI(dir.name)}
               className='mt-4 ms-3'
             >
-              <DirectoryCard directory={dir} />
+              <DirectoryAvatar directory={dir} />
             </NavLink>
         )
       }

@@ -3,11 +3,11 @@ import DirectoryActions from '../actions/DirectoryActions';
 import VideoActions from '../actions/VideoActions';
 import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
-import ManageDirectoriesSection from './ManageDirectoriesSection';
-import ManageVideosSection from './ManageVideosSection';
+import DirectoryManagmentSection from './DirectoryManagmentSection';
+import VideoManagementSection from './VideoManagementSection';
 import { DirectoryEditPending } from './DirectoryEditPending';
 
-const ManagePage = (props: {
+const ManagementPage = (props: {
   directories: Directories,
   videos: Videos,
   pendingDirectoryEdit: DirectoryEditPending
@@ -24,11 +24,11 @@ const ManagePage = (props: {
 
   return (
     <div>
-      <ManageDirectoriesSection
+      <DirectoryManagmentSection
         directories={props.directories}
         pendingDirectoryEdit={props.pendingDirectoryEdit}
       />  
-      <ManageVideosSection
+      <VideoManagementSection
         videos={props.videos}
         pendingDirectoryEdit={props.pendingDirectoryEdit}
       />
@@ -36,4 +36,4 @@ const ManagePage = (props: {
   );
 }
 
-export default ManagePage;
+export default ManagementPage;

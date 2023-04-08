@@ -4,7 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DirectoryValidation from './DirectoryValidation';
 import DirectoryActions from '../actions/DirectoryActions';
 import ImageUpload from '../common/ImageUpload';
-import DirectoryCard from './DirectoryCard';
+import DirectoryAvatar from './DirectoryAvatar';
 import OptionalField from '../common/OptionalField';
 import { v4 as uuid } from 'uuid';
 import './DirectoryEdit.sass';
@@ -139,7 +139,7 @@ const DirectoryEdit = (props: {
 
                 <div className='d-flex flex-column'>
                   <span>Preview</span>
-                  <DirectoryCard directory={values} />
+                  <DirectoryAvatar directory={values} />
                 </div>
 
               </div>

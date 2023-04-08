@@ -1,9 +1,9 @@
 import React from 'react';
-import { Directories, Directory } from '../directories/Directory';
-import DirectoryEditActions from '../actions/DirectoryEditActions';
-import EditSelectDirectoryCard from './DirectoryEditSelect';
-import { DirectoryEditPending } from './DirectoryEditPending';
 import DirectoryActions from '../actions/DirectoryActions';
+import DirectoryEditActions from '../actions/DirectoryEditActions';
+import DirectorySelectableAvatar from './DirectorySelectableAvatar';
+import { Directories, Directory } from '../directories/Directory';
+import { DirectoryEditPending } from './DirectoryEditPending';
 import './DirectorySelectList.sass';
 
 
@@ -75,7 +75,7 @@ const DirectorySelectList = (props: {
         directories &&
         directories.map(
           dir => 
-            <EditSelectDirectoryCard
+            <DirectorySelectableAvatar
               key={dir.id}
               directory={dir}
               onClick={() => {

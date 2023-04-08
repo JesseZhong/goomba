@@ -1,10 +1,9 @@
-import React from 'react';
 import { Video, Videos } from '../videos/Video';
-import VideoCardEditable from './VideoCardEditable';
-import './VideoEditMultiSelect.sass';
+import VideoCardEditor from './VideoCardEditor';
+import './VideoCardEditorMultiSelectList.sass';
 
 
-const EditMultiSelectVideoList = (props: {
+const VideoCardEditorMultiSelectList = (props: {
   videos: Videos | Video[],
   disableEdit?: boolean,
   selected?: Set<string>,
@@ -15,14 +14,16 @@ const EditMultiSelectVideoList = (props: {
     ? [...props.videos.values()]
     : props.videos;
 
-  const selected = props.selected;
-  const onSelected = props.onSelected;
-  const className = props.className;
+  const {
+    selected,
+    onSelected,
+    className
+  } = props;
 
   return (
     <div
       className={
-        'video-edit-multiselect d-flex flex-wrap flex-row' +
+        'video-card-editor-multi-select d-flex flex-wrap flex-row' +
         (className ? ` ${className}` : '')
       }
     >
@@ -38,7 +39,7 @@ const EditMultiSelectVideoList = (props: {
                 selected?.has(video.id) &&
                 <div className='selected-border' />
               }
-              <VideoCardEditable
+              <VideoCardEditor
                 video={video}
                 disableEdit={props.disableEdit}
                 onClick={(
@@ -64,7 +65,7 @@ const EditMultiSelectVideoList = (props: {
         )
       }
     </div>
-  )
+  );
 }
 
-export default EditMultiSelectVideoList;
+export default VideoCardEditorMultiSelectList;

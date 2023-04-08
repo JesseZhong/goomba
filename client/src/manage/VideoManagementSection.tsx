@@ -4,12 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Videos } from '../videos/Video';
 import VideoEdit from '../videos/VideoEdit';
 import DirectoryEditActions from '../actions/DirectoryEditActions';
-import EditMultiSelectVideoList from './VideoEditMultiSelect';
+import VideoCardEditorMultiSelectList from './VideoCardEditorMultiSelectList';
 import { DirectoryEditPending } from './DirectoryEditPending';
 import orderBy from 'lodash/orderBy';
 
 
-const ManageVideosSection = (props: {
+const VideoManagementSection = (props: {
   videos: Videos,
   pendingDirectoryEdit: DirectoryEditPending
 }) => {
@@ -45,7 +45,7 @@ const ManageVideosSection = (props: {
             finished={() => setVideoAdd(false)}
           />
         }
-        <EditMultiSelectVideoList
+        <VideoCardEditorMultiSelectList
           videos={videos}
           disableEdit={!!pendingDirEdit.directory}
           selected={pendingDirEdit.selectedVideos}
@@ -58,4 +58,4 @@ const ManageVideosSection = (props: {
   );
 }
 
-export default ManageVideosSection;
+export default VideoManagementSection;

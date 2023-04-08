@@ -1,15 +1,15 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import DirectoryCard from './DirectoryCard';
+import DirectoryAvatar from './DirectoryAvatar';
 import avatar from '../assets/chadgura.png';
 
 
 export default {
   title: 'Directories/DirectoryCard',
-  component: DirectoryCard
-} as ComponentMeta<typeof DirectoryCard>;
+  component: DirectoryAvatar
+} as ComponentMeta<typeof DirectoryAvatar>;
 
-const Template: ComponentStory<typeof DirectoryCard> = (args) => <DirectoryCard {...args} />;
+const Template: ComponentStory<typeof DirectoryAvatar> = (args) => <DirectoryAvatar {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {

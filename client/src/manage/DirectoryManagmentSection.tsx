@@ -7,7 +7,7 @@ import { DirectoryEditPending } from './DirectoryEditPending';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
-const ManageDirectoriesSection = (props: {
+const DirectoryManagmentSection = (props: {
   directories: Directories,
   pendingDirectoryEdit: DirectoryEditPending
 }) => {
@@ -44,4 +44,4 @@ const ManageDirectoriesSection = (props: {
   );
 }
 
-export default ManageDirectoriesSection;
+export default DirectoryManagmentSection;

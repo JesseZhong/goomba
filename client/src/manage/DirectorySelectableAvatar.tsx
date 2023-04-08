@@ -1,15 +1,15 @@
 import React from 'react';
 import { Directory } from '../directories/Directory';
 import DirectoryEdit from '../directories/DirectoryEdit';
-import DirectoryCard from '../directories/DirectoryCard';
+import DirectoryAvatar from '../directories/DirectoryAvatar';
 import ManageButtons from '../common/ManageButtons';
 import DirectoryActions from '../actions/DirectoryActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
-import './DirectoryEditSelect.sass';
+import './DirectorySelectableAvatar.sass';
 
 
-const EditSelectDirectoryCard = (props: {
+const DirectorySelectableAvatar = (props: {
   directory: Directory,
   selected?: boolean,
   onClick?: () => void,
@@ -30,7 +30,7 @@ const EditSelectDirectoryCard = (props: {
     <div
       ref={wrap}
       className={
-        'directory-edit-select' +
+        'directory-selectable-avatar' +
         (className ? ` ${className}` : '')
       }
     >
@@ -53,7 +53,7 @@ const EditSelectDirectoryCard = (props: {
             selected &&
             <div className='selected-ring' />
           }
-          <DirectoryCard
+          <DirectoryAvatar
             directory={directory}
             onClick={props.onClick}
           />
@@ -90,4 +90,4 @@ const EditSelectDirectoryCard = (props: {
   );
 }
 
-export default EditSelectDirectoryCard;
+export default DirectorySelectableAvatar;

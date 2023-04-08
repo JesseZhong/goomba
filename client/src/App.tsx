@@ -9,7 +9,7 @@ import VideoPlayer from './videos/VideoPlayer';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
 import SessionActions from './actions/SessionActions';
-import ManagePage from './manage/ManagePage';
+import ManagementPage from './manage/ManagementPage';
 import Denied from './auth/Denied';
 import Nav from './nav/Nav';
 import Home from './home/Home';
@@ -59,7 +59,7 @@ const App = (state: AppState) => {
             <Route
               path='/manage'
               element={
-                <ManagePage
+                <ManagementPage
                   directories={state.directories}
                   videos={state.videos}
                   pendingDirectoryEdit={state.pendingDirectoryEdit}

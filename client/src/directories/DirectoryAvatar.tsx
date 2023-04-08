@@ -1,10 +1,9 @@
-import React from 'react';
 import { MouseEventHandler } from 'react-bootstrap/node_modules/@types/react';
 import { Directory } from './Directory';
-import './DirectoryCard.sass';
+import './DirectoryAvatar.sass';
 
 
-const DirectoryCard = (props: {
+const DirectoryAvatar = (props: {
   directory: Directory,
   onClick?: MouseEventHandler<HTMLDivElement>,
   className?: string
@@ -46,4 +45,4 @@ const DirectoryCard = (props: {
   );
 }
 
-export default DirectoryCard;
+export default DirectoryAvatar;
