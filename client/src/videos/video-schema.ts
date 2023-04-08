@@ -4,7 +4,6 @@ const legalCharacterRegex = /^[^\\^{}%`"<>|]{1,}/;
 const legalCharacterRegexMessage = 'Cannot contain: ^{}%\'"<>|';
 
 const genGeneralInputSchema = () => yup.string()
-  .required('Required.')
   .min(2, 'Too short.')
   .matches(
     legalCharacterRegex,
@@ -19,8 +18,8 @@ const genIsoDateSchema = () => yup.string()
   );
 
 const videoSchema = yup.object().shape({
-  name: genGeneralInputSchema(),
-  stream_key: genGeneralInputSchema(),
+  name: genGeneralInputSchema().required(),
+  stream_key: genGeneralInputSchema().required(),
   download_key: genGeneralInputSchema(),
   download_available: yup.boolean().optional(),
   member: yup.boolean().optional(),
