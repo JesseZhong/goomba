@@ -7,27 +7,27 @@ import DirectoryNav from '../directories/DirectoryNav';
 
 
 const Home = (props: {
-    directories: Directories
+  directories: Directories
 }) => {
-    const { dirName } = useParams();
+  const { dirName } = useParams();
 
-    React.useEffect(() => {
-            DirectoryActions.get();
-            VideoActions.getVideos();
-        },
-        []
-    );
+  React.useEffect(() => {
+      DirectoryActions.get();
+      VideoActions.getVideos();
+    },
+    []
+  );
 
-    return (
-        <div className='d-flex flex-column'>
-            <DirectoryNav
-                directories={props.directories}
-                directoryName={dirName}
-                className='mb-4'
-            />
-            <Outlet />
-        </div>
-    );
+  return (
+    <div className='d-flex flex-column'>
+      <DirectoryNav
+        directories={props.directories}
+        directoryName={dirName}
+        className='mb-4'
+      />
+      <Outlet />
+    </div>
+  );
 }
 
 export default Home;

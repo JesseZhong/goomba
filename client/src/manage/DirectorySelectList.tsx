@@ -8,101 +8,101 @@ import './DirectorySelectList.sass';
 
 
 const DirectorySelectList = (props: {
-    directories: Directories | Directory[],
-    pendingDirectoryEdit: DirectoryEditPending
-    className?: string
+  directories: Directories | Directory[],
+  pendingDirectoryEdit: DirectoryEditPending
+  className?: string
 }) => {
-    const directories = props.directories
-        ? [...props.directories.values()]
-        : props.directories;
-    const className = props.className;
+  const directories = props.directories
+    ? [...props.directories.values()]
+    : props.directories;
+  const className = props.className;
 
-    const [selected, setSelected] = React.useState<Directory | undefined>(undefined);
+  const [selected, setSelected] = React.useState<Directory | undefined>(undefined);
 
-    /**
-     * Setup a selected directory so videos can be selected for it.
-     * @param directory Selected directory or nothing.
-     */
-    const doSetSelected = (
-        directory?: Directory
-    ) => {
-        setSelected(directory);
-        DirectoryEditActions.selectDirectory(directory);
-        DirectoryEditActions.selectVideos(
-            directory
-            ? new Set(directory.videos)
-            : undefined
-        );
+  /**
+   * Setup a selected directory so videos can be selected for it.
+   * @param directory Selected directory or nothing.
+   */
+  const doSetSelected = (
+    directory?: Directory
+  ) => {
+    setSelected(directory);
+    DirectoryEditActions.selectDirectory(directory);
+    DirectoryEditActions.selectVideos(
+      directory
+      ? new Set(directory.videos)
+      : undefined
+    );
+  }
+
+  /**
+   * Undo any selected videos and directory.
+   */
+  const reset = () => {
+    DirectoryEditActions.reset();
+    setSelected(undefined);
+  }
+
+  /**
+   * Apply any pending selected videos for a directory.
+   */
+  const confirmSelection = () => {
+    const pending = props.pendingDirectoryEdit;
+    if (pending.directory) {
+
+      // Apply pending videos to the selected directory.
+      const directory = pending.directory;
+      directory.videos = pending.selectedVideos
+        ? [...pending.selectedVideos.values()]
+        : undefined;
+
+      // Push changes.
+      DirectoryActions.put(directory);
+
+      // Reset pending after done.
+      reset();
     }
+  }
 
-    /**
-     * Undo any selected videos and directory.
-     */
-    const reset = () => {
-        DirectoryEditActions.reset();
-        setSelected(undefined);
-    }
+  return (
+    <div
+      className={
+        'directory-select-list d-flex flex-wrap ' +
+        (className ? ` ${className}` : '')
+      }
+    >
+      {
+        directories &&
+        directories.map(
+          dir => 
+            <EditSelectDirectoryCard
+              key={dir.id}
+              directory={dir}
+              onClick={() => {
 
-    /**
-     * Apply any pending selected videos for a directory.
-     */
-    const confirmSelection = () => {
-        const pending = props.pendingDirectoryEdit;
-        if (pending.directory) {
+                // Toggle if already selected.
+                if (selected?.id === dir.id) {
+                  doSetSelected(undefined);
+                } else {
+                  doSetSelected(dir);
+                }
+              }}
+              onEdit={() => {
 
-            // Apply pending videos to the selected directory.
-            const directory = pending.directory;
-            directory.videos = pending.selectedVideos
-                ? [...pending.selectedVideos.values()]
-                : undefined;
-
-            // Push changes.
-            DirectoryActions.put(directory);
-
-            // Reset pending after done.
-            reset();
-        }
-    }
-
-    return (
-        <div
-            className={
-                'directory-select-list d-flex flex-wrap ' +
-                (className ? ` ${className}` : '')
-            }
-        >
-            {
-                directories &&
-                directories.map(
-                    dir => 
-                        <EditSelectDirectoryCard
-                            key={dir.id}
-                            directory={dir}
-                            onClick={() => {
-
-                                // Toggle if already selected.
-                                if (selected?.id === dir.id) {
-                                    doSetSelected(undefined);
-                                } else {
-                                    doSetSelected(dir);
-                                }
-                            }}
-                            onEdit={() => {
-
-                                // Deselect on edit.
-                                if (selected?.id === dir.id) {
-                                    doSetSelected(undefined);
-                                }
-                            }}
-                            onConfirm={confirmSelection}
-                            onCancel={reset}
-                            selected={selected?.id === dir.id}
-                            className='mt-4 ms-3'
-                        />
-                )
-            }
-        </div>
-    )
+                // Deselect on edit.
+                if (selected?.id === dir.id) {
+                  doSetSelected(undefined);
+                }
+              }}
+              onConfirm={confirmSelection}
+              onCancel={reset}
+              selected={selected?.id === dir.id}
+              className='mt-4 ms-3'
+            />
+        )
+      }
+    </div>
+  )
 }
 
 export default DirectorySelectList;

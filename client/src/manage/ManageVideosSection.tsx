@@ -10,52 +10,52 @@ import orderBy from 'lodash/orderBy';
 
 
 const ManageVideosSection = (props: {
-    videos: Videos,
-    pendingDirectoryEdit: DirectoryEditPending
+  videos: Videos,
+  pendingDirectoryEdit: DirectoryEditPending
 }) => {
-    const pendingDirEdit = props.pendingDirectoryEdit;
+  const pendingDirEdit = props.pendingDirectoryEdit;
 
-    const videos = orderBy(
-        [...props.videos.values()],
-        ['date_added'],
-        ['desc']
-    );
-    const [videoAdd, setVideoAdd] = React.useState(false);
+  const videos = orderBy(
+    [...props.videos.values()],
+    ['date_added'],
+    ['desc']
+  );
+  const [videoAdd, setVideoAdd] = React.useState(false);
 
-    return (
-        <>
-            <div className='d-flex flex-row justify-content-end'>
-                <div className='align-self-center'>
-                    <button
-                        type='button'
-                        className='btn btn-outline-white text-primary'
-                        onClick={() => setVideoAdd(!videoAdd)}
-                    >
-                        <FontAwesomeIcon icon={faPlus} /> Video
-                    </button>
-                </div>
-            </div>
+  return (
+    <>
+      <div className='d-flex flex-row justify-content-end'>
+        <div className='align-self-center'>
+          <button
+            type='button'
+            className='btn btn-outline-white text-primary'
+            onClick={() => setVideoAdd(!videoAdd)}
+          >
+            <FontAwesomeIcon icon={faPlus} /> Video
+          </button>
+        </div>
+      </div>
 
-            <div
-                className='d-flex flex-column'
-            >
-                {
-                    videoAdd &&
-                    <VideoEdit
-                        finished={() => setVideoAdd(false)}
-                    />
-                }
-                <EditMultiSelectVideoList
-                    videos={videos}
-                    disableEdit={!!pendingDirEdit.directory}
-                    selected={pendingDirEdit.selectedVideos}
-                    onSelected={(videos: Set<string>) => {
-                        DirectoryEditActions.selectVideos(videos);
-                    }}
-                />
-            </div>
-        </>
-    );
+      <div
+        className='d-flex flex-column'
+      >
+        {
+          videoAdd &&
+          <VideoEdit
+            finished={() => setVideoAdd(false)}
+          />
+        }
+        <EditMultiSelectVideoList
+          videos={videos}
+          disableEdit={!!pendingDirEdit.directory}
+          selected={pendingDirEdit.selectedVideos}
+          onSelected={(videos: Set<string>) => {
+            DirectoryEditActions.selectVideos(videos);
+          }}
+        />
+      </div>
+    </>
+  );
 }
 
 export default ManageVideosSection;

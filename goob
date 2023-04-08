@@ -204,6 +204,7 @@ case "$arg1" in
         cd ./client/
 
         yarn install
+        yarn test
         yarn run build
 
         if [[ "$arg2" = 'dev' ]]
@@ -218,10 +219,6 @@ case "$arg1" in
         yarn install
         yarn run build
         yarn cdk deploy
-
-        # cdk deploy exiting with 1, even on successful deployment.
-        # Overriding exit code for CodeBuild until I figure out what's causing the 1.
-        exit 0
     ;;
     test)
         cd ./client/
@@ -235,4 +232,7 @@ case "$arg1" in
 esac
 
 # Execute any requested commands.
-[[ -v func ]] && exec_util "$func"
+if [[ -v func ]]
+then
+    exec_util "$func"
+fi

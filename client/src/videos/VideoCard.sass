@@ -5,37 +5,37 @@ $width: 33em
 $height: 9.5em
 
 div.video-card
-    margin: 0.1em
-    position: relative
-    background-color: $background5
-    border-radius: 5px
-    overflow: hidden
+  margin: 0.1em
+  position: relative
+  background-color: $background5
+  border-radius: 5px
+  overflow: hidden
 
-    min-width: $width
-    max-width: $width
+  min-width: $width
+  max-width: $width
+  min-height: $height
+  max-height: $height
+
+  span.title
+    font-size: 0.8em
+
+  div.thumbnail
+    min-width: $img-width
     min-height: $height
-    max-height: $height
 
-    span.title
-        font-size: 0.8em
+    > img
+      width: auto
+      object-fit: cover
+      min-height: $height
+      max-height: $height
 
-    div.thumbnail
-        min-width: $img-width
-        min-height: $height
+    > div.thumbholder
+      width: 100%
+      height: 100%
+      align-items: center
+      display: flex
+      background-color: $background2
 
-        > img
-            width: auto
-            object-fit: cover
-            min-height: $height
-            max-height: $height
-
-        > div.thumbholder
-            width: 100%
-            height: 100%
-            align-items: center
-            display: flex
-            background-color: $background2
-
-            > svg
-                display: block
-                margin: 0 auto
+      > svg
+        display: block
+        margin: 0 auto

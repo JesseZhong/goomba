@@ -18,8 +18,8 @@ $theme-colors: ("primary": $primary, "secondary": $secondary, "success": $succes
 @import "bootstrap/scss/bootstrap"
 
 body
-    font-family: 'Roboto Mono', monospace
-    color: #dcddde !important
+  font-family: 'Roboto Mono', monospace
+  color: #dcddde !important
 
 @keyframes goob-card-animation
   0%
@@ -42,7 +42,7 @@ body
   100%
     transform: translateX(0)
     opacity: 1
-    
+  
 
 @mixin delayed-animation($anim, $number, $delay)
   @for $i from 1 to ($number + 1)
@@ -61,4 +61,4 @@ div.card.goob
 nav
   a
     @include delayed-animation($anim: goob-nav-animation 0.4s normal forwards, $number: 6, $delay: 0.05s)
-    
+  
