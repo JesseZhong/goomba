@@ -1,8 +1,12 @@
 import { themes } from '@storybook/theming';
 import { addDecorator } from '@storybook/react';
+import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
 export const parameters = {
+  viewport: {
+    viewports: INITIAL_VIEWPORTS,
+  },
   backgrounds: {
     default: 'dark',
   },
@@ -20,9 +24,7 @@ export const parameters = {
 };
 
 addDecorator((Story, { parameters }) => {
-
   if (!!parameters) {
-
     if (parameters.withRouter) {
       return (<MemoryRouter>
         <Story />

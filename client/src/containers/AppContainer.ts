@@ -17,16 +17,16 @@ function getStores() {
     DirectoryStore,
     DirectoryEditStore,
     TagStore
-  ]
-}
+  ];
+};
 
 export interface AppState {
   session: Session,
   videos: Videos,
   directories: Directories,
   pendingDirectoryEdit: DirectoryEditPending,
-  tags: string[]
-}
+  tags: string[],
+};
 
 function getState(): AppState {
   return {
@@ -34,8 +34,8 @@ function getState(): AppState {
     videos: VideoStore.getState(),
     directories: DirectoryStore.getState(),
     pendingDirectoryEdit: DirectoryEditStore.getState(),
-    tags: TagStore.getState()
-  }
-}
+    tags: TagStore.getState(),
+  };
+};
 
 export default Container.createFunctional(App, getStores, getState);

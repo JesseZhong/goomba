@@ -13,9 +13,9 @@ import ManagePage from './manage/ManagePage';
 import Denied from './auth/Denied';
 import Nav from './nav/Nav';
 import Home from './home/Home';
-import chadgura from './assets/chadgura.png';
 import DirectoryVideos from './home/DirectoryVideos';
 import RecentVideos from './home/RecentVideos';
+import chadgura from './assets/chadgura.png';
 
 
 const titles: string[] = [
@@ -31,7 +31,7 @@ const titles: string[] = [
   'Goobus',
   'Glombus',
   'Gorbus',
-]
+];
 
 // Load session.
 SessionActions.load();
@@ -92,7 +92,7 @@ const App = (state: AppState) => {
               path='/'
               element={<Navigate replace to='/home' />}
             />
-            <Route path='*' element={PageNotFound} />
+            <Route path='*' element={<PageNotFound />} />
           </Routes>
         </>
       );
@@ -104,7 +104,7 @@ const App = (state: AppState) => {
             path='/'
             element={<Navigate replace to='/requestauth' />}
           />
-          <Route path='/denied' element={Denied} />
+          <Route path='/denied' element={<Denied />} />
           <Route
             path='/requestauth'
             element={<RequestAuthorization session={state.session} />}
@@ -155,7 +155,7 @@ const App = (state: AppState) => {
         {route()}
       </div>
     </>
-  )
-}
+  );
+};
 
 export default App;
