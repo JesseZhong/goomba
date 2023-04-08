@@ -62,7 +62,7 @@ const App = (state: AppState) => {
                 <ManagementPage
                   directories={state.directories}
                   videos={state.videos}
-                  pendingDirectoryEdit={state.pendingDirectoryEdit}
+                  pendingChanges={state.pendingChanges}
                 />
               }
             />

@@ -1,16 +1,16 @@
 import React from 'react';
-import DirectoryActions from '../actions/DirectoryActions';
-import VideoActions from '../actions/VideoActions';
-import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
+import { Directories } from '../directories/Directory';
+import { PendingChanges } from './PendingChanges';
+import VideoActions from '../actions/VideoActions';
+import DirectoryActions from '../actions/DirectoryActions';
 import DirectoryManagmentSection from './DirectoryManagmentSection';
 import VideoManagementSection from './VideoManagementSection';
-import { DirectoryEditPending } from './DirectoryEditPending';
 
 const ManagementPage = (props: {
   directories: Directories,
   videos: Videos,
-  pendingDirectoryEdit: DirectoryEditPending
+  pendingChanges: PendingChanges
 }) => {
   React.useEffect(() => {
       DirectoryActions.get();
@@ -26,11 +26,11 @@ const ManagementPage = (props: {
     <div>
       <DirectoryManagmentSection
         directories={props.directories}
-        pendingDirectoryEdit={props.pendingDirectoryEdit}
+        pendingChanges={props.pendingChanges}
       />  
       <VideoManagementSection
         videos={props.videos}
-        pendingDirectoryEdit={props.pendingDirectoryEdit}
+        pendingChanges={props.pendingChanges}
       />
     </div>
   );

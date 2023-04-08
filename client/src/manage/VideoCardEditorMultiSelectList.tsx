@@ -1,24 +1,28 @@
+import ManagementActions from '../actions/ManagementActions';
 import { Video, Videos } from '../videos/Video';
+import { PendingChanges } from './PendingChanges';
 import VideoCardEditor from './VideoCardEditor';
 import './VideoCardEditorMultiSelectList.sass';
 
 
 const VideoCardEditorMultiSelectList = (props: {
   videos: Videos | Video[],
-  disableEdit?: boolean,
-  selected?: Set<string>,
-  onSelected?: (videos: Set<string>) => void,
+  pendingChanges: PendingChanges,
+
   className?: string
 }) => {
+  const {
+    className,
+    pendingChanges: {
+      selectedDirectory,
+      selectedVideos,
+      unsavedVideos,
+    },
+  } = props;
+
   const videos = props.videos instanceof Videos
     ? [...props.videos.values()]
     : props.videos;
-
-  const {
-    selected,
-    onSelected,
-    className
-  } = props;
 
   return (
     <div
@@ -36,29 +40,44 @@ const VideoCardEditorMultiSelectList = (props: {
               className='video-section'
             >
               {
-                selected?.has(video.id) &&
+                selectedVideos?.has(video.id) &&
                 <div className='selected-border' />
               }
               <VideoCardEditor
                 video={video}
-                disableEdit={props.disableEdit}
+                disableEdit={!!selectedDirectory}
                 onClick={(
                   video: Video
                 ) => {
+                  if (!!selectedDirectory) {
+                    const id = video.id;
+  
+                    // Assign to new set to trigger rerender.
+                    const newSelected = new Set(selectedVideos);
+  
+                    // Toggle: Remove if it already exists.
+                    if (newSelected.has(id)) {
+                      newSelected.delete(id);
+                    }
+                    else {
+                      newSelected.add(id);
+                    }
+
+                    ManagementActions.selectVideos(newSelected);
+                  }
+                }}
+                onEditChange={(edit: boolean) => {
                   const id = video.id;
 
-                  // Assign to new set to trigger rerender.
-                  const newSelected = new Set(selected);
+                  const newUnsaved = new Set(unsavedVideos);
 
-                  // Toggle: Remove if it already exists.
-                  if (newSelected?.has(id)) {
-                    newSelected.delete(id);
-                  }
-                  else {
-                    newSelected.add(id);
+                  if (edit) {
+                    newUnsaved.add(id);
+                  } else if(newUnsaved.has(id)) {
+                    newUnsaved.delete(id);
                   }
 
-                  onSelected?.(newSelected);
+                  ManagementActions.setUnsavedVideos(newUnsaved);
                 }}
               />
             </div>

@@ -1,21 +1,28 @@
 import React from 'react';
 import DirectoryActions from '../actions/DirectoryActions';
-import DirectoryEditActions from '../actions/DirectoryEditActions';
+import ManagementActions from '../actions/ManagementActions';
 import DirectorySelectableAvatar from './DirectorySelectableAvatar';
 import { Directories, Directory } from '../directories/Directory';
-import { DirectoryEditPending } from './DirectoryEditPending';
+import { PendingChanges } from './PendingChanges';
 import './DirectorySelectList.sass';
 
 
 const DirectorySelectList = (props: {
   directories: Directories | Directory[],
-  pendingDirectoryEdit: DirectoryEditPending
+  pendingChanges: PendingChanges
   className?: string
 }) => {
   const directories = props.directories
     ? [...props.directories.values()]
     : props.directories;
-  const className = props.className;
+  const {
+    className,
+    pendingChanges: {
+      selectedDirectory,
+      selectedVideos,
+      unsavedVideos: unsavedVideos,
+    }
+  } = props;
 
   const [selected, setSelected] = React.useState<Directory | undefined>(undefined);
 
@@ -27,8 +34,8 @@ const DirectorySelectList = (props: {
     directory?: Directory
   ) => {
     setSelected(directory);
-    DirectoryEditActions.selectDirectory(directory);
-    DirectoryEditActions.selectVideos(
+    ManagementActions.selectDirectory(directory);
+    ManagementActions.selectVideos(
       directory
       ? new Set(directory.videos)
       : undefined
@@ -39,7 +46,7 @@ const DirectorySelectList = (props: {
    * Undo any selected videos and directory.
    */
   const reset = () => {
-    DirectoryEditActions.reset();
+    ManagementActions.resetSelections();
     setSelected(undefined);
   }
 
@@ -47,13 +54,12 @@ const DirectorySelectList = (props: {
    * Apply any pending selected videos for a directory.
    */
   const confirmSelection = () => {
-    const pending = props.pendingDirectoryEdit;
-    if (pending.directory) {
+    if (selectedDirectory) {
 
       // Apply pending videos to the selected directory.
-      const directory = pending.directory;
-      directory.videos = pending.selectedVideos
-        ? [...pending.selectedVideos.values()]
+      const directory = selectedDirectory;
+      directory.videos = selectedVideos
+        ? [...selectedVideos.values()]
         : undefined;
 
       // Push changes.
@@ -80,11 +86,15 @@ const DirectorySelectList = (props: {
               directory={dir}
               onClick={() => {
 
-                // Toggle if already selected.
-                if (selected?.id === dir.id) {
-                  doSetSelected(undefined);
-                } else {
-                  doSetSelected(dir);
+                // Don't allow selecting if videos are being edited.
+                if (!unsavedVideos?.size) {
+
+                  // Toggle if already selected.
+                  if (selected?.id === dir.id) {
+                    doSetSelected(undefined);
+                  } else {
+                    doSetSelected(dir);
+                  }
                 }
               }}
               onEdit={() => {

@@ -2,25 +2,39 @@ import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Videos } from '../videos/Video';
+import { PendingChanges } from './PendingChanges';
+import ManagementActions from '../actions/ManagementActions';
 import VideoEdit from '../videos/VideoEdit';
-import DirectoryEditActions from '../actions/DirectoryEditActions';
 import VideoCardEditorMultiSelectList from './VideoCardEditorMultiSelectList';
-import { DirectoryEditPending } from './DirectoryEditPending';
 import orderBy from 'lodash/orderBy';
 
 
+const NEW_VIDEO_ID = 'NEW_VIDEO_ID_FRFR';
+
 const VideoManagementSection = (props: {
   videos: Videos,
-  pendingDirectoryEdit: DirectoryEditPending
+  pendingChanges: PendingChanges
 }) => {
-  const pendingDirEdit = props.pendingDirectoryEdit;
-
   const videos = orderBy(
     [...props.videos.values()],
     ['date_added'],
     ['desc']
   );
+  const { unsavedVideos } = props.pendingChanges;
+
   const [videoAdd, setVideoAdd] = React.useState(false);
+  const changeVideoAdd = (value: boolean) => {
+    setVideoAdd(value);
+
+    const newUnsavedVideos = new Set(unsavedVideos);
+    if (value) {
+      newUnsavedVideos.add(NEW_VIDEO_ID);
+    } else if(newUnsavedVideos.has(NEW_VIDEO_ID)) {
+      newUnsavedVideos.delete(NEW_VIDEO_ID);
+    }
+
+    ManagementActions.setUnsavedVideos(newUnsavedVideos);
+  }
 
   return (
     <>
@@ -29,7 +43,7 @@ const VideoManagementSection = (props: {
           <button
             type='button'
             className='btn btn-outline-white text-primary'
-            onClick={() => setVideoAdd(!videoAdd)}
+            onClick={() => changeVideoAdd(!videoAdd)}
           >
             <FontAwesomeIcon icon={faPlus} /> Video
           </button>
@@ -42,16 +56,12 @@ const VideoManagementSection = (props: {
         {
           videoAdd &&
           <VideoEdit
-            finished={() => setVideoAdd(false)}
+            finished={() => changeVideoAdd(false)}
           />
         }
         <VideoCardEditorMultiSelectList
           videos={videos}
-          disableEdit={!!pendingDirEdit.directory}
-          selected={pendingDirEdit.selectedVideos}
-          onSelected={(videos: Set<string>) => {
-            DirectoryEditActions.selectVideos(videos);
-          }}
+          pendingChanges={props.pendingChanges}
         />
       </div>
     </>

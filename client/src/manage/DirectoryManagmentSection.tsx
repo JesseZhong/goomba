@@ -3,15 +3,15 @@ import { Directories } from '../directories/Directory';
 import DirectorySelectList from './DirectorySelectList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DirectoryEditPending } from './DirectoryEditPending';
+import { PendingChanges } from './PendingChanges';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 
 const DirectoryManagmentSection = (props: {
   directories: Directories,
-  pendingDirectoryEdit: DirectoryEditPending
+  pendingChanges: PendingChanges
 }) => {
-  const directories = props.directories;
+  const { directories, pendingChanges } = props;
   const [directoryAdd, setDirectoryAdd] = React.useState(false);
 
   return (
@@ -37,7 +37,7 @@ const DirectoryManagmentSection = (props: {
         }
         <DirectorySelectList
           directories={directories}
-          pendingDirectoryEdit={props.pendingDirectoryEdit}
+          pendingChanges={pendingChanges}
         />
       </div>
     </>

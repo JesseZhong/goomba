@@ -8,36 +8,48 @@ import ManageButtons from '../common/ManageButtons';
 const VideoCardEditor = (props: {
   video: Video,
   onClick?: (video: Video) => void,
+  onEditChange?: (editing: boolean) => void,
   disableEdit?: boolean,
   className?: string
 }) => {
-  const video = props.video;
+  const {
+    video,
+    onClick, 
+    onEditChange,
+    disableEdit,
+    className
+  } = props;
+
   const [edit, setEdit] = React.useState(false);
+  const changeEdit = (value: boolean) => {
+    setEdit(value);
+    onEditChange?.(value);
+  }
 
   const wrap = React.createRef<HTMLDivElement>();
 
   return (
     <div
       ref={wrap}
-      className={props.className}
+      className={className}
       style={{
         position: 'relative'
       }}
-      onClick={() => props.onClick?.(video)}
+      onClick={() => onClick?.(video)}
     >
       {
         edit
         ? <VideoEdit
           video={video}
-          finished={() => setEdit(false)}
+          finished={() => changeEdit(false)}
           className='my-3'
         />
         : <>
           {
-            !props.disableEdit &&
+            !disableEdit &&
             <ManageButtons
               owner={wrap}
-              onEditClick={() => setEdit(true)}
+              onEditClick={() => changeEdit(true)}
               onRemoveConfirm={() => {}}  // TODO: Remove
               overlay
             />
