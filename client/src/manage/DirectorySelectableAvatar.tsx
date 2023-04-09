@@ -8,15 +8,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
 import './DirectorySelectableAvatar.sass';
 
-
 const DirectorySelectableAvatar = (props: {
-  directory: Directory,
-  selected?: boolean,
-  onClick?: () => void,
-  onEdit?: () => void,
-  onConfirm?: () => void,
-  onCancel?: () => void,
-  className?: string
+  directory: Directory;
+  selected?: boolean;
+  onClick?: () => void;
+  onEdit?: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  className?: string;
 }) => {
   const directory = props.directory;
   const className = props.className;
@@ -30,17 +29,13 @@ const DirectorySelectableAvatar = (props: {
     <div
       ref={wrap}
       className={
-        'directory-selectable-avatar' +
-        (className ? ` ${className}` : '')
+        'directory-selectable-avatar' + (className ? ` ${className}` : '')
       }
     >
-      {
-        edit
-        ? <DirectoryEdit
-            directory={directory}
-            finished={() => setEdit(false)}
-          />
-        : <>
+      {edit ? (
+        <DirectoryEdit directory={directory} finished={() => setEdit(false)} />
+      ) : (
+        <>
           <ManageButtons
             owner={wrap}
             onEditClick={() => {
@@ -49,45 +44,26 @@ const DirectorySelectableAvatar = (props: {
             }}
             onRemoveConfirm={() => DirectoryActions.remove(directory.id)}
           />
-          {
-            selected &&
-            <div className='selected-ring' />
-          }
-          <DirectoryAvatar
-            directory={directory}
-            onClick={props.onClick}
-          />
-          {
-            selected &&
-            <div
-              className='vid-edit-controls'
-            >
+          {selected && <div className='selected-ring' />}
+          <DirectoryAvatar directory={directory} onClick={props.onClick} />
+          {selected && (
+            <div className='vid-edit-controls'>
               <button
                 className='confirm'
                 type='button'
                 onClick={props.onConfirm}
               >
-                <FontAwesomeIcon
-                  icon={faCheck}
-                  size='2x'
-                />
+                <FontAwesomeIcon icon={faCheck} size='2x' />
               </button>
-              <button
-                className='cancel'
-                type='button'
-                onClick={props.onCancel}
-              >
-                <FontAwesomeIcon
-                  icon={faTimes}
-                  size='2x'
-                />
+              <button className='cancel' type='button' onClick={props.onCancel}>
+                <FontAwesomeIcon icon={faTimes} size='2x' />
               </button>
             </div>
-          }
+          )}
         </>
-      }
+      )}
     </div>
   );
-}
+};
 
 export default DirectorySelectableAvatar;

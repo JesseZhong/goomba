@@ -4,7 +4,7 @@ const Denied = () => (
   <div
     className='d-flex justify-content-center align-items-center'
     style={{
-      height: '100vh'
+      height: '100vh',
     }}
   >
     <img
@@ -12,6 +12,6 @@ const Denied = () => (
       alt='Nope'
     />
   </div>
-)
+);
 
 export default Denied;

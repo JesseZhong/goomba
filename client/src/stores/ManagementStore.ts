@@ -2,10 +2,13 @@ import { ReduceStore } from 'flux/utils';
 import ActionTypes from '../actions/ActionTypes';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
 import { PendingChanges } from '../manage/PendingChanges';
-import { SelectDirectoryPayload, SelectVideosPayload, SetUnsavedVideosPayload } from '../actions/ManagementPayload';
+import {
+  SelectDirectoryPayload,
+  SelectVideosPayload,
+  SetUnsavedVideosPayload,
+} from '../actions/ManagementPayload';
 
 class ManagementStore extends ReduceStore<PendingChanges, ActionPayload> {
-
   public constructor() {
     super(AppDispatcher);
   }
@@ -14,12 +17,8 @@ class ManagementStore extends ReduceStore<PendingChanges, ActionPayload> {
     return {};
   }
 
-  public reduce(
-    state: PendingChanges,
-    action: ActionPayload
-  ): PendingChanges {
-
-    switch(action.type) {
+  public reduce(state: PendingChanges, action: ActionPayload): PendingChanges {
+    switch (action.type) {
       case ActionTypes.MANAGEMENT_SELECT_DIRECTORY:
         const selectDirAction = action as SelectDirectoryPayload;
         return {
@@ -50,7 +49,7 @@ class ManagementStore extends ReduceStore<PendingChanges, ActionPayload> {
           ...state,
           unsavedVideos: setUnsavedVidsAction?.videos,
         };
-        
+
       default:
         return state;
     }

@@ -9,6 +9,6 @@ if (!!container) {
   root.render(
     <BrowserRouter>
       <AppContainer />
-    </BrowserRouter>,
+    </BrowserRouter>
   );
 }

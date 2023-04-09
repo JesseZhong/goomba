@@ -15,7 +15,6 @@ export interface Video {
 }
 
 export class Videos extends Map<string, Video> {
-
   private readonly order: string[] = [];
   private readonly indexes: Map<string, number> = new Map();
 
@@ -30,10 +29,7 @@ export class Videos extends Map<string, Video> {
     }
   }
 
-  public set(
-    key: string,
-    value: Video
-  ) {
+  public set(key: string, value: Video) {
     const len = this.order.push(value.name);
     this.indexes.set(value.name, len - 1);
 

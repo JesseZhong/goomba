@@ -11,22 +11,16 @@ import ManagementStore from '../stores/ManagementStore';
 import { PendingChanges } from '../manage/PendingChanges';
 
 function getStores() {
-  return [
-    SessionStore,
-    VideoStore,
-    DirectoryStore,
-    ManagementStore,
-    TagStore
-  ];
-};
+  return [SessionStore, VideoStore, DirectoryStore, ManagementStore, TagStore];
+}
 
 export interface AppState {
-  session: Session,
-  videos: Videos,
-  directories: Directories,
-  pendingChanges: PendingChanges,
-  tags: string[],
-};
+  session: Session;
+  videos: Videos;
+  directories: Directories;
+  pendingChanges: PendingChanges;
+  tags: string[];
+}
 
 function getState(): AppState {
   return {
@@ -36,6 +30,6 @@ function getState(): AppState {
     pendingChanges: ManagementStore.getState(),
     tags: TagStore.getState(),
   };
-};
+}
 
 export default Container.createFunctional(App, getStores, getState);

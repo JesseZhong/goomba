@@ -1,8 +1,11 @@
 import AppDispatcher from '../AppDispatcher';
 import { Directory } from '../directories/Directory';
 import ActionTypes from './ActionTypes';
-import { SelectDirectoryPayload, SelectVideosPayload, SetUnsavedVideosPayload } from './ManagementPayload';
-
+import {
+  SelectDirectoryPayload,
+  SelectVideosPayload,
+  SetUnsavedVideosPayload,
+} from './ManagementPayload';
 
 const ManagementActions = {
   selectDirectory(directory?: Directory): void {

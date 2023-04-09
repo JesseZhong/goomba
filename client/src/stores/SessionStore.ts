@@ -5,19 +5,18 @@ import { Session } from '../auth/Session';
 import { SessionPayload } from '../actions/SessionPayloads';
 
 class SessionStore extends ReduceStore<Session, ActionPayload> {
-
   public constructor() {
     super(AppDispatcher);
   }
 
   public getInitialState(): Session {
     return {
-      session_id: ''
+      session_id: '',
     };
   }
 
   public reduce(state: Session, action: ActionPayload): Session {
-    switch(action.type) {
+    switch (action.type) {
       case ActionTypes.LOAD_SESSION:
         const loadAction: SessionPayload = action as SessionPayload;
         if (loadAction) {
@@ -28,7 +27,7 @@ class SessionStore extends ReduceStore<Session, ActionPayload> {
       case ActionTypes.SET_SESSION:
         const setAction: SessionPayload = action as SessionPayload;
         state = setAction.session;
-        return {...state};
+        return { ...state };
 
       default:
         return state;

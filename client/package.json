@@ -18,7 +18,8 @@
     "ssr-test-bot": "node -e 'require(\"./src/ssr/tests/run.js\").bot()'",
     "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'",
     "storybook": "start-storybook -p 6006 -s public",
-    "build-storybook": "build-storybook -s public"
+    "build-storybook": "build-storybook -s public",
+    "pretty": "prettier --write --single-quote --jsx-single-quote ."
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -52,6 +53,7 @@
     "@types/yup": "^0.28.0",
     "flow-remove-types": "^2.116.1",
     "jest-transform-stub": "^2.0.0",
+    "prettier": "^2.8.7",
     "react-scripts": "^5.0.1",
     "sass-embedded": "^1.58.3",
     "sass-loader": "^13.2.0",

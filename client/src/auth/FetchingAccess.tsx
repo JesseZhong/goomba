@@ -1,21 +1,20 @@
 import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { faCircleNotch, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleNotch,
+  faTimesCircle,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from './Session';
 import AuthActions from '../actions/AuthActions';
 
-const AwaitAccess = (
-  props: {
-    session: Session
-  }
-) => {
+const AwaitAccess = (props: { session: Session }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const goMain = () => {
     navigate('/');
-  }
+  };
 
   // NOTE: Discord OAuth service seems to call this route twice,
   // causing a second post to the API and therefore the Discord
@@ -23,18 +22,20 @@ const AwaitAccess = (
   // Check if the session already has a token before proceeding.
   if (props.session?.access_token) {
     goMain();
-    return <div>
-      <img
-        src='https://media1.tenor.com/images/bf327be1ebbde7f32baf5136042bf118/tenor.gif?itemid=14563637'
-        alt='To the moon!'
-      />
-    </div>
-  };
+    return (
+      <div>
+        <img
+          src='https://media1.tenor.com/images/bf327be1ebbde7f32baf5136042bf118/tenor.gif?itemid=14563637'
+          alt='To the moon!'
+        />
+      </div>
+    );
+  }
 
   // When the user authorizes or denies Discord access
   // they will be routed to this component via the Discord
   // OAuth redirect_uri.
-  
+
   // Grab the queries that were passed.
   const query = new URLSearchParams(location.search);
 
@@ -47,7 +48,7 @@ const AwaitAccess = (
       <div
         className='d-flex flex-column justify-content-center align-items-center'
         style={{
-          height: '100vh'
+          height: '100vh',
         }}
       >
         <FontAwesomeIcon
@@ -56,11 +57,10 @@ const AwaitAccess = (
           className='text-danger'
         />
         <h1>Authorization Required!</h1>
-        <p>You need to authorize access with Discord before viewing this page.</p>
-        <Link
-          to='/requestauth'
-          className='btn btn-secondary'
-        >
+        <p>
+          You need to authorize access with Discord before viewing this page.
+        </p>
+        <Link to='/requestauth' className='btn btn-secondary'>
           Retry
         </Link>
       </div>
@@ -77,7 +77,7 @@ const AwaitAccess = (
       <div
         className='d-flex flex-column justify-content-center align-items-center'
         style={{
-          height: '100vh'
+          height: '100vh',
         }}
       >
         <img
@@ -92,29 +92,21 @@ const AwaitAccess = (
 
   // Ping the API to retreive the access and refresh tokens from Discord.
   // Navigate back to root once the tokens are received.
-  AuthActions.requestAccess(
-    state,
-    code,
-  ).then(
-    goMain,
-    () => navigate('/denied')
+  AuthActions.requestAccess(state, code).then(goMain, () =>
+    navigate('/denied')
   );
 
   return (
     <div
       className='d-flex flex-column justify-content-center align-items-center'
       style={{
-        height: '100vh'
+        height: '100vh',
       }}
     >
       <h1>Fetching Access</h1>
-      <FontAwesomeIcon
-        icon={faCircleNotch}
-        size={'4x'}
-        spin
-      />
+      <FontAwesomeIcon icon={faCircleNotch} size={'4x'} spin />
     </div>
   );
-}
+};
 
 export default AwaitAccess;

@@ -8,18 +8,13 @@ import VideoEdit from '../videos/VideoEdit';
 import VideoCardEditorMultiSelectList from './VideoCardEditorMultiSelectList';
 import orderBy from 'lodash/orderBy';
 
-
 const NEW_VIDEO_ID = 'NEW_VIDEO_ID_FRFR';
 
 const VideoManagementSection = (props: {
-  videos: Videos,
-  pendingChanges: PendingChanges
+  videos: Videos;
+  pendingChanges: PendingChanges;
 }) => {
-  const videos = orderBy(
-    [...props.videos.values()],
-    ['date_added'],
-    ['desc']
-  );
+  const videos = orderBy([...props.videos.values()], ['date_added'], ['desc']);
   const { unsavedVideos } = props.pendingChanges;
 
   const [videoAdd, setVideoAdd] = React.useState(false);
@@ -29,12 +24,12 @@ const VideoManagementSection = (props: {
     const newUnsavedVideos = new Set(unsavedVideos);
     if (value) {
       newUnsavedVideos.add(NEW_VIDEO_ID);
-    } else if(newUnsavedVideos.has(NEW_VIDEO_ID)) {
+    } else if (newUnsavedVideos.has(NEW_VIDEO_ID)) {
       newUnsavedVideos.delete(NEW_VIDEO_ID);
     }
 
     ManagementActions.setUnsavedVideos(newUnsavedVideos);
-  }
+  };
 
   return (
     <>
@@ -50,15 +45,8 @@ const VideoManagementSection = (props: {
         </div>
       </div>
 
-      <div
-        className='d-flex flex-column'
-      >
-        {
-          videoAdd &&
-          <VideoEdit
-            finished={() => changeVideoAdd(false)}
-          />
-        }
+      <div className='d-flex flex-column'>
+        {videoAdd && <VideoEdit finished={() => changeVideoAdd(false)} />}
         <VideoCardEditorMultiSelectList
           videos={videos}
           pendingChanges={props.pendingChanges}
@@ -66,6 +54,6 @@ const VideoManagementSection = (props: {
       </div>
     </>
   );
-}
+};
 
 export default VideoManagementSection;

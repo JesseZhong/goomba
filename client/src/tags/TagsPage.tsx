@@ -3,9 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default (props: {
-  tags: string[]
-}) => {
+export default (props: { tags: string[] }) => {
   const [tags, setTags] = useState(props.tags);
 
   const filter = (predicate: string) => {
@@ -13,9 +11,8 @@ export default (props: {
       setTags(props.tags);
     }
 
-    let results: string[] = []
+    let results: string[] = [];
     props.tags.forEach((tag: string) => {
-
       // TODO: Needs Yup for sanitation.
       if (new RegExp(`.*${predicate}.*`).test(tag)) {
         results.push(tag);
@@ -23,16 +20,13 @@ export default (props: {
     });
 
     setTags(results);
-  }
+  };
 
   return (
     <div>
       <div className='input-group'>
-        <div className='input-group-prepend' >
-          <span
-            className='input-group-text'
-            id='search'
-          >
+        <div className='input-group-prepend'>
+          <span className='input-group-text' id='search'>
             <FontAwesomeIcon icon={faSearch} />
           </span>
         </div>
@@ -46,21 +40,18 @@ export default (props: {
         />
       </div>
       <div>
-        {
-          tags &&
-          tags.map(
-            (tag, index) =>
-              <Link
-                key={index}
-                to={{
-                  pathname: '/items'
-                }}
-              >
-                {tag}
-              </Link>
-          )
-        }
+        {tags &&
+          tags.map((tag, index) => (
+            <Link
+              key={index}
+              to={{
+                pathname: '/items',
+              }}
+            >
+              {tag}
+            </Link>
+          ))}
       </div>
     </div>
-  )
-}
+  );
+};

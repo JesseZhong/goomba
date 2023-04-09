@@ -1,7 +1,5 @@
 module.exports = {
-    webpack: {
-        configure: {
-            
-        }
-    }
+  webpack: {
+    configure: {},
+  },
 };

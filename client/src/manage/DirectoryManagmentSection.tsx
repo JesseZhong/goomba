@@ -6,10 +6,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { PendingChanges } from './PendingChanges';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
-
 const DirectoryManagmentSection = (props: {
-  directories: Directories,
-  pendingChanges: PendingChanges
+  directories: Directories;
+  pendingChanges: PendingChanges;
 }) => {
   const { directories, pendingChanges } = props;
   const [directoryAdd, setDirectoryAdd] = React.useState(false);
@@ -29,12 +28,9 @@ const DirectoryManagmentSection = (props: {
       </div>
 
       <div className='d-flex flex-column'>
-        {
-          directoryAdd &&
-          <DirectoryEdit
-            finished={() => setDirectoryAdd(false)}
-          />
-        }
+        {directoryAdd && (
+          <DirectoryEdit finished={() => setDirectoryAdd(false)} />
+        )}
         <DirectorySelectList
           directories={directories}
           pendingChanges={pendingChanges}
@@ -42,6 +38,6 @@ const DirectoryManagmentSection = (props: {
       </div>
     </>
   );
-}
+};
 
 export default DirectoryManagmentSection;

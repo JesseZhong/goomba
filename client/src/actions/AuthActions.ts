@@ -18,7 +18,7 @@ const saveSession = (
 
   // Save it.
   SessionActions.set(session);
-}
+};
 
 const resetSession = () => {
   // Clear out the existing token.
@@ -29,12 +29,10 @@ const resetSession = () => {
 
   // Save it.
   SessionActions.set(session);
-}
+};
 
 export const AuthAccess: Access = <Resource>(
-  action: (
-    access_token: string
-  ) => Promise<Resource>
+  action: (access_token: string) => Promise<Resource>
 ) => {
   const session = SessionStore.getState();
   if (session.access_token && session.refresh_token) {
@@ -47,34 +45,20 @@ export const AuthAccess: Access = <Resource>(
     );
   }
 
-  throw new Error(`One or more tokens is undefined, Access: ${session.access_token}, Refresh: ${session.refresh_token}.`);
-}
+  throw new Error(
+    `One or more tokens is undefined, Access: ${session.access_token}, Refresh: ${session.refresh_token}.`
+  );
+};
 
 const AuthActions = {
-  
-  requestAuthorization: (
-    state: string
-  ) => authApi.requestAuthorization(
-    state
-  ),
+  requestAuthorization: (state: string) => authApi.requestAuthorization(state),
 
-  requestAccess: (
-    state: string,
-    code: string
-  ) => authApi.requestAccess(
-    state,
-    code
-  ).then(({
-    access_token,
-    refresh_token,
-    is_admin
-  }) => {
-    saveSession(
-      access_token,
-      refresh_token,
-      is_admin
-    );
-  })
-}
+  requestAccess: (state: string, code: string) =>
+    authApi
+      .requestAccess(state, code)
+      .then(({ access_token, refresh_token, is_admin }) => {
+        saveSession(access_token, refresh_token, is_admin);
+      }),
+};
 
 export default AuthActions;

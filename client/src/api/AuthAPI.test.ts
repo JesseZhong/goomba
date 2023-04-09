@@ -6,7 +6,6 @@ import AuthAPI, { AuthAPIClient, TokenResponse } from './AuthAPI';
 jest.mock('superagent');
 
 describe('Auth API', () => {
-
   const url = 'fakeurl';
   let api: AuthAPIClient;
 
@@ -19,16 +18,14 @@ describe('Auth API', () => {
   });
 
   describe('when requesting authorization', () => {
-
     it('returns a valid auth url', async () => {
-
       const state = 'fakestate';
       const auth_url = 'somethingsoemthingsomething';
       request.__setDefaultMockResponse({
-        'body': {
-          'state': state,
-          'auth_url': auth_url
-        }
+        body: {
+          state: state,
+          auth_url: auth_url,
+        },
       });
 
       const actual = await api.requestAuthorization(state);
@@ -37,40 +34,34 @@ describe('Auth API', () => {
     });
 
     describe('with a falsified state', () => {
-      
       it('throws an error', async () => {
-        
         request.__setDefaultMockResponse({
-          'body': {
-            'state': 'falsified state',
-            'auth_url': 'nonesense'
-          }
+          body: {
+            state: 'falsified state',
+            auth_url: 'nonesense',
+          },
         });
 
-        await expect(api.requestAuthorization('wanted state')).rejects.toThrow(Error);
+        await expect(api.requestAuthorization('wanted state')).rejects.toThrow(
+          Error
+        );
       });
     });
   });
 
   describe('when requesting access', () => {
-
     describe('with a valid state and code', () => {
-
       it('returns access and refresh tokens', async () => {
-
         const tokens = {
           access_token: 'LET ME IN!!!',
           refresh_token: 'MOAR POWER!!!',
-          scope: 'I guess...'
+          scope: 'I guess...',
         } as TokenResponse;
         request.__setDefaultMockResponse({
-          'body': tokens
+          body: tokens,
         });
 
-        const actual = await api.requestAccess(
-          'fake state',
-          'fake code'
-        );
+        const actual = await api.requestAccess('fake state', 'fake code');
 
         expect(actual).toBe(tokens);
       });
@@ -78,29 +69,24 @@ describe('Auth API', () => {
   });
 
   describe('when accessing a protected resource', () => {
-
     let fakeResource;
 
     beforeEach(() => {
       fakeResource = {
         id: 'nope',
-        data: 'cake'
-      }
+        data: 'cake',
+      };
 
       request.__setDefaultMockResponse({
-        'body': fakeResource
+        body: fakeResource,
       });
     });
 
     describe('with a valid token', () => {
-
       it('returns the resource', async () => {
-
-        const getResource = async (
-          _access_token: string
-        ) => {
+        const getResource = async (_access_token: string) => {
           return Promise.resolve(fakeResource);
-        }
+        };
 
         const actual = await api.access(
           'access token',
@@ -112,7 +98,6 @@ describe('Auth API', () => {
       });
 
       it('refreshes an expired token', async () => {
-
         const access = 'shared access token';
         const oldRefresh = 'old refresh token';
         const newRefresh = 'new refresh token';
@@ -121,22 +106,19 @@ describe('Auth API', () => {
         // Reject first call with access token,
         // simulating that the token needs to be refreshed.
         let calls = 0;
-        const getResource = async (
-          _access_token: string
-        ) => {
+        const getResource = async (_access_token: string) => {
           if (calls > 0) {
             calls += 1;
             return Promise.resolve(fakeResource);
-          }
-          else {
+          } else {
             calls += 1;
             return Promise.reject({
               response: {
                 status: 401,
                 body: {
-                  message: 'Unauthorized - Invalid Token.'
+                  message: 'Unauthorized - Invalid Token.',
                 },
-              }
+              },
             });
           }
         };
@@ -144,23 +126,20 @@ describe('Auth API', () => {
         // Simulate the refresh endpoint response.
         request.__setMockResponses({
           [`${url}/refresh`]: {
-            'body': {
+            body: {
               access_token: access,
-              refresh_token: newRefresh
-            } as TokenResponse
-          }
+              refresh_token: newRefresh,
+            } as TokenResponse,
+          },
         });
 
         // Track the received tokens.
         let actualAccess, actualRefresh;
-        const onTokensReceived = (
-          access: string,
-          refresh: string
-        ) => {
+        const onTokensReceived = (access: string, refresh: string) => {
           actualAccess = access;
           actualRefresh = refresh;
-        }
-        
+        };
+
         const actual = await api.access(
           access,
           oldRefresh,

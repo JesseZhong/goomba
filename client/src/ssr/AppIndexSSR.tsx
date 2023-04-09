@@ -5,13 +5,7 @@ import { ssrWindow } from 'ssr-window';
 import VideoMetaAPI from './VideoMetaAPI';
 import VideoMeta from '../videos/VideoMeta';
 
-
-const getHtml = async (
-  api_url: string,
-  banner_url: string,
-  route?: string
-) => {
-
+const getHtml = async (api_url: string, banner_url: string, route?: string) => {
   let content = <></>;
   if (route) {
     const result = RegExp(
@@ -20,7 +14,6 @@ const getHtml = async (
     ).exec(route);
 
     if (result && result.length > 1) {
-
       const video = await VideoMetaAPI(api_url).get(result[1]);
 
       content = <VideoMeta video={video} />;
@@ -31,7 +24,7 @@ const getHtml = async (
     <>
       <Helmet
         htmlAttributes={{
-          lang: 'en'
+          lang: 'en',
         }}
       >
         <meta property='og:type' content='website' />

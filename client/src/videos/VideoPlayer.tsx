@@ -8,10 +8,7 @@ import VideoActions from '../actions/VideoActions';
 import VideoInfo from './VideoInfo';
 import './VideoPlayer.sass';
 
-
-const VideoPlayer = (props: {
-  id?: string
-}) => {
+const VideoPlayer = (props: { id?: string }) => {
   const navigate = useNavigate();
   const params = useParams();
 
@@ -24,36 +21,30 @@ const VideoPlayer = (props: {
   }
 
   const existingTimes = VideoActions.getTimes();
-  const startTime = (existingTimes && id in existingTimes)
-    ? existingTimes[id]
-    : -1;
+  const startTime =
+    existingTimes && id in existingTimes ? existingTimes[id] : -1;
 
   const [video, setVideo] = React.useState<Video | undefined>(undefined);
 
   React.useEffect(() => {
-      VideoActions.getStream(id)
-        .then(
-          (video: Video) => {
-            setVideo(video);
-          },
-          () => {
-            // Video can't be found, kick to the 404.
-            navigate('/not-found');
-          }
-        );
-    },
-    [id, navigate]
-  );
+    VideoActions.getStream(id).then(
+      (video: Video) => {
+        setVideo(video);
+      },
+      () => {
+        // Video can't be found, kick to the 404.
+        navigate('/not-found');
+      }
+    );
+  }, [id, navigate]);
 
   // Records the current video time, and save into local storage.
-  const saveTime = (
-    e: React.SyntheticEvent<HTMLVideoElement>
-  ) => {
+  const saveTime = (e: React.SyntheticEvent<HTMLVideoElement>) => {
     const player = e.currentTarget;
 
     if (player) {
       const currentTime = player.currentTime;
-      
+
       const times = VideoActions.getTimes();
       if (times) {
         times[id] = currentTime;
@@ -69,39 +60,32 @@ const VideoPlayer = (props: {
       delete times[id];
       VideoActions.setTimes(times);
     }
-  }
-  
-  const videoPlayer = video?.stream_url
-    ? (
-      <div className='video-player d-flex flex-column' tabIndex={0}>
-        <ReactHlsPlayer
-          playerRef={playerRef}
-          src={video.stream_url}
-          autoPlay={true}
-          controls={true}
-          width='100%'
-          height='auto'
-          hlsConfig={{
-            'startPosition': startTime
-          }}
-          onTimeUpdate={saveTime}
-          onSeeked={saveTime}
-          onEnded={resetTime}
-        />
-        <div className='info mt-2'>
-          <h3>{video.name}</h3>
-          <VideoInfo
-            className='ms-3'
-            video={video}
-          />
-        </div>
+  };
+
+  const videoPlayer = video?.stream_url ? (
+    <div className='video-player d-flex flex-column' tabIndex={0}>
+      <ReactHlsPlayer
+        playerRef={playerRef}
+        src={video.stream_url}
+        autoPlay={true}
+        controls={true}
+        width='100%'
+        height='auto'
+        hlsConfig={{
+          startPosition: startTime,
+        }}
+        onTimeUpdate={saveTime}
+        onSeeked={saveTime}
+        onEnded={resetTime}
+      />
+      <div className='info mt-2'>
+        <h3>{video.name}</h3>
+        <VideoInfo className='ms-3' video={video} />
       </div>
-    )
-    : (
-      <div>
-        Loading...
-      </div>
-    );
+    </div>
+  ) : (
+    <div>Loading...</div>
+  );
 
   return (
     <>
@@ -111,19 +95,14 @@ const VideoPlayer = (props: {
             className='back d-flex flex-nowrap align-items-center'
             onClick={() => navigate(-1)}
           >
-            <FontAwesomeIcon
-              icon={faArrowLeft}
-              className='me-2'
-            />
-            <span className='back-text'>
-              back
-            </span>
+            <FontAwesomeIcon icon={faArrowLeft} className='me-2' />
+            <span className='back-text'>back</span>
           </div>
         </div>
         {videoPlayer}
       </div>
     </>
   );
-}
+};
 
 export default VideoPlayer;

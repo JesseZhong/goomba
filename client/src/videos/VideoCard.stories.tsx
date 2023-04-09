@@ -3,19 +3,20 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import VideoCard from './VideoCard';
 import thumbnail from '../assets/goms.jpg';
 
-
 export default {
   title: 'Videos/VideoCard',
   component: VideoCard,
 } as ComponentMeta<typeof VideoCard>;
 
-const Template: ComponentStory<typeof VideoCard> = (args) => <VideoCard {...args} />;
+const Template: ComponentStory<typeof VideoCard> = (args) => (
+  <VideoCard {...args} />
+);
 
 export const Everything = Template.bind({});
 Everything.args = {
   video: {
     id: 'some-id',
-    name: 'Gober\'s Video',
+    name: "Gober's Video",
     thumbnail_url: thumbnail,
     member: true,
     download_available: true,

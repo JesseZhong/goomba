@@ -5,14 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Dialog from './Dialog';
 import './ManageButtons.sass';
 
-
 const ManageButtons = (props: {
-  owner: React.RefObject<HTMLElement>,
-  onEditClick: () => void,
-  onRemoveConfirm: () => void
-  overlay?: boolean
+  owner: React.RefObject<HTMLElement>;
+  onEditClick: () => void;
+  onRemoveConfirm: () => void;
+  overlay?: boolean;
 }) => {
-
   const [showDialog, setShowDialog] = React.useState(false);
   const overlay = props.overlay;
 
@@ -20,34 +18,20 @@ const ManageButtons = (props: {
     <>
       <HoverButtonGroup
         owner={props.owner}
-        className={
-          'manage-buttons' +
-          (overlay ? '-overlay' : '')   
-        }
+        className={'manage-buttons' + (overlay ? '-overlay' : '')}
       >
         <button
           type='button'
           onClick={() => setShowDialog(true)}
           className='remove'
         >
-          <FontAwesomeIcon
-            icon={faTrash}
-            size={overlay ? '3x' : '1x'}
-          />
+          <FontAwesomeIcon icon={faTrash} size={overlay ? '3x' : '1x'} />
         </button>
-        <button
-          type='button'
-          onClick={props.onEditClick}
-          className='edit'
-        >
-          <FontAwesomeIcon
-            icon={faEdit}
-            size={overlay ? '3x' : '1x'}
-          />
+        <button type='button' onClick={props.onEditClick} className='edit'>
+          <FontAwesomeIcon icon={faEdit} size={overlay ? '3x' : '1x'} />
         </button>
       </HoverButtonGroup>
-      {
-        showDialog &&
+      {showDialog && (
         <Dialog
           title={''}
           body={<p></p>}
@@ -57,9 +41,9 @@ const ManageButtons = (props: {
           }}
           onCancel={() => setShowDialog(false)}
         />
-      }
+      )}
     </>
   );
-}
+};
 
 export default ManageButtons;

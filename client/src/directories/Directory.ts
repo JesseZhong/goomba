@@ -11,13 +11,10 @@ export interface Directory {
 }
 
 export class Directories extends Map<string, Directory> {
-
   private root: Directory[] = [];
   private lookup: Map<string, Directory> = new Map();
 
-  constructor(
-    directories?: Object
-  ) {
+  constructor(directories?: Object) {
     super();
     if (directories) {
       for (const [key, directory] of Object.entries(directories)) {
@@ -34,9 +31,7 @@ export class Directories extends Map<string, Directory> {
     return this.lookup;
   }
 
-  public get_children(
-    directory_id: string
-  ): readonly Directory[] | null {
+  public get_children(directory_id: string): readonly Directory[] | null {
     if (!this.has(directory_id)) {
       return null;
     }
@@ -47,27 +42,20 @@ export class Directories extends Map<string, Directory> {
     }
 
     return children
-      .map(
-        (dir_id: string) => this.get(dir_id)
-      )
-      .filter(
-        (dir?: Directory): dir is Directory => {
-          if (dir === null || dir === undefined) {
-            return false;
-          }
-
-          return true;
+      .map((dir_id: string) => this.get(dir_id))
+      .filter((dir?: Directory): dir is Directory => {
+        if (dir === null || dir === undefined) {
+          return false;
         }
-      );
+
+        return true;
+      });
   }
 
   public set(key: string, value: Directory): this {
     if (!value.parent) {
       this.root.push(value);
-      this.lookup.set(
-        encodeURI(value.name),
-        value
-      );
+      this.lookup.set(encodeURI(value.name), value);
     }
 
     return super.set(key, value);
@@ -78,7 +66,7 @@ export class Directories extends Map<string, Directory> {
     if (rootIndex < 0) {
       delete this.root[rootIndex];
     }
-    
+
     return super.delete(key);
   }
 

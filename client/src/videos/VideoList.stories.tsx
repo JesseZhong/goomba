@@ -6,7 +6,6 @@ import sus_thumbnail from '../assets/sus.jpg';
 import mums_thumbnail from '../assets/mums.jpg';
 import oao_thumbnail from '../assets/oao.jpg';
 
-
 export default {
   title: 'Videos/VideoList',
   component: VideoList,
@@ -15,12 +14,14 @@ export default {
   },
 } as ComponentMeta<typeof VideoList>;
 
-const Template: ComponentStory<typeof VideoList> = (args) => <VideoList {...args} />;
+const Template: ComponentStory<typeof VideoList> = (args) => (
+  <VideoList {...args} />
+);
 
 export const SomeVideos = Template.bind({});
 SomeVideos.args = {
   videos: new Videos({
-    'gumbus': {
+    gumbus: {
       id: 'gumbus',
       name: 'Gooba Posted This Video',
       thumbnail_url: goms_thumbnail,
@@ -28,20 +29,20 @@ SomeVideos.args = {
       download_available: true,
       date_aired: '2021-11-28T01:00:00.000Z',
     },
-    'sussy': {
+    sussy: {
       id: 'sussy',
       name: 'Sussy Baka',
       thumbnail_url: sus_thumbnail,
       member: true,
       date_aired: '2020-08-24T09:00:00.000Z',
     },
-    'mumers': {
+    mumers: {
       id: 'mumers',
       name: 'Crunch ROADs',
       thumbnail_url: mums_thumbnail,
       date_aired: '2022-03-16T18:00:00.000Z',
     },
-    'goamus': {
+    goamus: {
       id: 'goamus',
       name: 'uwu',
       thumbnail_url: oao_thumbnail,

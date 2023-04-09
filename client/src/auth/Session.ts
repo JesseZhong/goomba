@@ -10,26 +10,21 @@ export interface Session {
   refresh_token?: string;
   is_admin?: boolean;
   user?: User;
-  videoProgress?: { [key: string]: number }
+  videoProgress?: { [key: string]: number };
 }
 
 export const Sessions = {
-
   /**
    * Attempt to resume or create a session.
    */
-  load: (
-    receive: (session: Session) => void
-  ) => {
-
+  load: (receive: (session: Session) => void) => {
     // Attempt to resume a session.
     let session = ls.get(key) as Session;
 
     // No session found? Make a new one.
     if (!session?.session_id) {
-
       session = {
-        session_id: uuid()
+        session_id: uuid(),
       };
 
       // Put the session in local storage.
@@ -44,5 +39,5 @@ export const Sessions = {
    */
   set: (session: Session) => {
     ls.set(key, session);
-  }
-}
+  },
+};

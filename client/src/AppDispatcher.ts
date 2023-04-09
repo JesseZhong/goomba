@@ -1,7 +1,7 @@
 import { Dispatcher } from 'flux';
 
 export interface ActionPayload {
-  type: string
+  type: string;
 }
 
 export default new Dispatcher<ActionPayload>();

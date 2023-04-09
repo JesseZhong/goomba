@@ -2,7 +2,6 @@ import React from 'react';
 import Nav from './Nav';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-
 export default {
   title: 'Navigation/Nav',
   component: Nav,

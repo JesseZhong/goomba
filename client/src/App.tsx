@@ -1,4 +1,3 @@
-import * as React from 'react';
 import sample from 'lodash/sample';
 import { AppState } from './containers/AppContainer';
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -16,7 +15,6 @@ import Home from './home/Home';
 import DirectoryVideos from './home/DirectoryVideos';
 import RecentVideos from './home/RecentVideos';
 import chadgura from './assets/chadgura.png';
-
 
 const titles: string[] = [
   'Goob',
@@ -39,7 +37,6 @@ SessionActions.load();
 const title = sample(titles) ?? 'Goob';
 
 const App = (state: AppState) => {
-  
   // Give a random title.
   document.title = title;
 
@@ -47,15 +44,9 @@ const App = (state: AppState) => {
     if (state.session?.access_token) {
       return (
         <>
-          <Nav
-            className='mb-1'
-            session={state.session}
-          />
+          <Nav className='mb-1' session={state.session} />
           <Routes>
-            <Route
-              path='/watch/:id'
-              element={<VideoPlayer />}
-            />
+            <Route path='/watch/:id' element={<VideoPlayer />} />
             <Route
               path='/manage'
               element={
@@ -83,27 +74,17 @@ const App = (state: AppState) => {
                   />
                 }
               />
-              <Route
-                index
-                element={<RecentVideos videos={state.videos} />}
-              />
+              <Route index element={<RecentVideos videos={state.videos} />} />
             </Route>
-            <Route
-              path='/'
-              element={<Navigate replace to='/home' />}
-            />
+            <Route path='/' element={<Navigate replace to='/home' />} />
             <Route path='*' element={<PageNotFound />} />
           </Routes>
         </>
       );
-    }
-    else {
+    } else {
       return (
         <Routes>
-          <Route
-            path='/'
-            element={<Navigate replace to='/requestauth' />}
-          />
+          <Route path='/' element={<Navigate replace to='/requestauth' />} />
           <Route path='/denied' element={<Denied />} />
           <Route
             path='/requestauth'
@@ -113,26 +94,26 @@ const App = (state: AppState) => {
             path='/authorized'
             element={<FetchingAccess session={state.session} />}
           />
-          <Route
-            path='*'
-            element={<Navigate replace to='/denied' />}
-          />
+          <Route path='*' element={<Navigate replace to='/denied' />} />
         </Routes>
-      )
+      );
     }
-  }
+  };
 
   return (
     <>
       <Helmet
         htmlAttributes={{
-          lang: 'en'
+          lang: 'en',
         }}
       >
         <meta charSet='utf-8' />
-        <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
+        <meta
+          name='viewport'
+          content='width=device-width, initial-scale=1, shrink-to-fit=no'
+        />
         <meta name='theme-color' content='#000000' />
-        
+
         <meta property='og:type' content='website' />
         <meta property='og:title' content={title} />
         <meta property='og:url' content={window.location.href} />
@@ -151,9 +132,7 @@ const App = (state: AppState) => {
           crossOrigin='anonymous'
         />
       </Helmet>
-      <div className='page'>
-        {route()}
-      </div>
+      <div className='page'>{route()}</div>
     </>
   );
 };

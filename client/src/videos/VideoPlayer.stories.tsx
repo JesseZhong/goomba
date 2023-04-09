@@ -9,6 +9,8 @@ export default {
   },
 } as ComponentMeta<typeof VideoPlayer>;
 
-const Template: ComponentStory<typeof VideoPlayer> = args => <VideoPlayer {...args} />;
+const Template: ComponentStory<typeof VideoPlayer> = (args) => (
+  <VideoPlayer {...args} />
+);
 
 export const WithVideo = Template.bind({});

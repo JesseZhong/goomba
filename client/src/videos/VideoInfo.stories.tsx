@@ -2,13 +2,14 @@ import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import VideoInfo from './VideoInfo';
 
-
 export default {
   title: 'Videos/VideoInfo',
   component: VideoInfo,
 } as ComponentMeta<typeof VideoInfo>;
 
-const Template: ComponentStory<typeof VideoInfo> = (args) => <VideoInfo {...args} />;
+const Template: ComponentStory<typeof VideoInfo> = (args) => (
+  <VideoInfo {...args} />
+);
 
 export const Everything = Template.bind({});
 Everything.args = {

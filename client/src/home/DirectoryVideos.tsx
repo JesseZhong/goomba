@@ -5,11 +5,9 @@ import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
 import VideosByDate from '../video-views/VideosByDate';
 
-
-
 const DirectoryVideos = (props: {
-  directories: Directories,
-  videos: Videos
+  directories: Directories;
+  videos: Videos;
 }) => {
   const navigate = useNavigate();
   const directories = props.directories.get_lookup();
@@ -24,14 +22,10 @@ const DirectoryVideos = (props: {
   const currentDir = directories.get(dirName);
 
   const currentVideos = compact(
-    currentDir?.videos?.map(
-      vid => props.videos.get(vid)
-    )
+    currentDir?.videos?.map((vid) => props.videos.get(vid))
   );
 
-  return (
-    <VideosByDate videos={currentVideos} />
-  );
-}
+  return <VideosByDate videos={currentVideos} />;
+};
 
 export default DirectoryVideos;

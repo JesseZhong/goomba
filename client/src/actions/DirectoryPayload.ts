@@ -2,13 +2,13 @@ import { ActionPayload } from '../AppDispatcher';
 import { Directories, Directory } from '../directories/Directory';
 
 export interface ReceiveDirectoriesPayload extends ActionPayload {
-  directories: Directories
+  directories: Directories;
 }
 
 export interface PutDirectoryPayload extends ActionPayload {
-  directory: Directory
+  directory: Directory;
 }
 
 export interface RemoveDirectoryPayload extends ActionPayload {
-  id: string
+  id: string;
 }

@@ -1,7 +1,11 @@
 import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
 import { Directories, Directory } from '../directories/Directory';
-import { PutDirectoryPayload, ReceiveDirectoriesPayload, RemoveDirectoryPayload } from './DirectoryPayload';
+import {
+  PutDirectoryPayload,
+  ReceiveDirectoriesPayload,
+  RemoveDirectoryPayload,
+} from './DirectoryPayload';
 import DirectoryAPI from '../api/DirectoryAPI';
 import { AuthAccess } from './AuthActions';
 
@@ -12,38 +16,33 @@ const directoryApi = DirectoryAPI(
 
 const DirectoryActions = {
   async get(): Promise<void> {
-    return await directoryApi.get()
-      .then((directories: Directories) => {
-        AppDispatcher.dispatch({
-          type: ActionTypes.RECEIVE_DIRECTORIES,
-          directories: directories
-        } as ReceiveDirectoriesPayload);
-      });
+    return await directoryApi.get().then((directories: Directories) => {
+      AppDispatcher.dispatch({
+        type: ActionTypes.RECEIVE_DIRECTORIES,
+        directories: directories,
+      } as ReceiveDirectoriesPayload);
+    });
   },
 
-  async put(
-    directory: Directory
-  ): Promise<void> {
-    return await directoryApi.put(directory)
+  async put(directory: Directory): Promise<void> {
+    return await directoryApi
+      .put(directory)
       .then((confirmedDirectory: Directory) => {
         AppDispatcher.dispatch({
           type: ActionTypes.PUT_DIRECTORY,
-          directory: confirmedDirectory
+          directory: confirmedDirectory,
         } as PutDirectoryPayload);
       });
   },
 
-  async remove(
-    id: string
-  ): Promise<void> {
-    return await directoryApi.remove(id)
-      .then(() => {
-        AppDispatcher.dispatch({
-          type: ActionTypes.REMOVE_DIRECTORY,
-          id: id
-        } as RemoveDirectoryPayload);
-      });
-  }
-}
+  async remove(id: string): Promise<void> {
+    return await directoryApi.remove(id).then(() => {
+      AppDispatcher.dispatch({
+        type: ActionTypes.REMOVE_DIRECTORY,
+        id: id,
+      } as RemoveDirectoryPayload);
+    });
+  },
+};
 
 export default DirectoryActions;

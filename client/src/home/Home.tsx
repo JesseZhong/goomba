@@ -1,22 +1,17 @@
 import React from 'react';
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom';
 import DirectoryActions from '../actions/DirectoryActions';
 import VideoActions from '../actions/VideoActions';
 import { Directories } from '../directories/Directory';
 import DirectoryNav from '../directories/DirectoryNav';
 
-
-const Home = (props: {
-  directories: Directories
-}) => {
+const Home = (props: { directories: Directories }) => {
   const { dirName } = useParams();
 
   React.useEffect(() => {
-      DirectoryActions.get();
-      VideoActions.getVideos();
-    },
-    []
-  );
+    DirectoryActions.get();
+    VideoActions.getVideos();
+  }, []);
 
   return (
     <div className='d-flex flex-column'>
@@ -28,6 +23,6 @@ const Home = (props: {
       <Outlet />
     </div>
   );
-}
+};
 
 export default Home;

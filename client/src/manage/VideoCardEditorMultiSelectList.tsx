@@ -4,25 +4,19 @@ import { PendingChanges } from './PendingChanges';
 import VideoCardEditor from './VideoCardEditor';
 import './VideoCardEditorMultiSelectList.sass';
 
-
 const VideoCardEditorMultiSelectList = (props: {
-  videos: Videos | Video[],
-  pendingChanges: PendingChanges,
+  videos: Videos | Video[];
+  pendingChanges: PendingChanges;
 
-  className?: string
+  className?: string;
 }) => {
   const {
     className,
-    pendingChanges: {
-      selectedDirectory,
-      selectedVideos,
-      unsavedVideos,
-    },
+    pendingChanges: { selectedDirectory, selectedVideos, unsavedVideos },
   } = props;
 
-  const videos = props.videos instanceof Videos
-    ? [...props.videos.values()]
-    : props.videos;
+  const videos =
+    props.videos instanceof Videos ? [...props.videos.values()] : props.videos;
 
   return (
     <div
@@ -31,60 +25,50 @@ const VideoCardEditorMultiSelectList = (props: {
         (className ? ` ${className}` : '')
       }
     >
-      {
-        videos &&
-        videos.map(
-          (video: Video) =>
-            <div
-              key={video.id}
-              className='video-section'
-            >
-              {
-                selectedVideos?.has(video.id) &&
-                <div className='selected-border' />
-              }
-              <VideoCardEditor
-                video={video}
-                disableEdit={!!selectedDirectory}
-                onClick={(
-                  video: Video
-                ) => {
-                  if (!!selectedDirectory) {
-                    const id = video.id;
-  
-                    // Assign to new set to trigger rerender.
-                    const newSelected = new Set(selectedVideos);
-  
-                    // Toggle: Remove if it already exists.
-                    if (newSelected.has(id)) {
-                      newSelected.delete(id);
-                    }
-                    else {
-                      newSelected.add(id);
-                    }
-
-                    ManagementActions.selectVideos(newSelected);
-                  }
-                }}
-                onEditChange={(edit: boolean) => {
+      {videos &&
+        videos.map((video: Video) => (
+          <div key={video.id} className='video-section'>
+            {selectedVideos?.has(video.id) && (
+              <div className='selected-border' />
+            )}
+            <VideoCardEditor
+              video={video}
+              disableEdit={!!selectedDirectory}
+              onClick={(video: Video) => {
+                if (!!selectedDirectory) {
                   const id = video.id;
 
-                  const newUnsaved = new Set(unsavedVideos);
+                  // Assign to new set to trigger rerender.
+                  const newSelected = new Set(selectedVideos);
 
-                  if (edit) {
-                    newUnsaved.add(id);
-                  } else if(newUnsaved.has(id)) {
-                    newUnsaved.delete(id);
+                  // Toggle: Remove if it already exists.
+                  if (newSelected.has(id)) {
+                    newSelected.delete(id);
+                  } else {
+                    newSelected.add(id);
                   }
 
-                  ManagementActions.setUnsavedVideos(newUnsaved);
-                }}
-              />
-            </div>
-        )
-      }
+                  ManagementActions.selectVideos(newSelected);
+                }
+              }}
+              onEditChange={(edit: boolean) => {
+                const id = video.id;
+
+                const newUnsaved = new Set(unsavedVideos);
+
+                if (edit) {
+                  newUnsaved.add(id);
+                } else if (newUnsaved.has(id)) {
+                  newUnsaved.delete(id);
+                }
+
+                ManagementActions.setUnsavedVideos(newUnsaved);
+              }}
+            />
+          </div>
+        ))}
     </div>
   );
-}
+};
 
 export default VideoCardEditorMultiSelectList;

@@ -26,12 +26,12 @@ export const parameters = {
 addDecorator((Story, { parameters }) => {
   if (!!parameters) {
     if (parameters.withRouter) {
-      return (<MemoryRouter>
-        <Story />
-      </MemoryRouter>);
-    }
-    else if (parameters.withRoute || parameters.withParams) {
-
+      return (
+        <MemoryRouter>
+          <Story />
+        </MemoryRouter>
+      );
+    } else if (parameters.withRoute || parameters.withParams) {
       let path = undefined;
       let entries = undefined;
 
@@ -40,15 +40,13 @@ addDecorator((Story, { parameters }) => {
         entries = [`/${Object.values(parameters.withParams).join('/')}`];
       }
 
-      return (<MemoryRouter initialEntries={entries}>
-        <Routes>
-          <Route
-            index={!path}
-            path={path}
-            element={<Story />}
-          />
-        </Routes>
-      </MemoryRouter>);
+      return (
+        <MemoryRouter initialEntries={entries}>
+          <Routes>
+            <Route index={!path} path={path} element={<Story />} />
+          </Routes>
+        </MemoryRouter>
+      );
     }
   }
 
