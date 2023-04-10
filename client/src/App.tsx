@@ -3,7 +3,7 @@ import { AppState } from './containers/AppContainer';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PageNotFound from './not-found/PageNotFound';
-import VideosByDate from './video-views/VideosByDate';
+import VideoListByDate from './videos/VideoListByDate';
 import VideoPlayer from './videos/VideoPlayer';
 import RequestAuthorization from './auth/RequestAuth';
 import FetchingAccess from './auth/FetchingAccess';
@@ -59,7 +59,7 @@ const App = (state: AppState) => {
             />
             <Route
               path='/videos'
-              element={<VideosByDate videos={state.videos} />}
+              element={<VideoListByDate videos={state.videos} />}
             />
             <Route
               path='/home'

@@ -1,9 +1,8 @@
-import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import VideoInfo from './VideoInfo';
 
 export default {
-  title: 'Videos/VideoInfo',
+  title: 'Videos/Video Info',
   component: VideoInfo,
 } as ComponentMeta<typeof VideoInfo>;
 

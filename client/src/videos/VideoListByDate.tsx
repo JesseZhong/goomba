@@ -1,10 +1,10 @@
 import React from 'react';
 import VideoActions from '../actions/VideoActions';
-import { Video, Videos } from '../videos/Video';
-import VideoList from '../videos/VideoList';
+import { Video, Videos } from './Video';
+import VideoList from './VideoList';
 import orderBy from 'lodash/orderBy';
 
-const VideosByDate = (props: {
+const VideoListByDate = (props: {
   videos: Videos | Video[];
   topToShow?: number;
 }) => {
@@ -27,4 +27,4 @@ const VideosByDate = (props: {
   );
 };
 
-export default VideosByDate;
+export default VideoListByDate;

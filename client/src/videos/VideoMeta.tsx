@@ -1,4 +1,3 @@
-import React from 'react';
 import { Video } from './Video';
 import { Helmet } from 'react-helmet';
 

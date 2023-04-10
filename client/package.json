@@ -59,6 +59,7 @@
     "sass-loader": "^13.2.0",
     "serverless-plugin-cloudfront-lambda-edge": "^2.1.0",
     "source-map-loader": "^0.2.4",
+    "storybook-addon-manual-mocks": "^0.0.6",
     "storybook-dark-mode": "^1.1.2",
     "ts-jest": "^27.x",
     "ts-loader": "^6.2.1",

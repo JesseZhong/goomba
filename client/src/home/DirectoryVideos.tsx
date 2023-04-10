@@ -1,9 +1,8 @@
-import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import compact from 'lodash/compact';
 import { Directories } from '../directories/Directory';
 import { Videos } from '../videos/Video';
-import VideosByDate from '../video-views/VideosByDate';
+import VideoListByDate from '../videos/VideoListByDate';
 
 const DirectoryVideos = (props: {
   directories: Directories;
@@ -25,7 +24,7 @@ const DirectoryVideos = (props: {
     currentDir?.videos?.map((vid) => props.videos.get(vid))
   );
 
-  return <VideosByDate videos={currentVideos} />;
+  return <VideoListByDate videos={currentVideos} />;
 };
 
 export default DirectoryVideos;

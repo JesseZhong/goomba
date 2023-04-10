@@ -1,10 +1,9 @@
-import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import VideoCard from './VideoCard';
 import thumbnail from '../assets/goms.jpg';
 
 export default {
-  title: 'Videos/VideoCard',
+  title: 'Videos/Video Card',
   component: VideoCard,
 } as ComponentMeta<typeof VideoCard>;
 

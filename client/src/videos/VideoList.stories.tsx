@@ -7,7 +7,7 @@ import mums_thumbnail from '../assets/mums.jpg';
 import oao_thumbnail from '../assets/oao.jpg';
 
 export default {
-  title: 'Videos/VideoList',
+  title: 'Videos/Video List',
   component: VideoList,
   parameters: {
     withRoute: true,
@@ -18,8 +18,8 @@ const Template: ComponentStory<typeof VideoList> = (args) => (
   <VideoList {...args} />
 );
 
-export const SomeVideos = Template.bind({});
-SomeVideos.args = {
+export const Some = Template.bind({});
+Some.args = {
   videos: new Videos({
     gumbus: {
       id: 'gumbus',
@@ -51,7 +51,4 @@ SomeVideos.args = {
   }),
 };
 
-export const EmptyList = Template.bind({});
-EmptyList.args = {
-  videos: [],
-};
+export const Empty = Template.bind({});
