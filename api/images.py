@@ -37,6 +37,9 @@ class ImageUpload(Resource):
         if not image_key:
             abort(400, message='Missing image key.')
 
+        # Replace all # with _.
+        image_key = image_key.replace('#', '_')
+
         if not re.match(
             IMAGE_KEY_REGEX,
             image_key,
