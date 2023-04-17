@@ -5,7 +5,7 @@ try:
     from flask import Flask
     from flask_restful import Api
     from api.authorization import RefreshAccess, RequestAccess, RequestAuthorization
-    from api.directories import Directories, Directory
+    from api.directories import Directories, Directory, DirectoryMeta
     from api.tags import Tags
     from api.videos import DownloadVideo, StreamVideo, Video, Videos, VideoMeta
     from api.images import ImageUpload
@@ -46,6 +46,7 @@ api.add_resource(VideoMeta, '/videos/<video_id>/meta')
 
 api.add_resource(Directories, '/directories')
 api.add_resource(Directory, '/directories/<directory_id>')
+api.add_resource(DirectoryMeta, '/directories/<directory_name>/meta')
 
 api.add_resource(Tags, '/tags')
 

@@ -1,5 +1,6 @@
 from os import abort
 from typing import Dict
+from urllib.parse import unquote
 from api.authorization import admin_required, auth_required
 from api.cdn import gen_image_url
 from api.db import get, open_db, transact_get, transact_update
@@ -130,3 +131,30 @@ class Directories(Resource):
         except Exception as e:
             print(e)
             abort(500)
+
+
+class DirectoryMeta(Resource):
+
+    def get(self, directory_name: str):
+
+        if not directory_name:
+            abort(400, messsage='Missing name.')
+
+        directory_name = unquote(directory_name)
+        directories = get('directories')
+
+        # Attempt to find a directory that matches the passed name.
+        directory = next((
+            directory for directory in directories.values()
+            if directory['name'] == directory_name),
+            None
+        )
+        
+        if directory:
+            return {
+                'id': directory['id'],
+                'name': directory['name'],
+                'avatar_url': directory['avatar_url']
+            }, 200
+        else:
+            abort(400, message='Directory not found.')

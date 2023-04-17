@@ -63,7 +63,10 @@ const VideoEdit = (props: {
               setSubmitting(false);
               finished();
             },
-            () => setShowPutError(true)
+            () => {
+              setShowPutError(true)
+              setSubmitting(false);
+            }
           );
         }}
       >
