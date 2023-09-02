@@ -1,5 +1,4 @@
 import { themes } from '@storybook/theming';
-import { addDecorator } from '@storybook/react';
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 
@@ -23,7 +22,7 @@ export const parameters = {
   },
 };
 
-addDecorator((Story, { parameters }) => {
+const routingDecorator = (Story, { parameters }) => {
   if (!!parameters) {
     if (parameters.withRouter) {
       return (
@@ -51,4 +50,6 @@ addDecorator((Story, { parameters }) => {
   }
 
   return Story();
-});
+};
+
+export const decorators = [routingDecorator];

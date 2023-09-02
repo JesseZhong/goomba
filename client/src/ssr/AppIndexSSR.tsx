@@ -14,17 +14,13 @@ const getHtml = async (api_url: string, banner_url: string, route?: string) => {
       'i'
     ).exec(route);
 
-    const dirResult = RegExp(
-      '^/home/([^\^{}%`\"\'~<>#|]{1,})$',
-      'i'
-    ).exec(route);
+    const dirResult = RegExp('^/home/([^^{}%`"\'~<>#|]{1,})$', 'i').exec(route);
 
     if (vidResult && vidResult.length > 1) {
       const video = await VideoMetaAPI(api_url).get(vidResult[1]);
 
       content = <VideoMeta video={video} />;
-    }
-    else if(dirResult && dirResult.length > 1) {
+    } else if (dirResult && dirResult.length > 1) {
       const directory = await DirectoryMetaAPI(api_url).get(dirResult[1]);
 
       content = <DirectoryMeta directory={directory} />;

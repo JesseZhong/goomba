@@ -66,7 +66,7 @@ run_api() {
 
 run_client() {
   cd client/
-  yarn run start
+  pnpm run start
 }
 
 exec_util() {
@@ -180,27 +180,27 @@ case "$arg1" in
 
     cd ./client/
 
-    yarn install
-    yarn test
-    yarn run build
+    pnpm install
+    pnpm test
+    pnpm run build
 
     if [[ "$arg2" = 'dev' ]]
     then
       echo 'Creating a development build.'
-      yarn run build-ssr-dev
+      pnpm run build-ssr-dev
     else
-      yarn run build-ssr
+      pnpm run build-ssr
     fi
 
     cd ../cdk/
-    yarn install
-    yarn run build
-    yarn cdk deploy
+    pnpm install
+    pnpm run build
+    pnpm cdk deploy
   ;;
   test)
     cd ./client/
 
-    yarn test
+    pnpm test
   ;;
   *)
     echo "$usage"

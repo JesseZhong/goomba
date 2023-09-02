@@ -1,7 +1,7 @@
 import { Directory } from './Directory';
 import { Helmet } from 'react-helmet';
 
-const DirectoryMeta = (props: { directory?: Directory}) => {
+const DirectoryMeta = (props: { directory?: Directory }) => {
   const { directory: { avatar_url, name } = {} } = props;
 
   return (

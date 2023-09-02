@@ -19,7 +19,7 @@ const genIsoDateSchema = () =>
     );
 
 const videoSchema = yup.object().shape({
-  name: genGeneralInputSchema().required(),
+  name: genGeneralInputSchema().required('Required.'),
   stream_key: genGeneralInputSchema().required(),
   download_key: genGeneralInputSchema(),
   download_available: yup.boolean().optional(),

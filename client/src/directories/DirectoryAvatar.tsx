@@ -7,7 +7,10 @@ const DirectoryAvatar = (props: {
   onClick?: MouseEventHandler<HTMLDivElement>;
   className?: string;
 }) => {
-  const { directory: { name, avatar_url }, className } = props;
+  const {
+    directory: { name, avatar_url },
+    className,
+  } = props;
 
   return (
     <div
@@ -18,11 +21,7 @@ const DirectoryAvatar = (props: {
         {avatar_url ? (
           <div className='avatar-img'>
             <img src={avatar_url} alt={name} />
-            <img
-              className='filter'
-              src={avatar_url}
-              alt={name}
-            />
+            <img className='filter' src={avatar_url} alt={name} />
           </div>
         ) : (
           <span>{name[0]}</span>

@@ -1,0 +1,19 @@
+{
+  "name": "goob",
+  "version": "1.0.0",
+  "description": "Simple-to-use private streaming site, created primarily to host live streams by Hololive members.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}

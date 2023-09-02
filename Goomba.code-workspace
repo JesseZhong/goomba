@@ -9,7 +9,7 @@
 			"**/.git": true,
 			"**/.gitignore": true,
 			"**/yarn.lock": true,
-			"**/node_modules": true,
+			"**/node_modules/": true,
 			"**/browserslist": true,
 			"**/craco.config.js": true,
 			"**/tsconfig.json": true,
@@ -18,7 +18,8 @@
 			"**/dist": true,
 			"cdk/**/*.js": true,
 			"cdk/**/*.d.ts": true,
-			"cdk/cdk.out/": true
+			"cdk/cdk.out/": true,
+      ".cache/": true
 		}
 	}
 }

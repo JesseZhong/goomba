@@ -5,7 +5,7 @@ phases:
     runtime-versions:
       nodejs: 16
     commands:
-      - npm i -g yarn --unsafe-perm
+      - wget -qO- https://get.pnpm.io/install.sh | sh -
   build:
     commands:
       - ./goob deploy
