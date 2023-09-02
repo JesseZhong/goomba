@@ -17,8 +17,8 @@
     "build-ssr-dev": "webpack --config webpack.ssr-dev.js",
     "ssr-test-bot": "node -e 'require(\"./src/ssr/tests/run.js\").bot()'",
     "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'",
-    "storybook": "storybook dev -p 6006 -s public",
-    "build-storybook": "storybook build -s public",
+    "storybook": "storybook dev -p 6006 -s ../public",
+    "build-storybook": "storybook build -s ../public",
     "pretty": "prettier --write --single-quote --jsx-single-quote ."
   },
   "devDependencies": {

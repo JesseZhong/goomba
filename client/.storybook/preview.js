@@ -1,24 +1,12 @@
-import { themes } from '@storybook/theming';
-import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 export const parameters = {
   viewport: {
     viewports: INITIAL_VIEWPORTS,
   },
   backgrounds: {
-    default: 'dark',
-  },
-  darkMode: {
-    dark: {
-      ...themes.dark,
-      appBg: '#181a1b',
-    },
-    light: {
-      ...themes.normal,
-    },
-    default: 'dark',
-    classTarget: 'html',
+    default: "dark",
   },
 };
 
@@ -35,8 +23,8 @@ const routingDecorator = (Story, { parameters }) => {
       let entries = undefined;
 
       if (!!parameters.withParams) {
-        path = `/:${Object.keys(parameters.withParams).join('/:')}`;
-        entries = [`/${Object.values(parameters.withParams).join('/')}`];
+        path = `/:${Object.keys(parameters.withParams).join("/:")}`;
+        entries = [`/${Object.values(parameters.withParams).join("/")}`];
       }
 
       return (

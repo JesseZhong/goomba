@@ -19,7 +19,8 @@
 			"cdk/**/*.js": true,
 			"cdk/**/*.d.ts": true,
 			"cdk/cdk.out/": true,
-      ".cache/": true
+      ".cache/": true,
+      ".husky/": true
 		}
 	}
 }
