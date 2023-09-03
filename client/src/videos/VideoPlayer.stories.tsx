@@ -5,7 +5,7 @@ const meta: Meta<typeof VideoPlayer> = {
   title: 'Videos/Video Player',
   component: VideoPlayer,
   parameters: {
-    withRoute: true,
+    router: true,
   },
 };
 

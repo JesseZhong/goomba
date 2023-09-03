@@ -13,7 +13,7 @@ const meta: Meta<typeof VideoList> = {
   title: 'Videos/Video List',
   component: VideoList,
   parameters: {
-    withRoute: true,
+    router: true,
   },
 };
 

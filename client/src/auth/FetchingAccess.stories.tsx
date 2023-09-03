@@ -5,7 +5,7 @@ const meta: Meta<typeof FetchingAccess> = {
   title: 'Auth/Fetching Access',
   component: FetchingAccess,
   parameters: {
-    withRouter: true,
+    router: true,
   },
 };
 
@@ -15,7 +15,8 @@ type Story = StoryObj<typeof FetchingAccess>;
 
 export const Default: Story = {};
 
-export const WithToken: Story = {
+export const AccessToken: Story = {
+  storyName: 'Receiving a Valid Access Token',
   args: {
     session: {
       session_id: 'example',

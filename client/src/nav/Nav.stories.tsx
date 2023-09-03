@@ -8,7 +8,7 @@ const meta: Meta<typeof Nav> = {
   title: 'Navigation/Nav',
   component: Nav,
   parameters: {
-    withRouter: true,
+    router: true,
   },
 };
 

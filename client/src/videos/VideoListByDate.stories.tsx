@@ -1,4 +1,4 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { Meta, StoryObj } from '@storybook/react';
 import { Videos } from './video';
 import VideoListByDate from './VideoListByDate';
 import goms_thumbnail from '../assets/goms.jpg';
@@ -36,27 +36,29 @@ const VIDEOS = new Videos({
   },
 });
 
-export default {
+const meta: Meta<typeof VideoListByDate> = {
   title: 'Videos/Video List By Date',
   component: VideoListByDate,
   parameters: {
-    withRoute: true,
+    router: true,
   },
-} as ComponentMeta<typeof VideoListByDate>;
-
-const Template: ComponentStory<typeof VideoListByDate> = (args) => (
-  <VideoListByDate {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  videos: VIDEOS,
 };
 
-export const LimitThree = Template.bind({});
-LimitThree.args = {
-  videos: VIDEOS,
-  topToShow: 3,
+export default meta;
+
+type Story = StoryObj<typeof VideoListByDate>;
+
+export const Default: Story = {
+  args: {
+    videos: VIDEOS,
+  },
 };
 
-export const Empty = Template.bind({});
+export const LimitThree: Story = {
+  args: {
+    videos: VIDEOS,
+    topToShow: 3,
+  },
+};
+
+export const Empty: Story = {};

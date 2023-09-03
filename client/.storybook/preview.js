@@ -1,5 +1,5 @@
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { MemoryRouter, Routes, Route } from 'react-router-dom';
+import { MemoryRouter, Routes, Route, Location } from 'react-router-dom';
 
 export const parameters = {
   viewport: {
@@ -11,33 +11,41 @@ export const parameters = {
 };
 
 const routingDecorator = (Story, { parameters }) => {
-  if (!!parameters) {
-    if (parameters.withRouter) {
-      return (
-        <MemoryRouter>
-          <Story />
-        </MemoryRouter>
-      );
-    } else if (parameters.withRoute || parameters.withParams) {
-      let path = undefined;
-      let entries = undefined;
-
-      if (!!parameters.withParams) {
-        path = `/:${Object.keys(parameters.withParams).join('/:')}`;
-        entries = [`/${Object.values(parameters.withParams).join('/')}`];
-      }
-
-      return (
-        <MemoryRouter initialEntries={entries}>
-          <Routes>
-            <Route index={!path} path={path} element={<Story />} />
-          </Routes>
-        </MemoryRouter>
-      );
-    }
+  if (!parameters?.router) {
+    return Story();
   }
 
-  return Story();
+  if (typeof parameters.router !== 'object') {
+    return <MemoryRouter>{Story()}</MemoryRouter>;
+  }
+
+  const { params, layout, queries } = parameters.router;
+
+  let path = undefined;
+  let entry = undefined;
+
+  if (!!params) {
+    path = `/:${Object.keys(params).join('/:')}`;
+    entry = `/${Object.values(params).join('/')}`;
+  }
+
+  if (Array.isArray(queries)) {
+    entry = (entry ?? '') + '?' + queries.join('&');
+  }
+
+  return (
+    <MemoryRouter initialEntries={!!entry ? [entry] : entry}>
+      <Routes>
+        {!!layout ? (
+          <Route index={!path} path={path} element={layout}>
+            <Route index element={Story()} />
+          </Route>
+        ) : (
+          <Route index={!path} path={path} element={Story()} />
+        )}
+      </Routes>
+    </MemoryRouter>
+  );
 };
 
 export const decorators = [routingDecorator];
