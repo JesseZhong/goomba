@@ -5,7 +5,7 @@ import {
   VideosPayload,
   RemoveVideoPayload,
 } from './VideoPayloads';
-import { Video, Videos } from '../videos/Video';
+import { Video, Videos } from '../videos/video';
 import VideoAPI, { VideoOptions } from '../api/VideoAPI';
 import { AuthAccess } from './AuthActions';
 import * as ls from 'local-storage';

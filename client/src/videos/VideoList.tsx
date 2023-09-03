@@ -1,6 +1,6 @@
 import './VideoList.sass';
 import { useNavigate } from 'react-router-dom';
-import { Video, Videos } from './Video';
+import { Video, Videos } from './video';
 import VideoCard from './VideoCard';
 
 const VideoList = (props: { videos: Videos | Video[]; className?: string }) => {
@@ -10,7 +10,9 @@ const VideoList = (props: { videos: Videos | Video[]; className?: string }) => {
 
   const flatVideos = Array.isArray(videos)
     ? videos
-    : [...props.videos.values()];
+    : videos instanceof Videos
+    ? [...videos.values()]
+    : [];
 
   return (
     <div

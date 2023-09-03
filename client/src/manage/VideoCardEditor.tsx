@@ -1,5 +1,5 @@
 import React from 'react';
-import { Video } from '../videos/Video';
+import { Video } from '../videos/video';
 import VideoCard from '../videos/VideoCard';
 import VideoEdit from '../videos/VideoEdit';
 import ManageButtons from '../common/ManageButtons';

@@ -1,29 +1,52 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react';
 import DirectoryAvatar from './DirectoryAvatar';
 import avatar from '../assets/chadgura.png';
 
-export default {
+/**
+ * It's magical, really.
+ */
+const meta: Meta<typeof DirectoryAvatar> = {
   title: 'Directories/Directory Avatar',
   component: DirectoryAvatar,
-} as ComponentMeta<typeof DirectoryAvatar>;
-
-const Template: ComponentStory<typeof DirectoryAvatar> = (args) => (
-  <DirectoryAvatar {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {
-  directory: {
-    id: 'primary-id',
-    name: 'Goomba',
-    avatar_url: avatar,
+  argTypes: {
+    directory: {
+      description: `The directory's data. Name, ID, avatar, etc.`,
+    },
+    onClick: {
+      description: 'Action executed when avatar is clicked.',
+      control: false,
+    },
+    className: {
+      description: 'Any additional styling.',
+    },
   },
 };
 
-export const NoPicture = Template.bind({});
-NoPicture.args = {
-  directory: {
-    id: 'no-picture-id',
-    name: 'Faceless',
+export default meta;
+
+type Story = StoryObj<typeof DirectoryAvatar>;
+
+/**
+ * Get a load of that chin. Fine chin there, Goobs.
+ */
+export const Default: Story = {
+  args: {
+    directory: {
+      id: 'primary-id',
+      name: 'Goomba',
+      avatar_url: avatar,
+    },
+  },
+};
+
+/**
+ * You're playin'.
+ */
+export const NoPicture: Story = {
+  args: {
+    directory: {
+      id: 'no-picture-id',
+      name: 'Faceless',
+    },
   },
 };

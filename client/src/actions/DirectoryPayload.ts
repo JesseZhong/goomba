@@ -1,5 +1,5 @@
 import { ActionPayload } from '../AppDispatcher';
-import { Directories, Directory } from '../directories/Directory';
+import { Directories, Directory } from '../directories/directory';
 
 export interface ReceiveDirectoriesPayload extends ActionPayload {
   directories: Directories;

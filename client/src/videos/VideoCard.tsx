@@ -1,7 +1,7 @@
 import React from 'react';
 import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Video } from './Video';
+import { Video } from './video';
 import VideoInfo from './VideoInfo';
 import './VideoCard.sass';
 

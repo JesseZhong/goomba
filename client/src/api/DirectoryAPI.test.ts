@@ -2,7 +2,7 @@
 // Type checking disabled so that mock helper methods won't error on build.
 import request from 'superagent';
 import DirectoryAPI, { DirectoryAPIClient } from '../api/DirectoryAPI';
-import { Directories } from '../directories/Directory';
+import { Directories } from '../directories/directory';
 
 jest.mock('superagent');
 jest.mock('../directories/Directory');

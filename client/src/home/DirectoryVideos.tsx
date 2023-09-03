@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import compact from 'lodash/compact';
-import { Directories } from '../directories/Directory';
-import { Videos } from '../videos/Video';
+import { Directories } from '../directories/directory';
+import { Videos } from '../videos/video';
 import VideoListByDate from '../videos/VideoListByDate';
 
 const DirectoryVideos = (props: {

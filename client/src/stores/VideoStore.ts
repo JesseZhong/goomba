@@ -6,7 +6,7 @@ import {
   VideosPayload,
   RemoveVideoPayload,
 } from '../actions/VideoPayloads';
-import { Videos } from '../videos/Video';
+import { Videos } from '../videos/video';
 
 class VideoStore extends ReduceStore<Videos, ActionPayload> {
   public constructor() {

@@ -1,6 +1,6 @@
 import React from 'react';
 import VideoActions from '../actions/VideoActions';
-import { Video, Videos } from './Video';
+import { Video, Videos } from './video';
 import VideoList from './VideoList';
 import orderBy from 'lodash/orderBy';
 

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Videos } from '../videos/Video';
-import { Directories } from '../directories/Directory';
+import { Videos } from '../videos/video';
+import { Directories } from '../directories/directory';
 import { PendingChanges } from './PendingChanges';
 import VideoActions from '../actions/VideoActions';
 import DirectoryActions from '../actions/DirectoryActions';

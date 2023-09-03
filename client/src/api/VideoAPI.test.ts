@@ -2,7 +2,7 @@
 // Type checking disabled so that mock helper methods won't error on build.
 import request from 'superagent';
 import VideoAPI, { VideoAPIClient } from '../api/VideoAPI';
-import { Videos } from '../videos/Video';
+import { Videos } from '../videos/video';
 
 jest.mock('superagent');
 jest.mock('../videos/Video');

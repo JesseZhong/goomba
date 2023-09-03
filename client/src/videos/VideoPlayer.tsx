@@ -4,7 +4,7 @@ import ReactHlsPlayer from 'react-hls-player';
 import VideoActions from '../actions/VideoActions';
 import VideoInfo from './VideoInfo';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Video } from './Video';
+import { Video } from './video';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 

@@ -1,4 +1,4 @@
-import { Directory } from './Directory';
+import { Directory } from './directory';
 import { Helmet } from 'react-helmet';
 
 const DirectoryMeta = (props: { directory?: Directory }) => {

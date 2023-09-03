@@ -1,5 +1,5 @@
 import ManagementActions from '../actions/ManagementActions';
-import { Video, Videos } from '../videos/Video';
+import { Video, Videos } from '../videos/video';
 import { PendingChanges } from './PendingChanges';
 import VideoCardEditor from './VideoCardEditor';
 import './VideoCardEditorMultiSelectList.sass';

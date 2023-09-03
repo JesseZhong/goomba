@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { Videos } from './Video';
+import { Videos } from './video';
 import VideoListByDate from './VideoListByDate';
 import goms_thumbnail from '../assets/goms.jpg';
 import sus_thumbnail from '../assets/sus.jpg';

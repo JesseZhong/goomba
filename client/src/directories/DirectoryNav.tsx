@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Directories } from './Directory';
+import { Directories } from './directory';
 import DirectoryAvatar from './DirectoryAvatar';
 import './DirectoryNav.sass';
 

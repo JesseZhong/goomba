@@ -1,5 +1,5 @@
 import React from 'react';
-import { Directory } from './Directory';
+import { Directory } from './directory';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import DirectoryValidation from './DirectoryValidation';
 import DirectoryActions from '../actions/DirectoryActions';

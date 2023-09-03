@@ -2,7 +2,7 @@ import React from 'react';
 import DirectoryActions from '../actions/DirectoryActions';
 import ManagementActions from '../actions/ManagementActions';
 import DirectorySelectableAvatar from './DirectorySelectableAvatar';
-import { Directories, Directory } from '../directories/Directory';
+import { Directories, Directory } from '../directories/directory';
 import { PendingChanges } from './PendingChanges';
 
 const DirectorySelectList = (props: {

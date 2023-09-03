@@ -1,28 +1,40 @@
-import React from 'react';
+import type { Meta, StoryObj } from '@storybook/react';
 import Nav from './Nav';
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-export default {
+/**
+ * What are you expecting here? An explanation?
+ */
+const meta: Meta<typeof Nav> = {
   title: 'Navigation/Nav',
   component: Nav,
   parameters: {
     withRouter: true,
   },
-} as ComponentMeta<typeof Nav>;
+};
 
-const Template: ComponentStory<typeof Nav> = (args) => <Nav {...args} />;
+export default meta;
 
-export const Admin = Template.bind({});
-Admin.args = {
-  session: {
-    session_id: 'some-admin-id',
-    is_admin: true,
+type Story = StoryObj<typeof Nav>;
+
+/**
+ * Eh.
+ */
+export const Admin: Story = {
+  args: {
+    session: {
+      session_id: 'some-admin-id',
+      is_admin: true,
+    },
   },
 };
 
-export const Pleb = Template.bind({});
-Pleb.args = {
-  session: {
-    session_id: 'pleb',
+/**
+ * What everyone else sees.
+ */
+export const Pleb: Story = {
+  args: {
+    session: {
+      session_id: 'pleb',
+    },
   },
 };

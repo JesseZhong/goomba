@@ -1,7 +1,7 @@
 import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Videos } from '../videos/Video';
+import { Videos } from '../videos/video';
 import { PendingChanges } from './PendingChanges';
 import ManagementActions from '../actions/ManagementActions';
 import VideoEdit from '../videos/VideoEdit';

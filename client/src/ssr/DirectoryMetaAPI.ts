@@ -1,4 +1,4 @@
-import { Directory } from '../directories/Directory';
+import { Directory } from '../directories/directory';
 import request, { Response } from 'superagent';
 
 const DirectoryMetaAPI = (url: string) => ({

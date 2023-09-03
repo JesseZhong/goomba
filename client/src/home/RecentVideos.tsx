@@ -1,6 +1,6 @@
 import React from 'react';
 import VideoListByDate from '../videos/VideoListByDate';
-import { Videos } from '../videos/Video';
+import { Videos } from '../videos/video';
 
 const RECENT_VIDS = 20;
 

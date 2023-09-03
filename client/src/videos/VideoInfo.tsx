@@ -1,5 +1,5 @@
 import React from 'react';
-import { Video } from './Video';
+import { Video } from './video';
 import { faClock, faDownload, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './VideoInfo.sass';

@@ -1,5 +1,5 @@
 import request, { Response } from 'superagent';
-import { Directories, Directory } from '../directories/Directory';
+import { Directories, Directory } from '../directories/directory';
 import { Access } from './Access';
 
 export interface DirectoryAPIClient {

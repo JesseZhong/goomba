@@ -1,5 +1,5 @@
 import React from 'react';
-import { Directories } from '../directories/Directory';
+import { Directories } from '../directories/directory';
 import DirectorySelectList from './DirectorySelectList';
 import DirectoryEdit from '../directories/DirectoryEdit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

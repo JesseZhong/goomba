@@ -1,4 +1,4 @@
-import { Directory } from '../directories/Directory';
+import { Directory } from '../directories/directory';
 
 export interface PendingChanges {
   selectedDirectory?: Directory;

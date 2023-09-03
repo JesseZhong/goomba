@@ -1,5 +1,5 @@
 import request, { Response } from 'superagent';
-import { Video, Videos } from '../videos/Video';
+import { Video, Videos } from '../videos/video';
 import { Access } from './Access';
 
 export interface VideoOptions {

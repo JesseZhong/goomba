@@ -1,6 +1,7 @@
+import { Meta, StoryObj } from '@storybook/react';
 import VideoPlayer from './VideoPlayer';
 
-export default {
+const meta: Meta<typeof VideoPlayer> = {
   title: 'Videos/Video Player',
   component: VideoPlayer,
   parameters: {
@@ -8,6 +9,8 @@ export default {
   },
 };
 
-const Template = (args: any) => <VideoPlayer {...args} />;
+export default meta;
 
-export const WithVideo = Template.bind({});
+type Story = StoryObj<typeof VideoPlayer>;
+
+export const WithVideo: Story = {};
