@@ -56,4 +56,6 @@ class ManagementStore extends ReduceStore<PendingChanges, ActionPayload> {
   }
 }
 
-export default new ManagementStore();
+const managementStore = new ManagementStore();
+
+export default managementStore;

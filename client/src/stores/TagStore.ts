@@ -26,4 +26,6 @@ class TagStore extends ReduceStore<string[], ActionPayload> {
   }
 }
 
-export default new TagStore();
+const tagStore = new TagStore();
+
+export default tagStore;

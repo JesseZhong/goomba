@@ -4,7 +4,6 @@ import ManagementActions from '../actions/ManagementActions';
 import DirectorySelectableAvatar from './DirectorySelectableAvatar';
 import { Directories, Directory } from '../directories/Directory';
 import { PendingChanges } from './PendingChanges';
-import './DirectorySelectList.sass';
 
 const DirectorySelectList = (props: {
   directories: Directories | Directory[];
@@ -16,11 +15,7 @@ const DirectorySelectList = (props: {
     : props.directories;
   const {
     className,
-    pendingChanges: {
-      selectedDirectory,
-      selectedVideos,
-      unsavedVideos: unsavedVideos,
-    },
+    pendingChanges: { selectedDirectory, selectedVideos, unsavedVideos },
   } = props;
 
   const [selected, setSelected] = React.useState<Directory | undefined>(

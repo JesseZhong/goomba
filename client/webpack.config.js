@@ -7,6 +7,7 @@ module.exports = {
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
     extensions: ['.ts', '.tsx'],
+    fallback: { events: require.resolve('events/') },
   },
 
   module: {

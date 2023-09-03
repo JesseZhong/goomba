@@ -1,14 +1,16 @@
+import './VideoList.sass';
 import { useNavigate } from 'react-router-dom';
 import { Video, Videos } from './Video';
 import VideoCard from './VideoCard';
-import './VideoList.sass';
 
 const VideoList = (props: { videos: Videos | Video[]; className?: string }) => {
-  const navigate = useNavigate();
-  const videos =
-    props.videos instanceof Videos ? [...props.videos.values()] : props.videos;
+  const { videos, className } = props;
 
-  const className = props.className;
+  const navigate = useNavigate();
+
+  const flatVideos = Array.isArray(videos)
+    ? videos
+    : [...props.videos.values()];
 
   return (
     <div
@@ -17,8 +19,8 @@ const VideoList = (props: { videos: Videos | Video[]; className?: string }) => {
         (className ? ` ${className}` : '')
       }
     >
-      {videos &&
-        videos.map((video: Video) => (
+      {flatVideos &&
+        flatVideos.map((video: Video) => (
           <div
             key={video.id}
             className='d-flex flex-row justify-content-around'

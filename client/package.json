@@ -19,7 +19,7 @@
     "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'",
     "storybook": "storybook dev -p 6006 -s ../public",
     "build-storybook": "storybook build -s ../public",
-    "pretty": "prettier --write --single-quote --jsx-single-quote ."
+    "pretty": "prettier . --write"
   },
   "devDependencies": {
     "@babel/core": "^7.8.3",
@@ -66,7 +66,7 @@
     "storybook-addon-manual-mocks": "^0.1.1",
     "ts-jest": "^29.1.1",
     "ts-loader": "^6.2.1",
-    "typescript": "^4.5.5",
+    "typescript": "^5.2.2",
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
@@ -81,6 +81,7 @@
     "cross-env": "^6.0.3",
     "dotenv": "^14.3.2",
     "es6-crawler-detect": "^3.3.0",
+    "events": "^3.3.0",
     "flux": "^4.0.1",
     "formik": "^2.1.4",
     "local-storage": "2",

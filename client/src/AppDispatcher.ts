@@ -4,4 +4,6 @@ export interface ActionPayload {
   type: string;
 }
 
-export default new Dispatcher<ActionPayload>();
+const dispatcher = new Dispatcher<ActionPayload>();
+
+export default dispatcher;

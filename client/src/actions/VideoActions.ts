@@ -30,7 +30,7 @@ const VideoActions = {
   /**
    * Get all watchable videos.
    */
-  async getVideos(options?: VideoOptions): Promise<void> {
+  getVideos: async (options?: VideoOptions): Promise<void> => {
     return await videoApi.getVideos(options).then((videos: Videos) => {
       AppDispatcher.dispatch({
         type: ActionTypes.RECEIVE_VIDEOS,
@@ -43,7 +43,7 @@ const VideoActions = {
    * Adds or updates a video.
    * @param video Video information.
    */
-  async put(video: Video): Promise<void> {
+  put: async (video: Video): Promise<void> => {
     return await videoApi.put(video).then((confirmedVideo: Video) => {
       AppDispatcher.dispatch({
         type: ActionTypes.PUT_VIDEO,
@@ -56,7 +56,7 @@ const VideoActions = {
    * Removes an existing video by its ID.
    * @param id Video's UUID.
    */
-  async remove(id: string): Promise<void> {
+  remove: async (id: string): Promise<void> => {
     return await videoApi.remove(id).then(() => {
       AppDispatcher.dispatch({
         type: ActionTypes.REMOVE_VIDEO,
@@ -65,11 +65,11 @@ const VideoActions = {
     });
   },
 
-  getTimes(): { [id: string]: number } {
+  getTimes: (): { [id: string]: number } => {
     return (ls.get(video_times_key) as { [id: string]: number }) ?? {};
   },
 
-  setTimes(times: { [id: string]: number }): void {
+  setTimes: (times: { [id: string]: number }): void => {
     ls.set(video_times_key, times);
   },
 };

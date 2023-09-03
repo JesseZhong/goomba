@@ -35,4 +35,6 @@ class SessionStore extends ReduceStore<Session, ActionPayload> {
   }
 }
 
-export default new SessionStore();
+const sessionStore = new SessionStore();
+
+export default sessionStore;

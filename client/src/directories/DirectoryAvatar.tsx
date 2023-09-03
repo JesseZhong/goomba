@@ -1,21 +1,22 @@
-import { MouseEventHandler } from 'react-bootstrap/node_modules/@types/react';
-import { Directory } from './Directory';
 import './DirectoryAvatar.sass';
+import React from 'react';
+import { Directory } from './Directory';
 
 const DirectoryAvatar = (props: {
   directory: Directory;
-  onClick?: MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   className?: string;
 }) => {
   const {
     directory: { name, avatar_url },
     className,
+    onClick,
   } = props;
 
   return (
     <div
       className={'directory-card' + (className ? ` ${className}` : '')}
-      onClick={props.onClick}
+      onClick={onClick}
     >
       <div className='avatar'>
         {avatar_url ? (

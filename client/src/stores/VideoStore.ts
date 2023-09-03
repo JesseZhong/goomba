@@ -46,4 +46,6 @@ class VideoStore extends ReduceStore<Videos, ActionPayload> {
   }
 }
 
-export default new VideoStore();
+const videoStore = new VideoStore();
+
+export default videoStore;

@@ -40,4 +40,6 @@ class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
   }
 }
 
-export default new DirectoryStore();
+const directoryStore = new DirectoryStore();
+
+export default directoryStore;

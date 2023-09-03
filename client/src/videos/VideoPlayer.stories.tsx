@@ -1,4 +1,3 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
 import VideoPlayer from './VideoPlayer';
 
 export default {
@@ -7,10 +6,8 @@ export default {
   parameters: {
     withRoute: true,
   },
-} as ComponentMeta<typeof VideoPlayer>;
+};
 
-const Template: ComponentStory<typeof VideoPlayer> = (args) => (
-  <VideoPlayer {...args} />
-);
+const Template = (args: any) => <VideoPlayer {...args} />;
 
 export const WithVideo = Template.bind({});
