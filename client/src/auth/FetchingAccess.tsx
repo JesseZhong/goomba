@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   faCircleNotch,
@@ -7,43 +6,45 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Session } from './Session';
 import AuthActions from '../actions/AuthActions';
+import { useEffect, useMemo } from 'react';
 
-const AwaitAccess = (props: { session: Session }) => {
+/**
+ * When the user authorizes or denies Discord access
+ * they will be routed to this component via the Discord
+ * OAuth redirect_uri.
+ */
+const FetchingAccess = (props: { session: Session }) => {
+  const { access_token, session_id } = props?.session ?? {};
+
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const goMain = () => {
-    navigate('/');
-  };
-
-  // NOTE: Discord OAuth service seems to call this route twice,
-  // causing a second post to the API and therefore the Discord
-  // token endpoint again. This causes both the API and site to error.
-  // Check if the session already has a token before proceeding.
-  if (props.session?.access_token) {
-    goMain();
-    return (
-      <div>
-        <img
-          src='https://media1.tenor.com/images/bf327be1ebbde7f32baf5136042bf118/tenor.gif?itemid=14563637'
-          alt='To the moon!'
-        />
-      </div>
-    );
-  }
-
-  // When the user authorizes or denies Discord access
-  // they will be routed to this component via the Discord
-  // OAuth redirect_uri.
-
-  // Grab the queries that were passed.
-  const query = new URLSearchParams(location.search);
+  const { search } = useLocation();
+  const query = useMemo(() => new URLSearchParams(search), [search]);
 
   // If the user denied access, an error (usually 'access_denied') is passed.
   // In this case, inform the user that authorization is required and prompt
   // them to retry the process. Retry button redirects back to the '/requestauth'.
   const error = query.get('error');
-  if (error) {
+  const code = query.get('code');
+  const state = query.get('state');
+
+  useEffect(() => {
+    if (!!navigate && !!access_token) {
+      navigate('/');
+    }
+  }, [access_token, navigate]);
+
+  useEffect(() => {
+    if (!!navigate && !!state && !!code) {
+      // Ping the API to retreive the access and refresh tokens from Discord.
+      // Navigate back to root once the tokens are received.
+      AuthActions.requestAccess(state, code).then(
+        () => navigate('/'),
+        () => navigate('/denied')
+      );
+    }
+  }, [state, code, navigate]);
+
+  if (!!error) {
     return (
       <div
         className='d-flex flex-column justify-content-center align-items-center'
@@ -65,14 +66,19 @@ const AwaitAccess = (props: { session: Session }) => {
         </Link>
       </div>
     );
+  } else if (!!access_token) {
+    return (
+      <div>
+        <img
+          src='https://media1.tenor.com/images/bf327be1ebbde7f32baf5136042bf118/tenor.gif?itemid=14563637'
+          alt='To the moon!'
+        />
+      </div>
+    );
   }
-
-  const code = query.get('code');
-  const state = query.get('state');
-
   // Check for any kind of inconsistencies. States no matching or no
   // code could mean some kind of attack. Display this if that happens.
-  if (state !== props.session.session_id || code === null) {
+  else if (state !== session_id || code === null) {
     return (
       <div
         className='d-flex flex-column justify-content-center align-items-center'
@@ -88,25 +94,19 @@ const AwaitAccess = (props: { session: Session }) => {
         <p>You, uh, playing fuck, fuck games??</p>
       </div>
     );
+  } else {
+    return (
+      <div
+        className='d-flex flex-column justify-content-center align-items-center'
+        style={{
+          height: '100vh',
+        }}
+      >
+        <h1>Fetching Access</h1>
+        <FontAwesomeIcon icon={faCircleNotch} size={'4x'} spin />
+      </div>
+    );
   }
-
-  // Ping the API to retreive the access and refresh tokens from Discord.
-  // Navigate back to root once the tokens are received.
-  AuthActions.requestAccess(state, code).then(goMain, () =>
-    navigate('/denied')
-  );
-
-  return (
-    <div
-      className='d-flex flex-column justify-content-center align-items-center'
-      style={{
-        height: '100vh',
-      }}
-    >
-      <h1>Fetching Access</h1>
-      <FontAwesomeIcon icon={faCircleNotch} size={'4x'} spin />
-    </div>
-  );
 };
 
-export default AwaitAccess;
+export default FetchingAccess;

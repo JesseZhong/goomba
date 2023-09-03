@@ -34,11 +34,11 @@ const resetSession = () => {
 export const AuthAccess: Access = <Resource>(
   action: (access_token: string) => Promise<Resource>
 ) => {
-  const session = SessionStore.getState();
-  if (session.access_token && session.refresh_token) {
+  const { access_token, refresh_token } = SessionStore.getState();
+  if (access_token && refresh_token) {
     return authApi.access<Resource>(
-      session.access_token,
-      session.refresh_token,
+      access_token,
+      refresh_token,
       action,
       saveSession,
       resetSession
@@ -46,7 +46,7 @@ export const AuthAccess: Access = <Resource>(
   }
 
   throw new Error(
-    `One or more tokens is undefined, Access: ${session.access_token}, Refresh: ${session.refresh_token}.`
+    `One or more tokens is undefined, Access: ${access_token}, Refresh: ${refresh_token}.`
   );
 };
 

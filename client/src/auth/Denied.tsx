@@ -1,5 +1,3 @@
-import React from 'react';
-
 const Denied = () => (
   <div
     className='d-flex justify-content-center align-items-center'
