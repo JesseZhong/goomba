@@ -2,10 +2,10 @@
 // Type checking disabled so that mock helper methods won't error on build.
 import request from 'superagent';
 import VideoAPI, { VideoAPIClient } from '../api/VideoAPI';
-import { Videos } from '../videos/video';
+import { Videos } from '../models/video';
 
 jest.mock('superagent');
-jest.mock('../videos/Video');
+jest.mock('../models/video');
 
 describe('Video API', () => {
   const url = 'fakeurl';

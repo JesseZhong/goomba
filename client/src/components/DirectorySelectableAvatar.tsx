@@ -1,0 +1,69 @@
+import React from 'react';
+import { Directory } from '../models/directory';
+import DirectoryEdit from './DirectoryEdit';
+import DirectoryAvatar from './DirectoryAvatar';
+import ManageButtons from './ManageButtons';
+import DirectoryActions from '../actions/DirectoryActions';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import './DirectorySelectableAvatar.sass';
+
+const DirectorySelectableAvatar = (props: {
+  directory: Directory;
+  selected?: boolean;
+  onClick?: () => void;
+  onEdit?: () => void;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+  className?: string;
+}) => {
+  const directory = props.directory;
+  const className = props.className;
+  const selected = props.selected;
+
+  const [edit, setEdit] = React.useState(false);
+
+  const wrap = React.createRef<HTMLDivElement>();
+
+  return (
+    <div
+      ref={wrap}
+      className={
+        'directory-selectable-avatar' + (className ? ` ${className}` : '')
+      }
+    >
+      {edit ? (
+        <DirectoryEdit directory={directory} finished={() => setEdit(false)} />
+      ) : (
+        <>
+          <ManageButtons
+            owner={wrap}
+            onEditClick={() => {
+              setEdit(true);
+              props.onEdit?.();
+            }}
+            onRemoveConfirm={() => DirectoryActions.remove(directory.id)}
+          />
+          {selected && <div className='selected-ring' />}
+          <DirectoryAvatar directory={directory} onClick={props.onClick} />
+          {selected && (
+            <div className='vid-edit-controls'>
+              <button
+                className='confirm'
+                type='button'
+                onClick={props.onConfirm}
+              >
+                <FontAwesomeIcon icon={faCheck} size='2x' />
+              </button>
+              <button className='cancel' type='button' onClick={props.onCancel}>
+                <FontAwesomeIcon icon={faTimes} size='2x' />
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
+
+export default DirectorySelectableAvatar;

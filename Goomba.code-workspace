@@ -20,7 +20,9 @@
 			"cdk/**/*.d.ts": true,
 			"cdk/cdk.out/": true,
       ".cache/": true,
-      ".husky/": true
+      ".husky/": true,
+      "**/*.test.ts*": true,
+      "**/*.sass": true,
 		}
 	}
 }

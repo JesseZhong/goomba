@@ -1,4 +1,4 @@
-import { Video } from '../videos/video';
+import { Video } from '../models/video';
 import request, { Response } from 'superagent';
 
 const VideoMetaAPI = (url: string) => ({

@@ -1,14 +1,14 @@
 import { Container } from 'flux/utils';
 import App from '../App';
 import SessionStore from '../stores/SessionStore';
-import { Session } from '../auth/Session';
+import { Session } from '../models/session';
 import VideoStore from '../stores/VideoStore';
-import { Videos } from '../videos/video';
+import { Videos } from '../models/video';
 import TagStore from '../stores/TagStore';
-import { Directories } from '../directories/directory';
+import { Directories } from '../models/directory';
 import DirectoryStore from '../stores/DirectoryStore';
 import ManagementStore from '../stores/ManagementStore';
-import { PendingChanges } from '../manage/PendingChanges';
+import { PendingChanges } from '../models/pendingChanges';
 
 function getStores() {
   return [SessionStore, VideoStore, DirectoryStore, ManagementStore, TagStore];

@@ -1,6 +1,6 @@
 import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
-import { Directories, Directory } from '../directories/directory';
+import { Directories, Directory } from '../models/directory';
 import {
   PutDirectoryPayload,
   ReceiveDirectoriesPayload,

@@ -11,7 +11,7 @@ import ManagementPage from './manage/ManagementPage';
 import Denied from './auth/Denied';
 import Nav from './nav/Nav';
 import Home from './home/Home';
-import DirectoryVideos from './home/DirectoryVideos';
+import DirectoryVideos from './components/DirectoryVideos';
 import RecentVideos from './home/RecentVideos';
 import chadgura from './assets/chadgura.png';
 import { getRandomName } from './constants/names';

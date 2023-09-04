@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
 import ActionTypes from '../actions/ActionTypes';
-import { Session } from '../auth/Session';
+import { Session } from '../models/session';
 import { SessionPayload } from '../actions/SessionPayloads';
 
 class SessionStore extends ReduceStore<Session, ActionPayload> {
