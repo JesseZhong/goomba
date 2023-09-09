@@ -1,5 +1,5 @@
 import request, { Response } from 'superagent';
-import { Access } from './Access';
+import { Access } from '../models/access';
 
 const TagsAPI = (url: string, access: Access) => ({
   async getTags(): Promise<string[]> {

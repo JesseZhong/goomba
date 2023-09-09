@@ -1,18 +1,18 @@
 import { AppState } from './containers/AppContainer';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import PageNotFound from './not-found/PageNotFound';
-import VideoListByDate from './videos/VideoListByDate';
-import VideoPlayer from './videos/VideoPlayer';
-import RequestAuthorization from './auth/RequestAuth';
-import FetchingAccess from './auth/FetchingAccess';
+import PageNotFound from './components/PageNotFound';
+import VideoListByDate from './components/VideoListByDate';
+import VideoPlayer from './components/VideoPlayer';
+import RequestAuthorization from './components/RequestAuth';
+import FetchingAccess from './components/FetchingAccess';
 import SessionActions from './actions/SessionActions';
-import ManagementPage from './manage/ManagementPage';
-import Denied from './auth/Denied';
-import Nav from './nav/Nav';
-import Home from './home/Home';
+import ManagementPage from './components/ManagementPage';
+import Denied from './components/Denied';
+import Nav from './components/Nav';
+import Home from './components/Home';
 import DirectoryVideos from './components/DirectoryVideos';
-import RecentVideos from './home/RecentVideos';
+import RecentVideos from './components/RecentVideos';
 import chadgura from './assets/chadgura.png';
 import { getRandomName } from './constants/names';
 

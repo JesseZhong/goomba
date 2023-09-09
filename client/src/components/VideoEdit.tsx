@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid';
 import { Video } from '../models/video';
 import VideoCard from './VideoCard';
 import VideoActions from '../actions/VideoActions';
-import videoSchema from '../schemas/videoSchema';
+import videoSchema from '../validation/videoSchema';
 import ImageUpload from './ImageUpload';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import { WithContext as ReactTags, Tag } from 'react-tag-input';

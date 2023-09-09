@@ -1,4 +1,4 @@
-import { Access } from '../../api/Access';
+import { Access } from '../../models/access';
 
 export const AuthAccess: Access = <Resource>(
   action: (access_token: string) => Promise<Resource>

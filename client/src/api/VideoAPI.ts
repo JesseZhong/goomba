@@ -1,6 +1,6 @@
 import request, { Response } from 'superagent';
 import { Video, Videos } from '../models/video';
-import { Access } from './Access';
+import { Access } from '../models/access';
 
 export interface VideoOptions {
   show_hidden?: boolean;

@@ -1,4 +1,4 @@
-import { Access } from '../api/Access';
+import { Access } from '../models/access';
 import AuthAPI from '../api/AuthAPI';
 import SessionStore from '../stores/SessionStore';
 import SessionActions from './SessionActions';

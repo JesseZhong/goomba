@@ -1,7 +1,7 @@
 import React from 'react';
 import { Directory } from '../models/directory';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
-import DirectoryValidation from '../schemas/directorySchema';
+import DirectoryValidation from '../validation/directorySchema';
 import DirectoryActions from '../actions/DirectoryActions';
 import ImageUpload from './ImageUpload';
 import DirectoryAvatar from './DirectoryAvatar';

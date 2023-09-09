@@ -2,9 +2,9 @@ import ReactDOMServer from 'react-dom/server';
 import { Helmet } from 'react-helmet';
 import { ssrWindow } from 'ssr-window';
 import VideoMetaAPI from './VideoMetaAPI';
-import VideoMeta from '../videos/VideoMeta';
+import VideoMeta from '../components/VideoMeta';
 import DirectoryMetaAPI from './DirectoryMetaAPI';
-import DirectoryMeta from '../directories/DirectoryMeta';
+import DirectoryMeta from '../components/DirectoryMeta';
 
 const getHtml = async (api_url: string, banner_url: string, route?: string) => {
   let content = <></>;

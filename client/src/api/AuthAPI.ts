@@ -1,5 +1,5 @@
 import request, { Response } from 'superagent';
-import { ErrorResponse } from './ErrorResponse';
+import { ErrorResponse } from '../models/errorResponse';
 
 export interface TokenResponse {
   access_token: string;
