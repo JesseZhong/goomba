@@ -1,22 +1,18 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
+import { Construct } from 'constructs';
+import { CfnOutput, Duration, Stack, StackProps } from 'aws-cdk-lib';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import * as s3 from 'aws-cdk-lib/aws-s3';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+import * as route53 from 'aws-cdk-lib/aws-route53';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
+import {
+  CloudFrontAllowedMethods,
+  ViewerProtocolPolicy,
+} from 'aws-cdk-lib/aws-cloudfront';
 
-import * as cdk from '@aws-cdk/core';
-import { Duration } from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as s3deploy from '@aws-cdk/aws-s3-deployment';
-import * as cloudfront from '@aws-cdk/aws-cloudfront';
-import * as lambda from '@aws-cdk/aws-lambda';
-import * as route53 from '@aws-cdk/aws-route53';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import { CloudFrontAllowedMethods, ViewerProtocolPolicy } from '@aws-cdk/aws-cloudfront';
-
-export class SsrStack extends cdk.Stack {
-  constructor(
-    scope: cdk.Construct,
-    id: string,
-    props?: cdk.StackProps
-  ) {
+export class SsrStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const domain = process.env.SITE_URL;
@@ -25,21 +21,13 @@ export class SsrStack extends cdk.Stack {
     }
 
     // Create a bucket to store the static version of the site.
-    const siteBucket = new s3.Bucket(
-      this,
-      'ssr-site',
-      {
-        bucketName: domain,
-        websiteIndexDocument: 'index.html',
-        websiteErrorDocument: 'error.html',
-        publicReadAccess: false
-      }
-    );
-    new cdk.CfnOutput(
-      this,
-      'Bucket',
-      { value: siteBucket.bucketName }
-    );
+    const siteBucket = new s3.Bucket(this, 'ssr-site', {
+      bucketName: domain,
+      websiteIndexDocument: 'index.html',
+      websiteErrorDocument: 'error.html',
+      publicReadAccess: false,
+    });
+    new CfnOutput(this, 'Bucket', { value: siteBucket.bucketName });
 
     // User OAI to restrict access to CloudFront distribution.
     const originAccessIdentity = new cloudfront.OriginAccessIdentity(
@@ -54,24 +42,20 @@ export class SsrStack extends cdk.Stack {
       'Compiled static site/client to be served through S3.',
       {
         sources: [s3deploy.Source.asset('../client/build/')],
-        destinationBucket: siteBucket
+        destinationBucket: siteBucket,
       }
     );
 
     // Configure the Lambda@Edge function for
     // serving SSR versions of the client/site.
-    const ssrEdgeFunction = new lambda.Function(
-      this,
-        'ssr-lambda-edge',
-        {
-          runtime: lambda.Runtime.NODEJS_12_X,
-          code: lambda.Code.fromAsset('../client/ssr-build'),
-          memorySize: 128,
-          timeout: Duration.seconds(5),
-          handler: 'index.handler',
-          description: `Generated on: ${new Date().toISOString()}`
-        }
-    );
+    const ssrEdgeFunction = new lambda.Function(this, 'ssr-lambda-edge', {
+      runtime: lambda.Runtime.NODEJS_LATEST,
+      code: lambda.Code.fromAsset('../client/ssr-build'),
+      memorySize: 128,
+      timeout: Duration.seconds(5),
+      handler: 'index.handler',
+      description: `Generated on: ${new Date().toISOString()}`,
+    });
 
     // Declare a function aliasing for targeting latest SSR function.
     const ssrEdgeFunctionAlias = new lambda.Alias(
@@ -79,31 +63,23 @@ export class SsrStack extends cdk.Stack {
       'ssr-lambda-edge-alias',
       {
         aliasName: 'live',
-        version: ssrEdgeFunction.currentVersion
+        version: ssrEdgeFunction.currentVersion,
       }
-    )
+    );
 
     // Lookup an existing hosted zone for the specified domain.
-    const hostedZone = route53.HostedZone.fromLookup(
-      this,
-      'hosted-zone',
-      {
-        domainName: domain.replace(
-          /^(.*\.|)(?<domain>[^\/]*\..{2,5})$/i,
-          '$<domain>'
-        )
-      }
-    );
+    const hostedZone = route53.HostedZone.fromLookup(this, 'hosted-zone', {
+      domainName: domain.replace(
+        /^(.*\.|)(?<domain>[^\/]*\..{2,5})$/i,
+        '$<domain>'
+      ),
+    });
 
     // Create a certificate (and validate) if one doesn't exist.
-    const certificate = new acm.Certificate(
-      this,
-      'certificate',
-      {
-        domainName: domain,
-        validation: acm.CertificateValidation.fromDns(hostedZone)
-      }
-    );
+    const certificate = new acm.Certificate(this, 'certificate', {
+      domainName: domain,
+      validation: acm.CertificateValidation.fromDns(hostedZone),
+    });
 
     const distribution = new cloudfront.CloudFrontWebDistribution(
       this,
@@ -122,9 +98,7 @@ export class SsrStack extends cdk.Stack {
           certificate,
           {
             securityPolicy: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-            aliases: [
-              domain
-            ]
+            aliases: [domain],
           }
         ),
 
@@ -134,9 +108,9 @@ export class SsrStack extends cdk.Stack {
             // allowing access via OAI.
             s3OriginSource: {
               s3BucketSource: siteBucket,
-              originAccessIdentity: originAccessIdentity
+              originAccessIdentity: originAccessIdentity,
             },
-            
+
             behaviors: [
               {
                 isDefaultBehavior: true,
@@ -148,10 +122,8 @@ export class SsrStack extends cdk.Stack {
                 // Make sure to forward User-Agent for
                 // Lambda@Edge to distinguish between user and bot.
                 forwardedValues: {
-                  headers: [
-                    'User-Agent'
-                  ],
-                  queryString: false
+                  headers: ['User-Agent'],
+                  queryString: false,
                 },
 
                 // Trigger Lambda@Edge on all origin requests.
@@ -161,12 +133,12 @@ export class SsrStack extends cdk.Stack {
                 lambdaFunctionAssociations: [
                   {
                     eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-                    lambdaFunction: ssrEdgeFunctionAlias.version
-                  }
-                ]
-              }
-            ]
-          }
+                    lambdaFunction: ssrEdgeFunctionAlias.version,
+                  },
+                ],
+              },
+            ],
+          },
         ],
 
         // Forward non-root routes to client to handle, instead
@@ -176,20 +148,20 @@ export class SsrStack extends cdk.Stack {
             errorCode: 403,
             responsePagePath: '/index.html',
             responseCode: 200,
-            errorCachingMinTtl: 300
+            errorCachingMinTtl: 300,
           },
           {
             errorCode: 404,
             responsePagePath: '/index.html',
             responseCode: 200,
-            errorCachingMinTtl: 300
-          }
-        ]
+            errorCachingMinTtl: 300,
+          },
+        ],
       }
     );
 
-    new cdk.CfnOutput(this, 'CloudFront URL', {
-      value: `https://${distribution.distributionDomainName}`
+    new CfnOutput(this, 'CloudFront URL', {
+      value: `https://${distribution.distributionDomainName}`,
     });
   }
 }

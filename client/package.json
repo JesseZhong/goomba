@@ -14,8 +14,8 @@
     "flow": "flow-remove-types app/ -d src/",
     "start": "PORT=4200 pnpm react-start",
     "build": "craco build",
-    "build-ssr": "webpack --config webpack.ssr.js",
-    "build-ssr-dev": "webpack --config webpack.ssr-dev.js",
+    "build-ssr": "webpack --config webpack.ssr.cjs",
+    "build-ssr-dev": "webpack --config webpack.ssr-dev.cjs",
     "ssr-test-bot": "node -e 'require(\"./src/ssr/tests/run.js\").bot()'",
     "ssr-test-user": "node -e 'require(\"./src/ssr/tests/run.js\").user()'",
     "storybook": "storybook dev -p 6006 -s ../public",
@@ -68,6 +68,7 @@
     "ts-jest": "^29.1.1",
     "ts-loader": "^6.2.1",
     "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
@@ -85,7 +86,7 @@
     "es6-crawler-detect": "^3.3.0",
     "events": "^3.3.0",
     "flux": "^4.0.1",
-    "formik": "^2.1.4",
+    "formik": "^2.4.4",
     "local-storage": "2",
     "lodash": "^4.17.15",
     "react": "^18.2.0",

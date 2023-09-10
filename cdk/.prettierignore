@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Ignore artifacts:
+build
+coverage
+
+# Ignore all HTML files:
+*.html
+
+# Packages
+package.json
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
