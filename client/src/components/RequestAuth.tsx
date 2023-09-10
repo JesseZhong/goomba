@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { faSync } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Session } from '../models/session';
+import { Session } from '../models/Session';
 import AuthActions from '../actions/AuthActions';
 
 const RequestAuthorization = (props: { session: Session }) => {

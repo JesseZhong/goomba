@@ -1,6 +1,6 @@
 import request, { Response } from 'superagent';
 import events from 'events';
-import { Access } from '../models/access';
+import { Access } from '../models/Access';
 
 interface Progress {
   percent?: string;

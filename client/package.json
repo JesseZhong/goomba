@@ -4,6 +4,7 @@
   "description": "Well then.",
   "private": true,
   "sideEffects": false,
+  "type": "module",
   "scripts": {
     "react-start": "craco start",
     "react-build": "craco build",
@@ -80,6 +81,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^6.0.3",
     "dotenv": "^14.3.2",
+    "env-var": "^7.4.1",
     "es6-crawler-detect": "^3.3.0",
     "events": "^3.3.0",
     "flux": "^4.0.1",

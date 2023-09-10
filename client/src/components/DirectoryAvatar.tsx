@@ -1,6 +1,6 @@
 import './DirectoryAvatar.sass';
 import React from 'react';
-import { Directory } from '../models/directory';
+import { Directory } from '../models/Directory';
 
 const DirectoryAvatar = (props: {
   directory: Directory;

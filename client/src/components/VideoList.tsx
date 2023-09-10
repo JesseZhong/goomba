@@ -1,6 +1,6 @@
 import './VideoList.sass';
 import { useNavigate } from 'react-router-dom';
-import { Video, Videos } from '../models/video';
+import { Video, Videos } from '../models/Video';
 import VideoCard from './VideoCard';
 
 const VideoList = (props: { videos: Videos | Video[]; className?: string }) => {

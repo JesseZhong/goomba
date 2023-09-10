@@ -4,7 +4,7 @@ import {
   faTimesCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Session } from '../models/session';
+import { Session } from '../models/Session';
 import AuthActions from '../actions/AuthActions';
 import { useEffect, useMemo } from 'react';
 

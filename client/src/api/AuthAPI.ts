@@ -1,5 +1,5 @@
 import request, { Response } from 'superagent';
-import { ErrorResponse } from '../models/errorResponse';
+import { ErrorResponse } from '../models/ErrorResponse';
 
 export interface TokenResponse {
   access_token: string;
@@ -13,6 +13,10 @@ export interface AuthAPIClient {
 
   requestAccess(state: string, code: string): Promise<TokenResponse>;
 
+  /**
+   * Access an endpoint that requires authorization.
+   * Handles token refreshes.
+   */
   access<Resource>(
     access_token: string,
     refresh_token: string,
@@ -53,10 +57,6 @@ const AuthAPI = (url: string): AuthAPIClient => ({
       });
   },
 
-  /**
-   * Access an endpoint that requires authorization.
-   * Handles token refreshes.
-   */
   async access<Resource>(
     access_token: string,
     refresh_token: string,

@@ -1,5 +1,5 @@
 import { ActionPayload } from '../AppDispatcher';
-import { Directory } from '../models/directory';
+import { Directory } from '../models/Directory';
 
 export interface SelectDirectoryPayload extends ActionPayload {
   directory?: Directory;

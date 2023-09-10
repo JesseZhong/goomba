@@ -1,34 +1,39 @@
-import { Access } from '../models/access';
+import { Access } from '../models/Access';
+import { API_URL } from '../constants/env';
 import AuthAPI from '../api/AuthAPI';
 import SessionStore from '../stores/SessionStore';
 import SessionActions from './SessionActions';
 
-export const authApi = AuthAPI(process.env.REACT_APP_API_URL ?? '');
+const authApi = AuthAPI(API_URL);
 
-const saveSession = (
+export const saveSession = (
   access_token: string,
   refresh_token: string,
   is_admin?: boolean
 ) => {
-  // Load up session info.
-  let session = SessionStore.getState();
-  session.access_token = access_token;
-  session.refresh_token = refresh_token;
-  session.is_admin = is_admin;
+  // Load up previous session info.
+  const session = SessionStore.getState();
 
-  // Save it.
-  SessionActions.set(session);
+  // Save new info.
+  SessionActions.set({
+    ...session,
+    access_token,
+    refresh_token,
+    is_admin,
+  });
 };
 
-const resetSession = () => {
-  // Clear out the existing token.
-  let session = SessionStore.getState();
-  delete session.access_token;
-  delete session.refresh_token;
-  delete session.is_admin;
+export const resetSession = () => {
+  // Load up previous session info.
+  const session = SessionStore.getState();
 
-  // Save it.
-  SessionActions.set(session);
+  // Clear out existing tokens.
+  SessionActions.set({
+    ...session,
+    access_token: undefined,
+    refresh_token: undefined,
+    is_admin: undefined,
+  });
 };
 
 export const AuthAccess: Access = <Resource>(

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Directory } from '../models/directory';
+import { Directory } from '../models/Directory';
 import DirectoryEdit from './DirectoryEdit';
 import DirectoryAvatar from './DirectoryAvatar';
 import ManageButtons from './ManageButtons';

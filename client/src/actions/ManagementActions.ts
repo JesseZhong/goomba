@@ -1,5 +1,5 @@
 import AppDispatcher from '../AppDispatcher';
-import { Directory } from '../models/directory';
+import { Directory } from '../models/Directory';
 import ActionTypes from './ActionTypes';
 import {
   SelectDirectoryPayload,

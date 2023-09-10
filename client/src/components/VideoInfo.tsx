@@ -1,4 +1,4 @@
-import { Video } from '../models/video';
+import { Video } from '../models/Video';
 import { faClock, faDownload, faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import './VideoInfo.sass';

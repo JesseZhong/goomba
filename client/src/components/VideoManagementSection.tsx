@@ -1,8 +1,8 @@
 import React from 'react';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Videos } from '../models/video';
-import { PendingChanges } from '../models/pendingChanges';
+import { Videos } from '../models/Video';
+import { PendingChanges } from '../models/PendingChanges';
 import ManagementActions from '../actions/ManagementActions';
 import VideoEdit from './VideoEdit';
 import VideoCardEditorMultiSelectList from './VideoCardEditorMultiSelectList';

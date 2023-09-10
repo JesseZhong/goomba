@@ -1,6 +1,6 @@
 import request, { Response } from 'superagent';
-import { Directories, Directory } from '../models/directory';
-import { Access } from '../models/access';
+import { Directories, Directory } from '../models/Directory';
+import { Access } from '../models/Access';
 
 export interface DirectoryAPIClient {
   get(): Promise<Directories>;

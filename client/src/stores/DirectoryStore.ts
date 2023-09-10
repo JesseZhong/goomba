@@ -5,7 +5,7 @@ import {
   PutDirectoryPayload,
   ReceiveDirectoriesPayload,
 } from '../actions/DirectoryPayload';
-import { Directories } from '../models/directory';
+import { Directories } from '../models/Directory';
 
 class DirectoryStore extends ReduceStore<Directories, ActionPayload> {
   public constructor() {

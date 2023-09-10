@@ -6,7 +6,7 @@ import {
   faSearch,
   faStream,
 } from '@fortawesome/free-solid-svg-icons';
-import { Session } from '../models/session';
+import { Session } from '../models/Session';
 import image from '../assets/goobs.png';
 import './Nav.sass';
 

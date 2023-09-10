@@ -1,9 +1,9 @@
 import React from 'react';
-import { Directories } from '../models/directory';
+import { Directories } from '../models/Directory';
 import DirectorySelectList from './DirectorySelectList';
 import DirectoryEdit from './DirectoryEdit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PendingChanges } from '../models/pendingChanges';
+import { PendingChanges } from '../models/PendingChanges';
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 const DirectoryManagmentSection = (props: {

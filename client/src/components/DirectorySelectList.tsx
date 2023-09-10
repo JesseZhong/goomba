@@ -2,8 +2,8 @@ import React from 'react';
 import DirectoryActions from '../actions/DirectoryActions';
 import ManagementActions from '../actions/ManagementActions';
 import DirectorySelectableAvatar from './DirectorySelectableAvatar';
-import { Directories, Directory } from '../models/directory';
-import { PendingChanges } from '../models/pendingChanges';
+import { Directories, Directory } from '../models/Directory';
+import { PendingChanges } from '../models/PendingChanges';
 
 const DirectorySelectList = (props: {
   directories: Directories | Directory[];

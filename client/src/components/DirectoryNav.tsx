@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Directories } from '../models/directory';
+import { Directories } from '../models/Directory';
 import DirectoryAvatar from './DirectoryAvatar';
 import './DirectoryNav.sass';
 

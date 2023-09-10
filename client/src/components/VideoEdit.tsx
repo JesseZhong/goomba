@@ -1,6 +1,6 @@
 import React from 'react';
 import { v4 as uuid } from 'uuid';
-import { Video } from '../models/video';
+import { Video } from '../models/Video';
 import VideoCard from './VideoCard';
 import VideoActions from '../actions/VideoActions';
 import videoSchema from '../validation/videoSchema';

@@ -1,5 +1,5 @@
 import AppDispatcher from '../AppDispatcher';
-import { Session, Sessions } from '../models/session';
+import { Session, Sessions } from '../models/Session';
 import ActionTypes from './ActionTypes';
 import { SessionPayload } from './SessionPayloads';
 

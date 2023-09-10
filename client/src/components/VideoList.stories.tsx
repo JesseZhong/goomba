@@ -4,7 +4,7 @@ import sus_thumbnail from '../assets/sus.jpg';
 import mums_thumbnail from '../assets/mums.jpg';
 import oao_thumbnail from '../assets/oao.jpg';
 import VideoList from './VideoList';
-import { Videos } from '../models/video';
+import { Videos } from '../models/Video';
 
 /**
  * We out here with the content.

@@ -1,6 +1,6 @@
 import ManagementActions from '../actions/ManagementActions';
-import { Video, Videos } from '../models/video';
-import { PendingChanges } from '../models/pendingChanges';
+import { Video, Videos } from '../models/Video';
+import { PendingChanges } from '../models/PendingChanges';
 import VideoCardEditor from './VideoCardEditor';
 import './VideoCardEditorMultiSelectList.sass';
 

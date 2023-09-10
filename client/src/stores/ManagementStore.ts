@@ -1,7 +1,7 @@
 import { ReduceStore } from 'flux/utils';
 import ActionTypes from '../actions/ActionTypes';
 import AppDispatcher, { ActionPayload } from '../AppDispatcher';
-import { PendingChanges } from '../models/pendingChanges';
+import { PendingChanges } from '../models/PendingChanges';
 import {
   SelectDirectoryPayload,
   SelectVideosPayload,

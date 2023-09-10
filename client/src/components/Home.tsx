@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import DirectoryActions from '../actions/DirectoryActions';
 import VideoActions from '../actions/VideoActions';
-import { Directories } from '../models/directory';
+import { Directories } from '../models/Directory';
 import DirectoryNav from './DirectoryNav';
 
 const Home = (props: { directories: Directories }) => {

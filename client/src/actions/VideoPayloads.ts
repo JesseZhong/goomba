@@ -1,5 +1,5 @@
 import { ActionPayload } from '../AppDispatcher';
-import { Video, Videos } from '../models/video';
+import { Video, Videos } from '../models/Video';
 
 export interface VideosPayload extends ActionPayload {
   videos: Videos;

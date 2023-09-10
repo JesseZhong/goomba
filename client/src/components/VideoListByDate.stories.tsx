@@ -1,5 +1,5 @@
 import { Meta, StoryObj } from '@storybook/react';
-import { Videos } from '../models/video';
+import { Videos } from '../models/Video';
 import VideoListByDate from './VideoListByDate';
 import goms_thumbnail from '../assets/goms.jpg';
 import sus_thumbnail from '../assets/sus.jpg';

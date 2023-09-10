@@ -1,7 +1,7 @@
 import React from 'react';
-import { Videos } from '../models/video';
-import { Directories } from '../models/directory';
-import { PendingChanges } from '../models/pendingChanges';
+import { Videos } from '../models/Video';
+import { Directories } from '../models/Directory';
+import { PendingChanges } from '../models/PendingChanges';
 import VideoActions from '../actions/VideoActions';
 import DirectoryActions from '../actions/DirectoryActions';
 import DirectoryManagmentSection from './DirectoryManagmentSection';

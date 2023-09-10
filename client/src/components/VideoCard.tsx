@@ -1,6 +1,6 @@
 import { faPhotoVideo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Video } from '../models/video';
+import { Video } from '../models/Video';
 import VideoInfo from './VideoInfo';
 import './VideoCard.sass';
 

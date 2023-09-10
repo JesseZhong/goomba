@@ -1,4 +1,4 @@
-import { Video } from '../models/video';
+import { Video } from '../models/Video';
 import { Helmet } from 'react-helmet';
 
 const VideoMeta = (props: { video?: Video }) => {

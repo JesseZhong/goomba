@@ -1,5 +1,5 @@
 import VideoListByDate from './VideoListByDate';
-import { Videos } from '../models/video';
+import { Videos } from '../models/Video';
 
 const RECENT_VIDS = 20;
 

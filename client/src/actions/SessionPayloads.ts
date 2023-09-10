@@ -1,5 +1,5 @@
 import { ActionPayload } from '../AppDispatcher';
-import { Session } from '../models/session';
+import { Session } from '../models/Session';
 
 export interface SessionPayload extends ActionPayload {
   session: Session;

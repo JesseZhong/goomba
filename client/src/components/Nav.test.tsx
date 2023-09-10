@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { Session } from '../models/session';
+import { Session } from '../models/Session';
 import '@testing-library/jest-dom/extend-expect';
 import Nav from './Nav';
 

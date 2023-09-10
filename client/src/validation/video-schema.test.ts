@@ -14,7 +14,7 @@ const createVideo = (obj?: {}) => ({
 });
 
 describe('when validating videos', () => {
-  it.each([
+  test.each([
     {
       video: createVideo({
         name: undefined,

@@ -1,6 +1,6 @@
 import * as ls from 'local-storage';
 import { v4 as uuid } from 'uuid';
-import { User } from './user';
+import { User } from './User';
 
 const key = 'session';
 
