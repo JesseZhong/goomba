@@ -12,7 +12,7 @@
     "react-eject": "react-scripts eject",
     "test": "jest",
     "flow": "flow-remove-types app/ -d src/",
-    "start": "PORT=4200 yarn react-start",
+    "start": "PORT=4200 pnpm react-start",
     "build": "craco build",
     "build-ssr": "webpack --config webpack.ssr.js",
     "build-ssr-dev": "webpack --config webpack.ssr-dev.js",

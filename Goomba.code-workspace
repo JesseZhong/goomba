@@ -11,7 +11,7 @@
 			"**/yarn.lock": true,
 			"**/node_modules/": true,
 			"**/browserslist": true,
-			"**/craco.config.js": true,
+			"**/craco.config.cjs": true,
 			"**/tsconfig.json": true,
 			"**/webpack.*.js": true,
 			"**/build": true,
