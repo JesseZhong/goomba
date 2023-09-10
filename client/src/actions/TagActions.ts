@@ -3,8 +3,9 @@ import AppDispatcher from '../AppDispatcher';
 import ActionTypes from './ActionTypes';
 import { AuthAccess } from './AuthActions';
 import { TagsPayload } from './TagPayload';
+import { API_URL } from '../constants/env';
 
-const tagsApi = TagsAPI(process.env.REACT_APP_API_URL ?? '', AuthAccess);
+const tagsApi = TagsAPI(API_URL ?? '', AuthAccess);
 
 const TagActions = {
   async get(): Promise<void> {

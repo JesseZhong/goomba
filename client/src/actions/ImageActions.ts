@@ -1,8 +1,9 @@
 import ImageAPI from '../api/ImageAPI';
+import { API_URL } from '../constants/env';
 import { AuthAccess } from './AuthActions';
 import events from 'events';
 
-const imageApi = ImageAPI(process.env.REACT_APP_API_URL ?? '', AuthAccess);
+const imageApi = ImageAPI(API_URL, AuthAccess);
 
 const ImageActions = {
   upload: async (

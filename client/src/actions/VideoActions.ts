@@ -5,14 +5,15 @@ import {
   VideosPayload,
   RemoveVideoPayload,
 } from './VideoPayloads';
-import { Video, Videos } from '../models/Video';
 import VideoAPI, { VideoOptions } from '../api/VideoAPI';
 import { AuthAccess } from './AuthActions';
+import { Video, Videos } from '../models/Video';
 import * as ls from 'local-storage';
+import { API_URL } from '../constants/env';
 
 const video_times_key = 'video_times';
 
-const videoApi = VideoAPI(process.env.REACT_APP_API_URL ?? '', AuthAccess);
+const videoApi = VideoAPI(API_URL ?? '', AuthAccess);
 
 const VideoActions = {
   /**

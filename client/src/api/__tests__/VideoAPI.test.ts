@@ -1,11 +1,11 @@
 // @ts-nocheck
 // Type checking disabled so that mock helper methods won't error on build.
-import request from 'superagent';
-import VideoAPI, { VideoAPIClient } from '../api/VideoAPI';
-import { Videos } from '../models/Video';
-
 jest.mock('superagent');
-jest.mock('../models/video');
+jest.mock('../../models/Video');
+
+import request from 'superagent';
+import VideoAPI, { VideoAPIClient } from '../VideoAPI';
+import { Videos } from '../../models/Video';
 
 describe('Video API', () => {
   const url = 'fakeurl';
@@ -35,13 +35,13 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    it('should return video info', async () => {
+    test('returns video info', async () => {
       const actual = await api.getStream();
 
       expect(actual).toBe(content);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.getStream();
 
       expect(request.auth).toHaveBeenCalled();
@@ -63,13 +63,13 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    it('should return video info', async () => {
+    test('returns video info', async () => {
       const actual = await api.getDownload();
 
       expect(actual).toBe(content);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.getDownload();
 
       expect(request.auth).toHaveBeenCalled();
@@ -91,20 +91,20 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    it('should return videos', async () => {
+    test('returns videos', async () => {
       await api.getVideos();
 
       expect(Videos).toBeCalledWith(content);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.getVideos();
 
       expect(request.auth).toHaveBeenCalled();
     });
 
-    describe('when requested with options', () => {
-      it('should be requestable with hidden videos only', async () => {
+    describe('when requesting with options', () => {
+      test('forwards options', async () => {
         await api.getVideos({
           show_hidden: true,
         });

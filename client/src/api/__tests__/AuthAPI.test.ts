@@ -1,9 +1,9 @@
 // @ts-nocheck
 // Type checking disabled so that mock helper methods won't error on build.
-import request from 'superagent';
-import AuthAPI, { AuthAPIClient, TokenResponse } from './AuthAPI';
-
 jest.mock('superagent');
+
+import request from 'superagent';
+import AuthAPI, { AuthAPIClient, TokenResponse } from '../AuthAPI';
 
 describe('Auth API', () => {
   const url = 'fakeurl';
@@ -18,7 +18,7 @@ describe('Auth API', () => {
   });
 
   describe('when requesting authorization', () => {
-    it('returns a valid auth url', async () => {
+    test('returns a valid auth url', async () => {
       const state = 'fakestate';
       const auth_url = 'somethingsoemthingsomething';
       request.__setDefaultMockResponse({
@@ -34,7 +34,7 @@ describe('Auth API', () => {
     });
 
     describe('with a falsified state', () => {
-      it('throws an error', async () => {
+      test('throws an error', async () => {
         request.__setDefaultMockResponse({
           body: {
             state: 'falsified state',
@@ -51,7 +51,7 @@ describe('Auth API', () => {
 
   describe('when requesting access', () => {
     describe('with a valid state and code', () => {
-      it('returns access and refresh tokens', async () => {
+      test('returns access and refresh tokens', async () => {
         const tokens = {
           access_token: 'LET ME IN!!!',
           refresh_token: 'MOAR POWER!!!',
@@ -83,7 +83,7 @@ describe('Auth API', () => {
     });
 
     describe('with a valid token', () => {
-      it('returns the resource', async () => {
+      test('returns the resource', async () => {
         const getResource = async (_access_token: string) => {
           return Promise.resolve(fakeResource);
         };
@@ -97,7 +97,7 @@ describe('Auth API', () => {
         expect(actual).toBe(fakeResource);
       });
 
-      it('refreshes an expired token', async () => {
+      test('refreshes an expired token', async () => {
         const access = 'shared access token';
         const oldRefresh = 'old refresh token';
         const newRefresh = 'new refresh token';

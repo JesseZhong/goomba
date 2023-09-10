@@ -8,11 +8,9 @@ import {
 } from './DirectoryPayload';
 import DirectoryAPI from '../api/DirectoryAPI';
 import { AuthAccess } from './AuthActions';
+import { API_URL } from '../constants/env';
 
-const directoryApi = DirectoryAPI(
-  process.env.REACT_APP_API_URL ?? '',
-  AuthAccess
-);
+const directoryApi = DirectoryAPI(API_URL, AuthAccess);
 
 const DirectoryActions = {
   async get(): Promise<void> {

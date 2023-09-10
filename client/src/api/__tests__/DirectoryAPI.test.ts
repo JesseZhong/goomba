@@ -1,11 +1,11 @@
 // @ts-nocheck
 // Type checking disabled so that mock helper methods won't error on build.
-import request from 'superagent';
-import DirectoryAPI, { DirectoryAPIClient } from '../api/DirectoryAPI';
-import { Directories } from '../models/Directory';
-
 jest.mock('superagent');
-jest.mock('../models/directory');
+jest.mock('../../models/Directory');
+
+import request from 'superagent';
+import DirectoryAPI, { DirectoryAPIClient } from '../DirectoryAPI';
+import { Directories } from '../../models/Directory';
 
 describe('Directory API', () => {
   const url = 'fakeurl';
@@ -35,13 +35,13 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    it('should return all as directories', async () => {
+    test('returns all as directories', async () => {
       await api.get();
 
       expect(Directories).toHaveBeenLastCalledWith(content);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.get();
 
       expect(request.auth).toHaveBeenCalled();
@@ -64,19 +64,19 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    it('should return the directory for a successful put', async () => {
+    test('returns the directory for a successful put', async () => {
       const actual = await api.put(directory);
 
       expect(actual).toBe(directory);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.put(directory);
 
       expect(request.auth).toHaveBeenCalled();
     });
 
-    it('should reject if something went wrong', async () => {
+    test('rejects if something went wrong', async () => {
       const response = {
         status: 500,
         ok: false,
@@ -103,19 +103,19 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    it('should return the directory id for a successful delete', async () => {
+    test('returns the directory id for a successful delete', async () => {
       const actual = await api.remove(id);
 
       expect(actual).toBe(id);
     });
 
-    it('should authenticate', async () => {
+    test('authenticates', async () => {
       await api.remove(id);
 
       expect(request.auth).toHaveBeenCalled();
     });
 
-    it('should reject if something went wrong', async () => {
+    test('rejects if something went wrong', async () => {
       const response = {
         status: 500,
         ok: false,

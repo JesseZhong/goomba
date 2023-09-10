@@ -2,15 +2,15 @@ const mockAccess = jest.fn();
 const mockRequestAuthorization = jest.fn();
 const mockRequestAccess = jest.fn();
 
-const mockAuthApi = jest.fn((..._args) => ({
-  access: (...args: any) => mockAccess(...args),
-  requestAuthorization: (...args: any) => mockRequestAuthorization(...args),
-  requestAccess: (...args: any) => mockRequestAccess(...args),
+const mockAuthApi = jest.fn(() => ({
+  access: mockAccess,
+  requestAuthorization: mockRequestAuthorization,
+  requestAccess: mockRequestAccess,
 }));
 
 jest.mock('../../api/AuthAPI', () => ({
   __esModule: true,
-  default: (...args: any) => mockAuthApi(...args),
+  default: mockAuthApi,
 }));
 jest.mock('../../stores/SessionStore');
 jest.mock('../SessionActions');
