@@ -39,7 +39,7 @@ const ImageAPI = (url: string, access: Access) => ({
         .get(`${url}/images/${image_key}`)
         .set('Accept', 'application/json')
         .auth(token, { type: 'bearer' })
-        .then((response: Response) => {
+        .then(async (response: Response) => {
           if (response.ok) {
             const result = response?.body as PresignedUpload;
             const data = new FormData();

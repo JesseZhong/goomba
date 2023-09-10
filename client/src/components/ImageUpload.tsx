@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import events from 'events';
 import ImageActions from '../actions/ImageActions';
 import { ImageUploadData } from '../api/ImageAPI';
@@ -11,13 +11,17 @@ const ImageUpload = (props: {
   value?: string;
   onChange?: (file_key: string, image_url?: string) => void;
 }) => {
-  const [value, setValue] = React.useState(props.value ?? '');
-  const [progress, setProgress] = React.useState<number | undefined>(undefined);
+  const [value, setValue] = useState(props.value ?? '');
+  const [progress, setProgress] = useState<number | undefined>(undefined);
 
   const progressEvent = new events.EventEmitter();
   progressEvent.addListener('uploadProgress', (percent: number) => {
     setProgress(Math.round(percent));
   });
+
+  const sanitize = (filename: string) => {
+    return filename.replace('#', '☆');
+  };
 
   let fileInput: HTMLInputElement | null;
 
@@ -35,7 +39,8 @@ const ImageUpload = (props: {
 
           const file = event?.target?.files?.[0];
           if (file) {
-            const filename = basename(file.name) ?? '';
+            const filename = sanitize(basename(file.name) ?? '');
+            console.log(filename);
             ImageActions.upload(filename, file, progressEvent).then(
               (imageUpload: ImageUploadData) => {
                 setValue(imageUpload.image_key);
