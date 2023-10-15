@@ -35,13 +35,13 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    test('returns video info', async () => {
+    it('returns video info', async () => {
       const actual = await api.getStream();
 
       expect(actual).toBe(content);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.getStream();
 
       expect(request.auth).toHaveBeenCalled();
@@ -63,13 +63,13 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    test('returns video info', async () => {
+    it('returns video info', async () => {
       const actual = await api.getDownload();
 
       expect(actual).toBe(content);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.getDownload();
 
       expect(request.auth).toHaveBeenCalled();
@@ -91,20 +91,20 @@ describe('Video API', () => {
       request.__mockClear();
     });
 
-    test('returns videos', async () => {
+    it('returns videos', async () => {
       await api.getVideos();
 
       expect(Videos).toBeCalledWith(content);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.getVideos();
 
       expect(request.auth).toHaveBeenCalled();
     });
 
     describe('when requesting with options', () => {
-      test('forwards options', async () => {
+      it('forwards options', async () => {
         await api.getVideos({
           show_hidden: true,
         });

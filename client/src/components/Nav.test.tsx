@@ -16,7 +16,7 @@ describe.each([
     );
   });
 
-  test('renders logo that links to home', () => {
+  it('renders logo that links to home', () => {
     const logo: HTMLImageElement = screen.getByRole('img');
 
     expect(logo?.closest('a')).toHaveAttribute('href', '/');

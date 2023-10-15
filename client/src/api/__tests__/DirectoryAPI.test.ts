@@ -35,13 +35,13 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    test('returns all as directories', async () => {
+    it('returns all as directories', async () => {
       await api.get();
 
       expect(Directories).toHaveBeenLastCalledWith(content);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.get();
 
       expect(request.auth).toHaveBeenCalled();
@@ -64,19 +64,19 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    test('returns the directory for a successful put', async () => {
+    it('returns the directory for a successful put', async () => {
       const actual = await api.put(directory);
 
       expect(actual).toBe(directory);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.put(directory);
 
       expect(request.auth).toHaveBeenCalled();
     });
 
-    test('rejects if something went wrong', async () => {
+    it('rejects if something went wrong', async () => {
       const response = {
         status: 500,
         ok: false,
@@ -103,19 +103,19 @@ describe('Directory API', () => {
       request.__mockClear();
     });
 
-    test('returns the directory id for a successful delete', async () => {
+    it('returns the directory id for a successful delete', async () => {
       const actual = await api.remove(id);
 
       expect(actual).toBe(id);
     });
 
-    test('authenticates', async () => {
+    it('authenticates', async () => {
       await api.remove(id);
 
       expect(request.auth).toHaveBeenCalled();
     });
 
-    test('rejects if something went wrong', async () => {
+    it('rejects if something went wrong', async () => {
       const response = {
         status: 500,
         ok: false,

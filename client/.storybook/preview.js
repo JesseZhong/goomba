@@ -1,51 +1,20 @@
 import { INITIAL_VIEWPORTS } from '@storybook/addon-viewport';
-import { MemoryRouter, Routes, Route, Location } from 'react-router-dom';
+import { routingDecorator } from './decorators';
+import dark from './themes/dark-theme';
 
-export const parameters = {
-  viewport: {
-    viewports: INITIAL_VIEWPORTS,
+const preview = {
+  parameters: {
+    viewport: {
+      viewports: INITIAL_VIEWPORTS,
+    },
+    backgrounds: {
+      default: 'dark',
+    },
+    docs: {
+      theme: dark,
+    },
   },
-  backgrounds: {
-    default: 'dark',
-  },
+  decorators: [routingDecorator],
 };
 
-const routingDecorator = (Story, { parameters }) => {
-  if (!parameters?.router) {
-    return Story();
-  }
-
-  if (typeof parameters.router !== 'object') {
-    return <MemoryRouter>{Story()}</MemoryRouter>;
-  }
-
-  const { params, layout, queries } = parameters.router;
-
-  let path = undefined;
-  let entry = undefined;
-
-  if (!!params) {
-    path = `/:${Object.keys(params).join('/:')}`;
-    entry = `/${Object.values(params).join('/')}`;
-  }
-
-  if (Array.isArray(queries)) {
-    entry = (entry ?? '') + '?' + queries.join('&');
-  }
-
-  return (
-    <MemoryRouter initialEntries={!!entry ? [entry] : entry}>
-      <Routes>
-        {!!layout ? (
-          <Route index={!path} path={path} element={layout}>
-            <Route index element={Story()} />
-          </Route>
-        ) : (
-          <Route index={!path} path={path} element={Story()} />
-        )}
-      </Routes>
-    </MemoryRouter>
-  );
-};
-
-export const decorators = [routingDecorator];
+export default preview;

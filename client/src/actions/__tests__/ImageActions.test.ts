@@ -19,7 +19,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test('sets up the API with the correct URL and access action', () => {
+it('sets up the API with the correct URL and access action', () => {
   expect(ImageAPI).toHaveBeenCalledWith('example api url', AuthAccess);
 });
 
@@ -29,7 +29,7 @@ describe('ImageActions', () => {
       mockUpload.mockResolvedValue('example response');
     });
 
-    test('call the API', async () => {
+    it('call the API', async () => {
       const image_key = 'example image key';
       const file = 'example file' as unknown as File;
       const event = 'example event' as unknown as events.EventEmitter;

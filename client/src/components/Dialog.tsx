@@ -22,10 +22,10 @@ const Dialog = (props: {
     <Modal.Body>{props.body}</Modal.Body>
     <Modal.Footer>
       <Button variant='danger' onClick={props.onConfirm}>
-        {props.confirmButton ?? 'Yes'}
+        {props.confirmButton ?? 'Confirm'}
       </Button>
       <Button variant='secondary' onClick={props.onCancel}>
-        {props.cancelButton ?? 'No'}
+        {props.cancelButton ?? 'Cancel'}
       </Button>
     </Modal.Footer>
   </Modal>

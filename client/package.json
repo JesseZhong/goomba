@@ -78,6 +78,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/react-fontawesome": "^0.1.18",
+    "@testing-library/user-event": "^14.5.1",
     "bootstrap": "^5.2.3",
     "classnames": "^2.2.6",
     "cross-env": "^6.0.3",

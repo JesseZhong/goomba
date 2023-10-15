@@ -28,7 +28,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test('setup API with the correct URL', () => {
+it('setup API with the correct URL', () => {
   expect(mockAuthApi).toHaveBeenCalledWith('example api url');
 });
 
@@ -47,7 +47,7 @@ describe('#saveSession', () => {
         (sessionStore.getState as jest.Mock).mockReturnValue(previous);
       });
 
-      test(`updates the session to ${JSON.stringify(current)}`, () => {
+      it(`updates the session to ${JSON.stringify(current)}`, () => {
         saveSession(access_token, refresh_token, is_admin);
 
         expect(SessionActions.set).toHaveBeenCalledWith(current);
@@ -68,7 +68,7 @@ describe('#resetSession', () => {
       (sessionStore.getState as jest.Mock).mockReturnValue(previous);
     });
 
-    test(`resets the session to ${JSON.stringify(current)}`, () => {
+    it(`resets the session to ${JSON.stringify(current)}`, () => {
       resetSession();
 
       expect(SessionActions.set).toHaveBeenCalledWith(current);
@@ -85,7 +85,7 @@ describe('#AuthAccess', () => {
       });
     });
 
-    test('attempts to verify access', () => {
+    it('attempts to verify access', () => {
       const action = () => Promise.resolve();
       AuthAccess(action);
 
@@ -106,7 +106,7 @@ describe('#AuthAccess', () => {
       });
     });
 
-    test('throws an exception', () => {
+    it('throws an exception', () => {
       expect(() => AuthAccess(() => Promise.resolve())).toThrow(
         /^One or more tokens is undefined, Access: undefined, Refresh: example refresh token\.$/
       );
@@ -120,7 +120,7 @@ describe('#AuthAccess', () => {
       });
     });
 
-    test('throws an exception', () => {
+    it('throws an exception', () => {
       expect(() => AuthAccess(() => Promise.resolve())).toThrow(
         /^One or more tokens is undefined, Access: example access token, Refresh: undefined\.$/
       );
@@ -130,7 +130,7 @@ describe('#AuthAccess', () => {
 
 describe('AuthAction', () => {
   describe('#requestAuthorization', () => {
-    test('request authorization through the API', () => {
+    it('request authorization through the API', () => {
       const state = 'example state';
 
       AuthActions.requestAuthorization(state);
@@ -148,7 +148,7 @@ describe('AuthAction', () => {
       });
     });
 
-    test('request access and save received tokens', async () => {
+    it('request access and save received tokens', async () => {
       const state = 'example state';
       const code = 'example code';
       const saveSessionSpy = jest.spyOn(authActionsModule, 'saveSession');

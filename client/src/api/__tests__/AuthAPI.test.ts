@@ -18,7 +18,7 @@ describe('Auth API', () => {
   });
 
   describe('when requesting authorization', () => {
-    test('returns a valid auth url', async () => {
+    it('returns a valid auth url', async () => {
       const state = 'fakestate';
       const auth_url = 'somethingsoemthingsomething';
       request.__setDefaultMockResponse({
@@ -34,7 +34,7 @@ describe('Auth API', () => {
     });
 
     describe('with a falsified state', () => {
-      test('throws an error', async () => {
+      it('throws an error', async () => {
         request.__setDefaultMockResponse({
           body: {
             state: 'falsified state',
@@ -51,7 +51,7 @@ describe('Auth API', () => {
 
   describe('when requesting access', () => {
     describe('with a valid state and code', () => {
-      test('returns access and refresh tokens', async () => {
+      it('returns access and refresh tokens', async () => {
         const tokens = {
           access_token: 'LET ME IN!!!',
           refresh_token: 'MOAR POWER!!!',
@@ -83,7 +83,7 @@ describe('Auth API', () => {
     });
 
     describe('with a valid token', () => {
-      test('returns the resource', async () => {
+      it('returns the resource', async () => {
         const getResource = async (_access_token: string) => {
           return Promise.resolve(fakeResource);
         };
@@ -97,7 +97,7 @@ describe('Auth API', () => {
         expect(actual).toBe(fakeResource);
       });
 
-      test('refreshes an expired token', async () => {
+      it('refreshes an expired token', async () => {
         const access = 'shared access token';
         const oldRefresh = 'old refresh token';
         const newRefresh = 'new refresh token';
